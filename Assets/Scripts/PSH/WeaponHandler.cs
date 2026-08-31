@@ -4,10 +4,10 @@ using System.Collections;
 public class WeaponHandler : MonoBehaviour
 {
     [SerializeField] private CamController camController;
-
+    [SerializeField] private Animator weaponHandlerAni;
     [Header("무기 설정")]
     [Tooltip("무기 프리팹(바게트 빵)")]
-    public GameObject BreadPrefs;
+    public Baguette BreadPrefs;
     [Tooltip("최대 빵 보유 갯수")]
     [SerializeField] private int MaxBread = 5;
     [Tooltip("현재 빵 보유 횟수, 자동으로 초기화")]
@@ -17,8 +17,11 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private float throwCooldownTime;
     [Tooltip("쿨타임 여부")]
     [SerializeField] private bool isCooldown = false;
+    [Tooltip("빵 던지는 힘(속도)")]
+    [SerializeField] private float throwForce = 1f;
     [Tooltip("빵 재장전 시간")]
-    [SerializeField] private float throwForce = 10f;
+    [SerializeField] private float reloadTime = 3f;
+
 
     //시작 시점에 빵 갯수 초기화  
     void Start()
@@ -54,7 +57,7 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void MeleeAttack()
     {
-        Debug.Log("빵 휘두르기!");
+        Debug.Log("빵 휘두르기! (플레이어가 애니메이션 진행");
     }
 
     /// <summary>
@@ -62,15 +65,20 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void ThrowBread()
     {
-        Debug.Log("빵 던지기!");
         if (isCooldown){
             Debug.Log("아직 쿨타임이 남았습니다.");
             return;
         }
         else
         {
+            Debug.Log("빵 던지기!");
             //curBread--;
             isCooldown = true;
+            //빵 던지기
+            BreadPrefs.ThrowBaguette(throwForce);
+            //빵 재장전
+            weaponHandlerAni.Play("ReloadBaguette");
+            //시간 측정
             StartCoroutine(ThrowCooldown());
             StartCoroutine(ThrowBreadCoroutine());
         }
@@ -83,9 +91,9 @@ public class WeaponHandler : MonoBehaviour
     IEnumerator ThrowCooldown()
     {
 
-        float curTime = 0;
-        while (curTime < throwCooldownTime){
-            curTime++;
+        float curCoolTime = 0;
+        while (curCoolTime < throwCooldownTime){
+            curCoolTime++;
             yield return new WaitForSeconds(1f);
         }
         isCooldown = false;
@@ -96,9 +104,9 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     IEnumerator ThrowBreadCoroutine()
     {
-        float curTime = 0;
-        while (curTime < throwCooldownTime){
-            curTime++;
+        float curReloadTime = 0;
+        while (curReloadTime < reloadTime){
+            curReloadTime++;
             yield return new WaitForSeconds(1f);
         }
         camController.CameraAim(false);

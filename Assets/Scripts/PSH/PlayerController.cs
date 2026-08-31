@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     public InputAction moveInput;
     [Tooltip("Space")]
     public InputAction jumpInput;
+    [Tooltip("근접공격 애니메이션")]
+    public Animator meleeAni;
+    public bool isThrowReady = false;
     /*
     [Tooltip("마우스 좌 우")]
     public InputAction mouseInput;
@@ -120,17 +123,17 @@ public class PlayerController : MonoBehaviour
     {
         //좌 "클릭"
         if (Input.GetMouseButtonDown(0)){
+            if(isThrowReady)
+                return;
             weaponHandler.MeleeAttack();
+            meleeAni.Play("SwingDiagonal");
         }
         //우 "클릭"
-        else if (Input.GetMouseButtonDown(1))
-        {
-            weaponHandler.ThrowBread();
-        }
         else if (Input.GetMouseButton(1))
         {
             rightClickTime += Time.deltaTime;
             if (rightClickTime >= aimTime){
+                isThrowReady = true;
                 camController.CameraAim(true);
             }
             
@@ -140,6 +143,7 @@ public class PlayerController : MonoBehaviour
         {
             weaponHandler.ThrowBread();
             rightClickTime = 0f;
+            isThrowReady = false;
         }
     }
 

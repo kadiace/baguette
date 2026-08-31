@@ -26,7 +26,7 @@ public class CamController : MonoBehaviour
         isZoom = isAim;
     }
     
-    void Update()
+    void LateUpdate()
     {
         if (!isOver){
             //마우스 움직임에 따른 카메라 방향 계산 (회전)
