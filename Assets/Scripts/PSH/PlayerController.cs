@@ -6,14 +6,21 @@ public class PlayerController : MonoBehaviour
     [Tooltip("카메라")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private CamController camController;
+    [Header("플레이어 무기 관리자(?)")]
+    public WeaponHandler weaponHandler;
     [Header("플레이어 조작")]
     [SerializeField] Rigidbody pRigid;
     [Tooltip("W A S D")]
     public InputAction moveInput;
     [Tooltip("Space")]
     public InputAction jumpInput;
+    /*
     [Tooltip("마우스 좌 우")]
     public InputAction mouseInput;
+    */
+    [SerializeField] private float rightClickTime = 0f;
+    [Tooltip("조준을 위한 우클릭 유지 시간")]
+    [SerializeField] private float aimTime = 1.5f;
 
     public bool isDead = false;
     [SerializeField] float walkSpeed;
@@ -39,12 +46,11 @@ public class PlayerController : MonoBehaviour
     {
         moveInput.Enable();
         jumpInput.Enable();
-        mouseInput.Enable();
+        //mouseInput.Enable();
     }
 
     void Update(){
         CheckKeyboardInput();
-
         RotatePlayer();
     }
 
@@ -58,9 +64,10 @@ public class PlayerController : MonoBehaviour
             return;
         MovePlayer();
         JumpPlayer();
+        AttackPlayer();
     }
 
-    #region Player Controll
+    #region 플레이어 조작(회전, 이동, 회전, 공격)
 
     /// <summary>
     /// 마우스 화전에 따른 플레이어 회전, 추후 카메라 회전과 연동으로 변경 필요
@@ -106,18 +113,36 @@ public class PlayerController : MonoBehaviour
             pRigid.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
     }
 
-    void MoveCamera()
+    /// <summary>
+    /// 플레이어 공격
+    /// </summary>
+    void AttackPlayer()
     {
-        /*
-        if (mouseInput.)
+        //좌 "클릭"
+        if (Input.GetMouseButtonDown(0)){
+            weaponHandler.MeleeAttack();
+        }
+        //우 "클릭"
+        else if (Input.GetMouseButtonDown(1))
         {
+            weaponHandler.ThrowBread();
+        }
+        else if (Input.GetMouseButton(1))
+        {
+            rightClickTime += Time.deltaTime;
+            if (rightClickTime >= aimTime){
+                camController.CameraAim(true);
+            }
             
         }
-        else
+        // 우클릭 해제 시 카메라 줌아웃
+        else if (Input.GetMouseButtonUp(1))
         {
-            
-        }*/
+            weaponHandler.ThrowBread();
+            rightClickTime = 0f;
+        }
     }
+
     #endregion
 
     /// <summary>
