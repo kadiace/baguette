@@ -1,10 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
     private static Managers _instance;
-
-    private readonly DeliveryManager _deliveryManager = new();
 
     private static Managers Instance
     {
@@ -15,7 +14,18 @@ public class Managers : MonoBehaviour
         }
     }
 
-    public static DeliveryManager Delivery => Instance._deliveryManager;
+    private readonly DeliverManager _deliverManager = new();
+    private readonly PoolManager _poolManager = new();
+    private readonly ResourceManager _resourceManager = new();
+    private readonly SceneManagerEx _sceneManager = new();
+    private readonly UIManager _uiManager = new();
+
+
+    public static DeliverManager Deliver => Instance._deliverManager;
+    public static PoolManager Pool => Instance._poolManager;
+    public static ResourceManager Resource => Instance._resourceManager;
+    public static SceneManagerEx Scene => Instance._sceneManager;
+    public static UIManager UI => Instance._uiManager;
 
     public static void EnsureExists()
     {
@@ -49,6 +59,10 @@ public class Managers : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        _deliveryManager.Init();
+        _poolManager.Init();
+    }
+
+    public static void Clear()
+    {
     }
 }
