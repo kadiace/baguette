@@ -6324,6 +6324,7 @@ MonoBehaviour:
   onHandBread: {fileID: 0}
   MaxBread: 5
   curBread: 0
+  fireAngleTransform: {fileID: 529181342}
   throwPathRaycast: {fileID: 1899416383}
   throwCooldownTime: 0.1
   isCooldown: 0
@@ -13037,7 +13038,7 @@ GameObject:
   - component: {fileID: 1663935142}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18643,7 +18644,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 159201829}
   - {fileID: 27331243}
   - {fileID: 293573844}
   - {fileID: 1409593033}

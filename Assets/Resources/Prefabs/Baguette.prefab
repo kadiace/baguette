@@ -49,8 +49,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Baguette
   breadAni: {fileID: 8115568364553372203}
   breadRigid: {fileID: 1612873478765492355}
+  breadVisual: {fileID: 4991467971936218174}
   flySpeed: 40
   explodeTime: 3
+  fireAngle: {x: 0, y: 0, z: 0}
 --- !u!136 &2699469696776315896
 CapsuleCollider:
   m_ObjectHideFlags: 0
