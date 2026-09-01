@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     #region 플레이어 상태값 by.Jeehoon
     [Header("플레이어 상태")]
     public bool isDead = false;
+    
     [SerializeField] float walkSpeed;
     [Tooltip("플레이어 최대 체력")]
     [SerializeField] private int maxHealth = 5;
