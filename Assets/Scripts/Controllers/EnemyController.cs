@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class JHTmpEnemyController : MonoBehaviour
+public class EnemyController : Poolable
 {
     [Tooltip("플레이어")]
     [SerializeField] private PlayerController player;
