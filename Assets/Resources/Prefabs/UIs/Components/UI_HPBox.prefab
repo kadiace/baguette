@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2057776445414106155}
   - component: {fileID: 1885896765496569465}
   m_Layer: 5
-  m_Name: HP Box
+  m_Name: UI_HPBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
