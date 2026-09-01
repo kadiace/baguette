@@ -27,8 +27,6 @@ public class PlayerController : MonoBehaviour
 
     public bool isDead = false;
     [SerializeField] float walkSpeed;
-    [Tooltip("마우스 좌 우 회전 속도(카메라 회전 속도)")]
-    [SerializeField] float rotateSpeed;
     [Tooltip("플레이어 이동 방향")]
     [SerializeField] Vector2 movePos;
     [SerializeField] float jumpHeight;
@@ -54,7 +52,6 @@ public class PlayerController : MonoBehaviour
 
     void Update(){
         CheckKeyboardInput();
-        RotatePlayer();
     }
 
     /// <summary>
@@ -70,17 +67,8 @@ public class PlayerController : MonoBehaviour
         AttackPlayer();
     }
 
-    #region 플레이어 조작(회전, 이동, 회전, 공격)
+    #region 플레이어 조작(이동, 회전, 공격)  *회전은 카메라에서 조절
 
-    /// <summary>
-    /// 마우스 화전에 따른 플레이어 회전, 추후 카메라 회전과 연동으로 변경 필요
-    /// </summary>
-    void RotatePlayer()
-    {
-        float mouseXInput = Mouse.current.delta.x.ReadValue() * rotateSpeed * Time.deltaTime;
-        //플레이어 회전
-        transform.Rotate(Vector3.up * mouseXInput);
-    }
 
     /// <summary>
     /// 플레이어 이동

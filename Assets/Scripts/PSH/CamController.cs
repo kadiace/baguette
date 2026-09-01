@@ -3,7 +3,6 @@ using UnityEngine.InputSystem; //마우스 입력을 받기 위해 필요
 
 public class CamController : MonoBehaviour
 {
-    public GameObject player;
     Vector3 camOffset = new Vector3(0, 4, -4.5f);
     public Transform scopeTransform;
     [Header("카메라 설정")]
@@ -15,6 +14,12 @@ public class CamController : MonoBehaviour
     [SerializeField] float mouseY;   //마우스 상하
     bool isOver = false;
     bool isZoom = false;
+
+   [Header("카메라 회전에 따라 같이 회전 시킬 오브젝트")]
+   [Tooltip("좌 우 회전")]
+    public GameObject player;
+    [Tooltip("상 하 회전 (1인칭 시)")]
+    public Transform weapon; 
 
     public void FreezeCam()
     {
@@ -35,11 +40,16 @@ public class CamController : MonoBehaviour
             mouseY = Mathf.Clamp(mouseY, minPitch, maxPitch);
             Quaternion camRotation = Quaternion.Euler(mouseY, mouseX, 0);
 
+            //플레이어 회전
+            player.transform.rotation = Quaternion.Euler(0, mouseX, 0);
+
             //카메라 위치 조정
             if (isZoom)
             {
                 transform.position = Vector3.Lerp(transform.position, scopeTransform.position, Time.deltaTime * adsSpeed);
                 transform.rotation = Quaternion.Slerp(transform.rotation, camRotation, Time.deltaTime * adsSpeed);
+                //1인칭일 때만 무기 상하 회전
+                weapon.rotation = Quaternion.Slerp(transform.rotation, camRotation, Time.deltaTime * adsSpeed);
             }
             else
             {

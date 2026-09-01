@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Baguette
   breadAni: {fileID: 8115568364553372203}
-  breadRigid: {fileID: 0}
+  breadRigid: {fileID: 3049601950239516692}
 --- !u!54 &3049601950239516692
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

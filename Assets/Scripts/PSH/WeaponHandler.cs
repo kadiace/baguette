@@ -5,9 +5,12 @@ public class WeaponHandler : MonoBehaviour
 {
     [SerializeField] private CamController camController;
     [SerializeField] private Animator weaponHandlerAni;
+    public Transform scopeTransform;
+
     [Header("무기 설정")]
     [Tooltip("무기 프리팹(바게트 빵)")]
     public Baguette BreadPrefs;
+    public Baguette onHandBread;
     [Tooltip("최대 빵 보유 갯수")]
     [SerializeField] private int MaxBread = 5;
     [Tooltip("현재 빵 보유 횟수, 자동으로 초기화")]
@@ -18,9 +21,9 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("쿨타임 여부")]
     [SerializeField] private bool isCooldown = false;
     [Tooltip("빵 던지는 힘(속도)")]
-    [SerializeField] private float throwForce = 1f;
+    [SerializeField] private float throwForce;
     [Tooltip("빵 재장전 시간")]
-    [SerializeField] private float reloadTime = 3f;
+    [SerializeField] private float reloadTime;
 
 
     //시작 시점에 빵 갯수 초기화  
@@ -35,7 +38,7 @@ public class WeaponHandler : MonoBehaviour
         if (curBread > 0)
         {
             curBread--;
-            Instantiate(BreadPrefs, transform.position + transform.forward * 1.5f, transform.rotation);
+            //Instantiate(BreadPrefs, transform.position + transform.forward * 1.5f, transform.rotation);
         }
     }
 

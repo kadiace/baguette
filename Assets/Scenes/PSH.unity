@@ -145,14 +145,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160150700}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1989041962}
   - {fileID: 1124577648}
-  m_Father: {fileID: 897092918}
+  m_Father: {fileID: 1489189767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &160150702
 Animator:
@@ -190,7 +190,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponHandler
   camController: {fileID: 675680632}
   weaponHandlerAni: {fileID: 160150702}
+  scopeTransform: {fileID: 0}
   BreadPrefs: {fileID: 1124577649}
+  onHandBread: {fileID: 0}
   MaxBread: 5
   curBread: 0
   throwCooldownTime: 0
@@ -491,12 +493,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e9d80f0b580d784585fafc31678ea02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CamController
-  player: {fileID: 897092914}
   scopeTransform: {fileID: 573504091}
   camRotateSpeed: 30
   adsSpeed: 15
   mouseX: 0
   mouseY: 0
+  player: {fileID: 897092914}
+  weapon: {fileID: 1489189767}
 --- !u!1 &897092914
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +615,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 573504091}
-  - {fileID: 160150701}
+  - {fileID: 1489189767}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &897092920
@@ -705,7 +708,6 @@ MonoBehaviour:
   aimTime: 1.5
   isDead: 0
   walkSpeed: 10
-  rotateSpeed: 30
   movePos: {x: 0, y: 0}
   jumpHeight: 2
 --- !u!54 &897092921
@@ -833,6 +835,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5bdb7ef4aa5c04f8e2e16acc606434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Baguette
+--- !u!1 &1489189766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1489189767}
+  m_Layer: 0
+  m_Name: WeaponCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1489189767
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489189766}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 160150701}
+  m_Father: {fileID: 897092918}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1907222802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +1043,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
