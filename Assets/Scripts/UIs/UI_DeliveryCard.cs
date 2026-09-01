@@ -21,6 +21,8 @@ public class UI_DeliveryCard : UI_Base
     private int _quantity;
     private float _time;
 
+    public Define.HouseColor Color { get { return _color; } }
+
     public override void Init()
     {
         Bind<TextMeshProUGUI>(typeof(Texts));
@@ -56,6 +58,8 @@ public class UI_DeliveryCard : UI_Base
         _quantity = quantity;
         _time = time;
 
+        Color32 color_ = Define.HouseColors.Colors[_color];
+        GetImage((int)Images.House).GetComponent<Image>().color = Define.HouseColors.Colors[_color];
         GetText((int)Texts.Reward).GetComponent<TextMeshProUGUI>().text = $"{_reward} €";
         GetText((int)Texts.Quantity).GetComponent<TextMeshProUGUI>().text = $"Baguette × {_quantity}";
         SetTime();

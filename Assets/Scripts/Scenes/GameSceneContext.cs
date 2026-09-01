@@ -5,27 +5,27 @@ using UnityEngine;
 
 public class rlacjfghks95_GameSceneContext : MonoBehaviour
 {
-    private UI_Deliveries _deliveries;
 
     private void Start()
     {
         Time.timeScale = 1f;
 
-        _deliveries = Managers.UI.CreateUI<UI_Deliveries>(null, "Scenes");
         Debug.Log("[rlacjfghks95_GameSceneContext] Game scene initialized.");
     }
 
     private void Update()
     {
-
+        StartCoroutine(GenerateNewDeliveryCard());
     }
 
     private IEnumerator GenerateNewDeliveryCard()
     {
-        Debug.Log("생성 시작");
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
 
-        yield return new WaitForSeconds(5f);
-
-        Debug.Log("2초 후 실행");
+            Debug.Log("생성 시도");
+            Managers.Deliver.GenerateDeliveryCard();
+        }
     }
 }
