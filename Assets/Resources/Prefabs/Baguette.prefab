@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4515814471483075604}
   - component: {fileID: 329643573421902685}
   - component: {fileID: 2699469696776315896}
+  - component: {fileID: 1612873478765492355}
   m_Layer: 0
   m_Name: Baguette
   m_TagString: Untagged
@@ -47,7 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Baguette
   breadAni: {fileID: 8115568364553372203}
-  flySpeed: 35
+  breadRigid: {fileID: 1612873478765492355}
+  flySpeed: 40
   explodeTime: 3
 --- !u!136 &2699469696776315896
 CapsuleCollider:
@@ -72,6 +74,33 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1612873478765492355
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3192825985473028765}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4991467971936218174
 GameObject:
   m_ObjectHideFlags: 0
