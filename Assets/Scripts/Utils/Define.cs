@@ -10,6 +10,7 @@ public class Define
 
     public enum HouseColor
     {
+        Unknown,
         Red,
         Green,
         Yellow,

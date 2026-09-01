@@ -20,10 +20,10 @@ public class DeliverManager
     /// <summary>
     /// 새로운 배달을 추가
     /// </summary>
-    public void GenerateDeliveryCard()
+    public Define.HouseColor GenerateDeliveryCard()
     {
         if (_deliveryCards.Count >= _maxLength)
-            return;
+            return Define.HouseColor.Unknown;
 
         UI_DeliveryCard deliveryCard = Managers.UI.CreateUI<UI_DeliveryCard>(_deliveriesBackground.transform, "Components");
 
@@ -40,6 +40,7 @@ public class DeliverManager
 
         _deliveryCards.Add(deliveryCard);
         RefreshDeliveriesLayout();
+        return color;
     }
 
     public void EnterHome(Define.HouseColor color)
