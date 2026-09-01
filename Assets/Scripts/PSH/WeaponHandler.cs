@@ -5,7 +5,6 @@ public class WeaponHandler : MonoBehaviour
 {
     [SerializeField] private CamController camController;
     [SerializeField] private Animator weaponHandlerAni;
-    public Transform scopeTransform;
 
     [Header("무기 설정")]
     [Tooltip("무기 프리팹(바게트 빵)")]
@@ -29,29 +28,44 @@ public class WeaponHandler : MonoBehaviour
     //시작 시점에 빵 갯수 초기화  
     void Start()
     {
-        curBread = MaxBread;
+        curBread = 99999;
+        CreateBread(0);
     }
 
 #region 빵 사용 관련
-    void UseBread()
-    {
-        if (curBread > 0)
-        {
-            curBread--;
-            //Instantiate(BreadPrefs, transform.position + transform.forward * 1.5f, transform.rotation);
-        }
-    }
 
-    public void ReloadBread()
-    {
-        curBread = MaxBread;
-    }
+    /// <summary>
+    /// 빵 충전/보급
+    /// </summary>
+    public void SupplyBread() => curBread = MaxBread;
 
+    /// <summary>
+    /// 빵 최대 보유 갯수 증가
+    /// </summary>
+    /// <param name="amount">증가량</param>
     public void UpgradeMaxBread(int amount)
     {
         MaxBread += amount;
         curBread = MaxBread;
     }
+
+    public void CreateBread(int type)
+    {
+        if(curBread <= 0)
+        {
+            Debug.Log("빵이 없습니다.");
+            return;
+        }
+
+        if(type == 0)
+            curBread--;
+
+        //빵 생성 위치 계산
+        Vector3 handPos = transform.position + new Vector3(0.62f, 0.2f, 0.7f);
+        //빵 프리팹 생성
+        onHandBread = Instantiate(BreadPrefs, handPos, transform.rotation, transform);
+    }
+
 #endregion
 
 #region 빵 공격 관련
@@ -60,7 +74,7 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void MeleeAttack()
     {
-        Debug.Log("빵 휘두르기! (플레이어가 애니메이션 진행");
+        Debug.Log("빵 휘두르기! \n 효과가 별로인 듯하다...");
     }
 
     /// <summary>
@@ -74,11 +88,11 @@ public class WeaponHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("빵 던지기!");
+            Debug.Log("빵 던지기! \n 효과가 굉장했다!");
             //curBread--;
             isCooldown = true;
             //빵 던지기
-            BreadPrefs.ThrowBaguette(throwForce);
+            onHandBread.ThrowBaguette(throwForce);
             //빵 재장전
             weaponHandlerAni.Play("ReloadBaguette");
             //시간 측정
