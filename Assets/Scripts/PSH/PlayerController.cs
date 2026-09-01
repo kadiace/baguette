@@ -198,12 +198,30 @@ public class PlayerController : MonoBehaviour
         return currentHealth;
     }
     /// <summary>
-    /// 
+    /// 최대 체력 반환
     /// </summary>
     /// <returns>최대 체력</returns>
     public int GetMaxHealth()
     {
         return maxHealth;
+    }
+    /// <summary>
+    /// 최대 체력 설정. 최대 체력 변경 시 현재 체력도 최대치로 초기화
+    /// </summary>
+    /// <param name="newMaxHealth"></param>
+        public void SetMaxHealth(int newMaxHealth)
+    {
+        maxHealth = newMaxHealth;
+        currentHealth = maxHealth; // 체력도 최대치로 초기화
+        HealthEventInvoke();
+    }
+    /// <summary>
+    /// 플레이어 속도 설정
+    /// </summary>
+    /// <param name="newSpeed"></param>
+    public void setPlayerSpeed(float newSpeed)
+    {
+        walkSpeed = newSpeed;
     }
 
     #endregion

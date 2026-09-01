@@ -39,10 +39,25 @@ public class BreadCounter : MonoBehaviour
         
     }
 
-    // 빵 개수 업데이트
+    /// <summary>
+    /// 빵 개수 업데이트
+    /// </summary>
+    /// <param name="currentBread">현재 빵 개수</param>
     void UpdateBreadCounter(int currentBread)
     {
         Debug.Log($"전달 받은 빵 개수: {currentBread}, 최대 빵 개수: {maxBread}");
         breadCountText.text = "Bread: " + currentBread.ToString() + " / " + maxBread.ToString();
+    }
+
+    public void SetMaxBread(int newMaxBread)
+    {
+        maxBread = newMaxBread;
+        UpdateBreadCounter(currentBread);
+    }
+
+    public void GetMaxBread()
+    {
+        maxBread = JHTmpPlayerWeaponHandler.GetMaxBread();
+        UpdateBreadCounter(currentBread);
     }
 }

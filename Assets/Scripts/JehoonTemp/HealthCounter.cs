@@ -24,7 +24,7 @@ public class HealthCounter : MonoBehaviour
     void Start()
     {
         player = GameObject.Find(playerName);
-        maxPlayerHealth = 5;
+        maxPlayerHealth = player.GetComponent<PlayerController>().GetMaxHealth();
         playerHealth = maxPlayerHealth;
         UpdateHealthCounter(playerHealth);
 
@@ -38,11 +38,12 @@ public class HealthCounter : MonoBehaviour
     }
 
     /// <summary>
-    /// 플레이어 체력 변동 이벤트를 받아 체력 UI를 업데이트합니다.
+    /// 플레이어 체력 변동 이벤트를 받아서 체력 UI 업데이트
     /// </summary>
     /// <param name="currentHealth">현재 체력</param>
     public void UpdateHealthCounter(int currentHealth)
     {
+        maxPlayerHealth = player.GetComponent<JHTmpPlayerController>().GetMaxHealth();
         playerHealth = currentHealth;
 
         // 기존 체력 UI 제거
@@ -64,4 +65,17 @@ public class HealthCounter : MonoBehaviour
             }
         }
     }
+
+    public int GetMaxPlayerHealth()
+    {
+        return maxPlayerHealth;
+    }
+
+    public void SetMaxPlayerHealth(int newMaxHealth)
+    {
+        maxPlayerHealth = newMaxHealth;
+        playerHealth = maxPlayerHealth; // 체력도 최대치로 초기화
+        UpdateHealthCounter(playerHealth);
+    }
+
 }
