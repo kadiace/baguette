@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class JHTmpWeaponHandler : MonoBehaviour
@@ -22,11 +23,17 @@ public class JHTmpWeaponHandler : MonoBehaviour
     [Tooltip("빵 재장전 시간")]
     [SerializeField] private float reloadTime = 3f;
 
+    // UI에 전달할 이벤트
+    [Tooltip("빵 개수 변경 이벤트")]
+    public UnityEvent<int> OnBreadCountChanged;
+
 
     //시작 시점에 빵 갯수 초기화  
     void Start()
     {
         curBread = MaxBread;
+        OnBreadCountChanged = new UnityEvent<int>();
+        CountEventInvoke();
     }
 
 #region 빵 사용 관련
@@ -35,6 +42,7 @@ public class JHTmpWeaponHandler : MonoBehaviour
         if (curBread > 0)
         {
             curBread--;
+            CountEventInvoke();
             Instantiate(BreadPrefs, transform.position + transform.forward * 1.5f, transform.rotation);
         }
     }
@@ -42,12 +50,14 @@ public class JHTmpWeaponHandler : MonoBehaviour
     public void ReloadBread()
     {
         curBread = MaxBread;
+        CountEventInvoke();
     }
 
     public void UpgradeMaxBread(int amount)
     {
         MaxBread += amount;
         curBread = MaxBread;
+        CountEventInvoke();
     }
 #endregion
 
@@ -69,11 +79,16 @@ public class JHTmpWeaponHandler : MonoBehaviour
             Debug.Log("아직 쿨타임이 남았습니다.");
             return;
         }
+        else if (curBread <= 0){
+            Debug.Log("빵이 없습니다.");
+            return;
+        }
         else
         {
             Debug.Log("빵 던지기!");
-            //curBread--;
+            curBread--;
             isCooldown = true;
+            CountEventInvoke();
             //빵 던지기
             BreadPrefs.ThrowBaguette(throwForce);
             //빵 재장전
@@ -95,6 +110,12 @@ public class JHTmpWeaponHandler : MonoBehaviour
     public int GetMaxBread()
     {
         return MaxBread;
+    }
+
+    public void CountEventInvoke()
+    {
+        OnBreadCountChanged.Invoke(curBread);
+        Debug.Log("현재 빵 개수: " + curBread);
     }
 
 #endregion
@@ -123,6 +144,6 @@ public class JHTmpWeaponHandler : MonoBehaviour
             curReloadTime++;
             yield return new WaitForSeconds(1f);
         }
-        camController.CameraAim(false);
+        // camController.CameraAim(false);
     }
 }

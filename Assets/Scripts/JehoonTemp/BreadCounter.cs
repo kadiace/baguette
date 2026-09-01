@@ -31,6 +31,7 @@ public class BreadCounter : MonoBehaviour
         breadCountText = GameObject.Find("BreadCount").GetComponent<TMPro.TextMeshProUGUI>();
 
         UpdateBreadCounter(currentBread);
+        JHTmpPlayerWeaponHandler.OnBreadCountChanged.AddListener(UpdateBreadCounter);
     }
 
     // Update is called once per frame
