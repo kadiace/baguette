@@ -3,13 +3,22 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class rlacjfghks95_GameSceneContext : MonoBehaviour
+[System.Serializable]
+public class TrafficPath
 {
+    public List<Vector3> Waypoints;
+}
+
+public class GameSceneContext : MonoBehaviour
+{
+    [SerializeField]
+    private List<TrafficPath> _paths;
 
     private void Start()
     {
-        Debug.Log("[rlacjfghks95_GameSceneContext] Game scene initialized.");
+        Debug.Log("[GameSceneContext] Game scene initialized.");
         StartCoroutine(GenerateNewDeliveryCard());
+        StartCoroutine(SpawnTraffics());
     }
 
     private IEnumerator GenerateNewDeliveryCard()
@@ -61,5 +70,23 @@ public class rlacjfghks95_GameSceneContext : MonoBehaviour
                 villagerInteractionController.DeliveryCard = deliveryCard;
             }
         }
+    }
+
+    private IEnumerator SpawnTraffics()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            Debug.Log("생성 시도");
+            SpawnTraffic();
+        }
+    }
+
+    private void SpawnTraffic()
+    {
+        GameObject go = Managers.Resource.Instantiate("Car");
+        CarController car = go.GetorAddComponent<CarController>();
+        car.Path = _paths[Random.Range(0, _paths.Count)].Waypoints;
     }
 }
