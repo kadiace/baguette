@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class JHTmpPlayerController : MonoBehaviour
@@ -32,6 +33,13 @@ public class JHTmpPlayerController : MonoBehaviour
     [Tooltip("플레이어 이동 방향")]
     [SerializeField] Vector2 movePos;
     [SerializeField] float jumpHeight;
+
+    [Tooltip("플레이어 최대 체력")]
+    [SerializeField] private int maxHealth = 5;
+    [Tooltip("플레이어 현재 체력")]
+    [SerializeField] private int currentHealth = 5;
+    [Tooltip("플레이어 체력 변동 이벤트")]
+    public UnityEvent<int> OnHealthChanged;
 
     private void Awake(){
         pRigid = GetComponent<Rigidbody>();
@@ -149,12 +157,70 @@ public class JHTmpPlayerController : MonoBehaviour
 
     #endregion
 
+    #region 플레이어 체력 변동 & 사망
     /// <summary>
-    /// 충돌 감지
+    /// 현재 체력 변동 이벤트를 Invoke합니다.
     /// </summary>
-    /// <param name="collision"></param>
-    private void OnCollisionEnter(Collision collision)
+    private void HealthEventInvoke()
     {
-
+        OnHealthChanged.Invoke(currentHealth);
     }
+    /// <summary>
+    /// 플레이어가 피해를 입었을 때 체력 감소
+    /// </summary>
+    /// <param name="damage">받은 피해량</param>
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;            
+        }
+
+        HealthEventInvoke();
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+    /// <summary>
+    /// 플레이어 사망 처리
+    /// </summary>
+    private void Die()
+    {
+        isDead = true;
+        Debug.Log("플레이어 사망");
+    }
+    /// <summary>
+    /// 현재 체력 반환
+    /// </summary>
+    /// <returns>현재 체력</returns>
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>최대 체력</returns>
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 트리거 발동 감지
+    /// </summary>
+    /// <param name="other"></param>
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.gameObject.name == "EnemyTemp")
+    //     {
+    //         TakeDamage(1);
+    //         Debug.Log("플레이어가 적에게 피해를 입었습니다. 현재 체력: " + currentHealth);
+    //     }
+    // }
 }

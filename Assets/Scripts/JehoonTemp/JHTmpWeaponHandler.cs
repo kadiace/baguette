@@ -28,7 +28,7 @@ public class JHTmpWeaponHandler : MonoBehaviour
     public UnityEvent<int> OnBreadCountChanged;
 
 
-    //시작 시점에 빵 갯수 초기화  
+    //시작 시점에 빵 갯수 초기화
     void Start()
     {
         curBread = MaxBread;
@@ -37,6 +37,9 @@ public class JHTmpWeaponHandler : MonoBehaviour
     }
 
 #region 빵 사용 관련
+    /// <summary>
+    /// 빵 사용 시 현재 빵 개수를 감소시키고, UI에 변경 사항을 전달합니다.
+    /// </summary>
     void UseBread()
     {
         if (curBread > 0)
@@ -46,13 +49,18 @@ public class JHTmpWeaponHandler : MonoBehaviour
             Instantiate(BreadPrefs, transform.position + transform.forward * 1.5f, transform.rotation);
         }
     }
-
+    /// <summary>
+    /// 현재 빵 개수를 최대치로 재장전하고, UI에 변경 사항을 전달합니다.
+    /// </summary>
     public void ReloadBread()
     {
         curBread = MaxBread;
         CountEventInvoke();
     }
-
+    /// <summary>
+    /// 최대 빵 개수를 증가시키고, 현재 빵 개수를 최대치로 설정하며, UI에 변경 사항을 전달합니다.
+    /// </summary>
+    /// <param name="amount">최대 빵 개수를 증가시킬 양을 매개변수로 전달받습니다.</param>
     public void UpgradeMaxBread(int amount)
     {
         MaxBread += amount;
@@ -102,17 +110,26 @@ public class JHTmpWeaponHandler : MonoBehaviour
 #endregion
 
 #region 빵 개수 관련
+    /// <summary>
+    /// 현재 빵 개수를 반환합니다.
+    /// </summary>
+    /// <returns>현재 빵 개수</returns>
     public int GetCurrentBread()
     {
         return curBread;
     }
-
+    /// <summary>
+    /// 최대 빵 개수를 반환합니다.
+    /// </summary>
+    /// <returns>최대 빵 개수</returns>
     public int GetMaxBread()
     {
         return MaxBread;
     }
-
-    public void CountEventInvoke()
+    /// <summary>
+    /// 현재 빵 개수가 변경되었음을 알리는 이벤트를 Invoke합니다.
+    /// </summary>
+    private void CountEventInvoke()
     {
         OnBreadCountChanged.Invoke(curBread);
         Debug.Log("현재 빵 개수: " + curBread);
