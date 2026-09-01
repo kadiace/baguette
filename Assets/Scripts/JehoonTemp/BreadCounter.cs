@@ -9,7 +9,7 @@ public class BreadCounter : MonoBehaviour
     [SerializeField] private string playerName = "PlayerTemp";
 
     [Tooltip("플레이어 WeaponHandler")]
-    [SerializeField] private JHTmpWeaponHandler JHTmpPlayerWeaponHandler;
+    [SerializeField] private WeaponHandler JHTmpPlayerWeaponHandler;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [Tooltip("현재 빵 개수")]
@@ -22,15 +22,14 @@ public class BreadCounter : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI breadCountText;
     void Start()
     {
+        UpdateBreadCounter(currentBread);
         player = GameObject.Find(playerName);
-        // JHTmpPlayerWeaponHandler = player.GetComponent<JHTmpWeaponHandler>();
         maxBread = JHTmpPlayerWeaponHandler.GetMaxBread();
         currentBread = JHTmpPlayerWeaponHandler.GetCurrentBread();
         Debug.Log("BreadCounter Start() - maxBread: " + maxBread + ", currentBread: " + currentBread);
 
         breadCountText = GameObject.Find("BreadCount").GetComponent<TMPro.TextMeshProUGUI>();
 
-        UpdateBreadCounter(currentBread);
         JHTmpPlayerWeaponHandler.OnBreadCountChanged.AddListener(UpdateBreadCounter);
     }
 
@@ -43,6 +42,7 @@ public class BreadCounter : MonoBehaviour
     // 빵 개수 업데이트
     void UpdateBreadCounter(int currentBread)
     {
+        Debug.Log($"전달 받은 빵 개수: {currentBread}, 최대 빵 개수: {maxBread}");
         breadCountText.text = "Bread: " + currentBread.ToString() + " / " + maxBread.ToString();
     }
 }

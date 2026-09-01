@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class JHTmpEnemyController : MonoBehaviour
 {
     [Tooltip("플레이어")]
-    [SerializeField] private JHTmpPlayerController player;
+    [SerializeField] private PlayerController player;
     [Tooltip("적 이동 속도")]
     [SerializeField] private float enemySpeed = 3f;
 
@@ -15,7 +15,7 @@ public class JHTmpEnemyController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = GameObject.Find("PlayerTemp").GetComponent<JHTmpPlayerController>();
+        player = GameObject.Find("PlayerTemp").GetComponent<PlayerController>();
         enemyRigid = GetComponent<Rigidbody>();
         onPlayerDamaged = new UnityEvent<int>();
     }

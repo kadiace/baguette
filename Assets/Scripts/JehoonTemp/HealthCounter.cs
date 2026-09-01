@@ -28,7 +28,7 @@ public class HealthCounter : MonoBehaviour
         playerHealth = maxPlayerHealth;
         UpdateHealthCounter(playerHealth);
 
-        player.GetComponent<JHTmpPlayerController>().OnHealthChanged.AddListener(UpdateHealthCounter);
+        player.GetComponent<PlayerController>().OnHealthChanged.AddListener(UpdateHealthCounter);
     }
 
     // Update is called once per frame
