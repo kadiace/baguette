@@ -11,7 +11,7 @@ public class rlacjfghks95_GameSceneContext : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        _deliveries = Managers.UI.CreateUI<UI_Deliveries>();
+        _deliveries = Managers.UI.CreateUI<UI_Deliveries>(null, "Scenes");
         Debug.Log("[rlacjfghks95_GameSceneContext] Game scene initialized.");
     }
 
