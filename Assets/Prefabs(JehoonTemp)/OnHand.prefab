@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2202690794543251651}
   - component: {fileID: 1780920778969881330}
   m_Layer: 0
-  m_Name: Baguette(OnHand)
+  m_Name: OnHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
