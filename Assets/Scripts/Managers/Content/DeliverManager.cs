@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class DeliverManager
 {
@@ -36,7 +35,7 @@ public class DeliverManager
                 Enum.GetValues(typeof(Define.HouseColor)).Length);
         }
 
-        // deliveryCard.SetCard(color, 3 * 60f, 5, 5);
+        deliveryCard.SetCard(color, 1 * 60f, 5, 5);
 
         _deliveryCards.Add(deliveryCard);
         RefreshDeliveriesLayout();
