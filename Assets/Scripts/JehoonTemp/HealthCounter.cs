@@ -43,7 +43,10 @@ public class HealthCounter : MonoBehaviour
     /// <param name="currentHealth">현재 체력</param>
     public void UpdateHealthCounter(int currentHealth)
     {
-        maxPlayerHealth = player.GetComponent<JHTmpPlayerController>().GetMaxHealth();
+        Debug.Log(player);
+        maxPlayerHealth = player.GetComponent<PlayerController>().GetMaxHealth();
+
+        Debug.Log("Get Max Health: " + maxPlayerHealth);
         playerHealth = currentHealth;
 
         // 기존 체력 UI 제거
