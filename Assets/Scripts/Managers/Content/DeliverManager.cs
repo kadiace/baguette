@@ -57,6 +57,11 @@ public class DeliverManager
         Managers.Resource.Destory(deliveryCard.transform.gameObject);
     }
 
+    public bool IsHouseDuplicated(GameObject house)
+    {
+        return _deliveryCards.Exists(card => card.House == house);
+    }
+
     private void RefreshDeliveriesLayout()
     {
         RectTransform container = _deliveriesBackground.GetComponent<RectTransform>();

@@ -16,11 +16,13 @@ public class UI_DeliveryCard : UI_Base
         Time
     }
 
+    private GameObject _house;
     private Define.HouseColor _color;
     private int _reward;
     private int _quantity;
     private float _time;
 
+    public GameObject House { get { return _house; } set { _house = value; } }
     public Define.HouseColor Color { get { return _color; } }
 
     public override void Init()

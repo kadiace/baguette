@@ -27,7 +27,6 @@ public class GameSceneContext : MonoBehaviour
         {
             yield return new WaitForSeconds(3f);
 
-            Debug.Log("생성 시도");
             UI_DeliveryCard deliveryCard = Managers.Deliver.GenerateDeliveryCard();
             if (deliveryCard != null)
             {
@@ -46,6 +45,10 @@ public class GameSceneContext : MonoBehaviour
 
                 // 많은 house 들 중에서 랜덤으로 하나 선택
                 GameObject selectedHouse = houseList[Random.Range(0, houseList.Count)];
+                while (Managers.Deliver.IsHouseDuplicated(selectedHouse))
+                {
+                    selectedHouse = houseList[Random.Range(0, houseList.Count)];
+                }
 
                 // 선택된 house 의 지붕, 주민을 선택
                 Transform selectedRoof = selectedHouse.transform.Find("Roof");
@@ -68,6 +71,7 @@ public class GameSceneContext : MonoBehaviour
                 VillagerInteractionController villagerInteractionController = trigger.GetorAddComponent<VillagerInteractionController>();
                 villagerInteractionController.OriginHouseColor = originRoofColor;
                 villagerInteractionController.DeliveryCard = deliveryCard;
+                villagerInteractionController.Roof = selectedRoof.gameObject;
             }
         }
     }
