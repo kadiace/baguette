@@ -59,6 +59,7 @@ public class Managers : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
+        _deliverManager.Init();
         _poolManager.Init();
     }
 
