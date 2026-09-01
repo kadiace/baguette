@@ -14,8 +14,8 @@ public class PlayerController : MonoBehaviour
     public InputAction moveInput;
     [Tooltip("Space")]
     public InputAction jumpInput;
-    [Tooltip("근접공격 애니메이션")]
-    public Animator meleeAni;
+    [Tooltip("공격 애니메이션(웨폰 헨들러)")]
+    public Animator weaponHandlerAni;
     public bool isThrowReady = false;
     /*
     [Tooltip("마우스 좌 우")]
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
             if(isThrowReady)
                 return;
             weaponHandler.MeleeAttack();
-            meleeAni.Play("SwingDiagonal");
+            weaponHandlerAni.Play("SwingDiagonal");
         }
         //우 "클릭"
         else if (Input.GetMouseButton(1))

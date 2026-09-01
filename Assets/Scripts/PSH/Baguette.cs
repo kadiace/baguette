@@ -11,7 +11,7 @@ public class Baguette : MonoBehaviour
     /// </summary>
     public void ThrowBaguette(float force)
     {
-        Debug.Log("빵 발사됨");
+        //Debug.Log("빵 발사됨");
         transform.SetParent(null);
         breadRigid.AddForce(transform.forward * force, ForceMode.Force);
         breadAni.Play("Rotate");

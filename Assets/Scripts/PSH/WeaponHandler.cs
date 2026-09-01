@@ -74,7 +74,7 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void MeleeAttack()
     {
-        Debug.Log("빵 휘두르기! \n 효과가 별로인 듯하다...");
+        Debug.Log("빵 휘두르기! \n          효과가 별로인 듯하다...");
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public class WeaponHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("빵 던지기! \n 효과가 굉장했다!");
+            Debug.Log("빵 던지기! \n        효과가 굉장했다!");
             //curBread--;
             isCooldown = true;
             //빵 던지기
@@ -121,11 +121,14 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     IEnumerator ThrowBreadCoroutine()
     {
-        float curReloadTime = 0;
-        while (curReloadTime < reloadTime){
-            curReloadTime++;
-            yield return new WaitForSeconds(1f);
-        }
+        //재장전 시간 동안 조준 상태 유지
+        yield return new WaitForSeconds(reloadTime);
+
+        //카메라 줌 아웃(3인칭으로 변경)
         camController.CameraAim(false);
+        yield return null;
+
+        //조준 방향 초기화
+        //transform.parent.rotation = Quaternion.identity;
     }
 }
