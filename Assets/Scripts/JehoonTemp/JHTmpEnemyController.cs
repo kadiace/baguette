@@ -36,10 +36,10 @@ public class JHTmpEnemyController : MonoBehaviour
     {
         if (other.gameObject.name == "PlayerTemp")
         {
-            StopCoroutine(StillTriggeredCoroutine());
             player.TakeDamage(1);
             Debug.Log("플레이어가 적에게 피해를 입었습니다. 현재 체력: " + player.GetCurrentHealth());
             StartCoroutine(StillTriggeredCoroutine());
+            Debug.Log("Coroutine 시작");
         }
     }
 
@@ -47,7 +47,9 @@ public class JHTmpEnemyController : MonoBehaviour
     {
         if (other.gameObject.name == "PlayerTemp")
         {
-            StopCoroutine(StillTriggeredCoroutine());
+            Debug.Log("플레이어가 적과 접촉을 끊었습니다.");
+            // StopCoroutine(StillTriggeredCoroutine());
+            StopAllCoroutines();
         }
     }
 
