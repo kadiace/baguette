@@ -76,14 +76,14 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Button drinkButton;
     [Tooltip("음료수 개수")]
 
-    [SerializeField] private int drinkEach = 1;
+    [SerializeField] private int drinkEach = 0;
     [Tooltip("음료수 개수 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI drinkEachText;
     [Tooltip("버터 구매 버튼")]
     [SerializeField] private Button butterButton;
     [Tooltip("버터 개수")]
 
-    [SerializeField] private int butterEach = 1;
+    [SerializeField] private int butterEach = 0;
     [Tooltip("버터 개수 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI butterEachText;
     #endregion
@@ -96,7 +96,7 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
         GetCurrentValues();
-        curMoney = 99999.00f;
+        curMoney = 5700.00f;
         //InitValueText();
         SetValueText();
         ButtonInitiate();
@@ -119,27 +119,6 @@ public class ShopManager : MonoBehaviour
         curButter = supplyManager.GetButterCount();
     }
     /// <summary>
-    /// 현재 소지한 돈, 체력, 빵 개수, 이동속도 수치 텍스트 변수 가져오기
-    /// </summary>
-    // public void InitValueText()
-    // {
-    //     // 스탯
-    //     priceText = GameObject.Find("PriceText").GetComponent<TMPro.TextMeshProUGUI>();
-    //     healthText = GameObject.Find("BeforeHealth").GetComponent<TMPro.TextMeshProUGUI>();
-    //     healthUpgradeText = GameObject.Find("AfterHealth").GetComponent<TMPro.TextMeshProUGUI>();
-    //     healthPriceText = GameObject.Find("HealthPrice").GetComponent<TMPro.TextMeshProUGUI>();
-    //     breadText = GameObject.Find("BeforeBread").GetComponent<TMPro.TextMeshProUGUI>();
-    //     breadUpgradeText = GameObject.Find("AfterBread").GetComponent<TMPro.TextMeshProUGUI>();
-    //     breadPriceText = GameObject.Find("BreadPrice").GetComponent<TMPro.TextMeshProUGUI>();
-    //     speedText = GameObject.Find("BeforeSpeed").GetComponent<TMPro.TextMeshProUGUI>();
-    //     speedUpgradeText = GameObject.Find("AfterSpeed").GetComponent<TMPro.TextMeshProUGUI>();
-    //     speedPriceText = GameObject.Find("SpeedPrice").GetComponent<TMPro.TextMeshProUGUI>();
-
-    //     // 소모품
-    //     drinkEachText = GameObject.Find("DrinkEach").GetComponent<TMPro.TextMeshProUGUI>();
-    //     butterEachText = GameObject.Find("ButterEach").GetComponent<TMPro.TextMeshProUGUI>();
-    // }
-    /// <summary>
     /// 현재 소지한 돈, 전체 텍스트 값 세팅
     /// </summary>
     public void SetValueText()
@@ -159,6 +138,14 @@ public class ShopManager : MonoBehaviour
         healthText.text = player.GetComponent<PlayerController>().GetMaxHealth().ToString();
         healthUpgradeText.text = (player.GetComponent<PlayerController>().GetMaxHealth() + 1).ToString();
         healthPriceText.text = "€ " + healthPrice.ToString("F2");
+
+        if (healthLevel >= 11)
+        {
+            healthText.text = 15.ToString();
+            healthUpgradeText.text = 15.ToString();
+            healthPriceText.text = "MAX";
+            healthButton.interactable = false;
+        }
     }
     /// <summary>
     /// 현재 소지한 빵 소지 최대치 텍스트 값 세팅
@@ -168,6 +155,14 @@ public class ShopManager : MonoBehaviour
         breadText.text = breadCounter.GetMaxBread().ToString();
         breadUpgradeText.text = (breadCounter.GetMaxBread() + 2).ToString();
         breadPriceText.text = "€ " + breadPrice.ToString("F2");
+
+        if (breadLevel >= 11)
+        {
+            breadText.text = 25.ToString();
+            breadUpgradeText.text = 25.ToString();
+            breadPriceText.text = "MAX";
+            breadButton.interactable = false;
+        }
     }
     /// <summary>
     /// 현재 소지한 이동속도 텍스트 값 세팅
@@ -177,11 +172,20 @@ public class ShopManager : MonoBehaviour
         speedText.text = (1 + (speedLevel - 1) * 0.1f).ToString("F1");
         speedUpgradeText.text = (1 + speedLevel * 0.1f).ToString("F1");
         speedPriceText.text = "€ " + speedPrice.ToString("F2");
+
+        if (speedLevel >= 6)
+        {
+            speedText.text = 1.5.ToString();
+            speedUpgradeText.text = 1.5.ToString();
+            speedPriceText.text = "MAX";
+            speedButton.interactable = false;
+            return;
+        }
     }
 
 
     /// <summary>
-    /// 모든 버튼을 활성화합니다.
+    /// 조건에 맞춰 초기 버튼 활성화
     /// </summary>
     public void ButtonInitiate()
     {   
@@ -204,7 +208,7 @@ public class ShopManager : MonoBehaviour
             breadButton.interactable = true;
         }
 
-        if(curMoney < speedPrice || speedLevel >= 5)
+        if(curMoney < speedPrice || speedLevel >= 6)
         {
             speedButton.interactable = false;
         }
@@ -249,11 +253,10 @@ public class ShopManager : MonoBehaviour
     public void SetHealthValue()
     {
         // 체력은 레벨별로 5 + 레벨 * 1, 최대 11레벨까지(최대치 15). 업그레이드 가격은 레벨별로 5 + 레벨 * 2.5
-        if (healthLevel >= 10)
+        if (healthLevel >= 11)
         {
-            healthText.text = 15.ToString();
-            healthUpgradeText.text = 15.ToString();
-            healthPriceText.text = "MAX";
+            SetHealthValueText();
+            ButtonInitiate();
             Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
             Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
             return;
@@ -267,6 +270,7 @@ public class ShopManager : MonoBehaviour
 
         curMoneyText.text = "€ " + curMoney.ToString("F2");
         SetHealthValueText();
+        ButtonInitiate();
 
         Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
         Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
@@ -277,11 +281,14 @@ public class ShopManager : MonoBehaviour
     public void SetBreadValue()
     {
         // 빵 소지 최대치는 레벨별로 5 + 레벨 * 2, 최대 11레벨까지(최대치 25). 업그레이드 가격은 레벨별로 5 + 레벨 * 2.5
-        if (breadLevel >= 10)
+        if (breadLevel >= 11)
         {
-            breadText.text = 25.ToString();
-            breadUpgradeText.text = 25.ToString();
-            breadPriceText.text = "MAX";
+            SetBreadValueText();
+            ButtonInitiate();
+            // breadText.text = 25.ToString();
+            // breadUpgradeText.text = 25.ToString();
+            // breadPriceText.text = "MAX";
+            // breadButton.interactable = false;
             Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
             Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
             return;
@@ -294,6 +301,7 @@ public class ShopManager : MonoBehaviour
 
         curMoneyText.text = "€ " + curMoney.ToString("F2");
         SetBreadValueText();
+        ButtonInitiate();
 
         Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
         Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
@@ -304,21 +312,21 @@ public class ShopManager : MonoBehaviour
     public void SetSpeedValue()
     {
         // 이동속도는 레벨별로 1 + 레벨 * 0.1, 최대 5레벨까지(최대치 1.5). 업그레이드 가격은 레벨별로 15 + 레벨 * 7.5
-        if (speedLevel >= 5)
+        if (speedLevel >= 6)
         {
-            speedText.text = 1.5.ToString();
-            speedUpgradeText.text = 1.5.ToString();
-            speedPriceText.text = "MAX";
+            SetSpeedValueText();
+            ButtonInitiate();
             return;
         }
         curMoney -= speedPrice;
         speedLevel += 1;
 
-        player.GetComponent<PlayerController>().setPlayerSpeed(1 + (speedLevel - 1) * 0.1f);
+        player.GetComponent<PlayerController>().setPlayerSpeed(10 * (1 + (speedLevel - 1) * 0.1f));
         speedPrice = 15 + (speedLevel - 1) * 7.5f;
 
         curMoneyText.text = "€ " + curMoney.ToString("F2");
         SetSpeedValueText();
+        ButtonInitiate();
     }
 
     public void SetDrinkValue()
@@ -327,6 +335,7 @@ public class ShopManager : MonoBehaviour
         supplyManager.SetDrinkCount(supplyManager.GetDrinkCount() + 1);
         curMoneyText.text = "€ " + curMoney.ToString("F2");
         drinkEachText.text = supplyManager.GetDrinkCount().ToString();
+        ButtonInitiate();
     }
 
     public void SetButterValue()
@@ -335,13 +344,26 @@ public class ShopManager : MonoBehaviour
         supplyManager.SetButterCount(supplyManager.GetButterCount() + 1);
         curMoneyText.text = "€ " + curMoney.ToString("F2");
         butterEachText.text = supplyManager.GetButterCount().ToString();
+        ButtonInitiate();
     }
 
     public void SetAirConditionerValue()
     {
         curMoney -= airConditionerPrice;
         curMoneyText.text = "€ " + curMoney.ToString("F2");
-        airConditionerButton.interactable = false;
+        ButtonInitiate();
+    }
+    #endregion
+
+    #region 상점 활성화시 다른 오브젝트 멈춤, 닫으면 재개
+    private void OnEnable()
+    {
+        Time.timeScale = 0f;
+    }
+
+    private void OnDisable()
+    {
+        Time.timeScale = 1f;
     }
     #endregion
 }
