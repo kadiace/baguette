@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class WeaponHandler : MonoBehaviour
@@ -27,13 +28,18 @@ public class WeaponHandler : MonoBehaviour
     [Header("위치 확인용 빵(테스트 후 제거 예정)")]
     public GameObject breadTMP;
 
+       // UI에 전달할 이벤트
+    [Tooltip("빵 개수 변경 이벤트")]
+    public UnityEvent<int> OnBreadCountChanged = new UnityEvent<int>();
 
     //시작 시점에 빵 갯수 초기화  
     void Start()
     {
         breadTMP.SetActive(false);
-        curBread = 99999;
+        curBread = 99999; //테스트용: curBread = MaxBread;
         CreateBread(0);
+        //UI 표시 빵 갯수 초기화
+        CountEventInvoke();
     }
 
 #region 빵 사용 관련
@@ -41,7 +47,11 @@ public class WeaponHandler : MonoBehaviour
     /// <summary>
     /// 빵 충전/보급
     /// </summary>
-    public void SupplyBread() => curBread = MaxBread;
+    public void SupplyBread()
+    {
+        curBread = MaxBread;
+        CountEventInvoke();
+    }
 
     /// <summary>
     /// 빵 최대 보유 갯수 증가
@@ -51,6 +61,7 @@ public class WeaponHandler : MonoBehaviour
     {
         MaxBread += amount;
         curBread = MaxBread;
+        CountEventInvoke();
     }
 
     public void CreateBread(int type)
@@ -63,6 +74,8 @@ public class WeaponHandler : MonoBehaviour
 
         if(type == 0)
             curBread--;
+
+        CountEventInvoke();
 
         //빵 프리팹 생성
         onHandBread = Instantiate(BreadPrefs, transform);
@@ -80,6 +93,7 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void MeleeAttack()
     {
+        //애니메이션과 콜라이더를 통해 처리
         Debug.Log("빵 휘두르기! \n          효과가 별로인 듯하다...");
     }
 
@@ -92,11 +106,16 @@ public class WeaponHandler : MonoBehaviour
             Debug.Log("아직 쿨타임이 남았습니다.");
             return;
         }
+        else if (curBread <= 0){
+            Debug.Log("빵이 없습니다.");
+            return;
+        }
         else
         {
             Debug.Log("빵 던지기! \n        효과가 굉장했다!");
             //curBread--;
             isCooldown = true;
+            CountEventInvoke();
             //빵 던지기
             onHandBread.ThrowBaguette(throwForce);
             //빵 재장전
@@ -106,8 +125,35 @@ public class WeaponHandler : MonoBehaviour
             StartCoroutine(ThrowBreadCoroutine());
         }
     }
-
 #endregion
+
+#region 빵 개수 관련 by.Jeehoon
+    /// <summary>
+    /// 현재 빵 개수를 반환합니다.
+    /// </summary>
+    /// <returns>현재 빵 개수</returns>
+    public int GetCurrentBread()
+    {
+        return curBread;
+    }
+    /// <summary>
+    /// 최대 빵 개수를 반환합니다.
+    /// </summary>
+    /// <returns>최대 빵 개수</returns>
+    public int GetMaxBread()
+    {
+        return MaxBread;
+    }
+    /// <summary>
+    /// 현재 빵 개수가 변경되었음을 알리는 이벤트를 Invoke합니다.
+    /// </summary>
+    private void CountEventInvoke()
+    {
+        OnBreadCountChanged.Invoke(curBread);
+        //Debug.Log("현재 빵 개수: " + curBread);
+    }
+#endregion
+
     /// <summary>
     /// 던지기 쿨타임 코루틴
     /// </summary>
