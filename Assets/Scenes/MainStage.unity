@@ -2671,10 +2671,15 @@ MonoBehaviour:
   isThrowReady: 0
   rightClickTime: 0
   aimTime: 1.5
-  isDead: 0
-  walkSpeed: 10
   movePos: {x: 0, y: 0}
   jumpHeight: 2
+  isDead: 0
+  walkSpeed: 10
+  maxHealth: 5
+  currentHealth: 5
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &279471379
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3087,6 +3092,123 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3e1123586122684d8e30d01cb3dd0b7, type: 3}
+--- !u!1 &333323679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 333323681}
+  - component: {fileID: 333323680}
+  m_Layer: 0
+  m_Name: '@Context'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &333323680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333323679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76fca4cb785f1144ba85300766eb927d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::rlacjfghks95_GameSceneContext
+  _paths:
+  - Waypoints:
+    - {x: 52.4, y: 1.2, z: -75}
+    - {x: 52.4, y: 1.2, z: 75}
+  - Waypoints:
+    - {x: 49.4, y: 1.2, z: 75}
+    - {x: 49.4, y: 1.2, z: -75}
+  - Waypoints:
+    - {x: 75, y: 1.2, z: 30.3}
+    - {x: -75, y: 1.2, z: 30.3}
+  - Waypoints:
+    - {x: -75, y: 1.2, z: 27.3}
+    - {x: 75, y: 1.2, z: 27.3}
+  - Waypoints:
+    - {x: 75, y: 1.2, z: -47.7}
+    - {x: -75, y: 1.2, z: -47.7}
+  - Waypoints:
+    - {x: -75, y: 1.2, z: -50.7}
+    - {x: 75, y: 1.2, z: -50.7}
+  - Waypoints:
+    - {x: 52.4, y: 1.2, z: -75}
+    - {x: 52.4, y: 1.2, z: 30.3}
+    - {x: -1.5, y: 1.2, z: 30.3}
+    - {x: -1.5, y: 1.2, z: -47.7}
+    - {x: -75, y: 1.2, z: -47.7}
+  - Waypoints:
+    - {x: -75, y: 1.2, z: -50.7}
+    - {x: 1.5, y: 1.2, z: -50.7}
+    - {x: 1.5, y: 1.2, z: 27.3}
+    - {x: 49.4, y: 1.2, z: 27.3}
+    - {x: 49.4, y: 1.2, z: -75}
+  - Waypoints:
+    - {x: 75, y: 1.2, z: 30.3}
+    - {x: -1.5, y: 1.2, z: 30.3}
+    - {x: -1.5, y: 1.2, z: -47.7}
+    - {x: -75, y: 1.2, z: -47.7}
+  - Waypoints:
+    - {x: -75, y: 1.2, z: -50.7}
+    - {x: 1.5, y: 1.2, z: -50.7}
+    - {x: 1.5, y: 1.2, z: 27.3}
+    - {x: 75, y: 1.2, z: 27.3}
+  - Waypoints:
+    - {x: 52.4, y: 1.2, z: 75}
+    - {x: 52.4, y: 1.2, z: -47.7}
+    - {x: 1.5, y: 1.2, z: -47.7}
+    - {x: 1.5, y: 1.2, z: 30.3}
+    - {x: -75, y: 1.2, z: 30.3}
+  - Waypoints:
+    - {x: -75, y: 1.2, z: 27.3}
+    - {x: -1.5, y: 1.2, z: 27.3}
+    - {x: -1.5, y: 1.2, z: -50.7}
+    - {x: 49.4, y: 1.2, z: -50.7}
+    - {x: 49.4, y: 1.2, z: 75}
+  - Waypoints:
+    - {x: 75, y: 1.2, z: -47.7}
+    - {x: 1.5, y: 1.2, z: -47.7}
+    - {x: 1.5, y: 1.2, z: 30.3}
+    - {x: -75, y: 1.2, z: 30.3}
+  - Waypoints:
+    - {x: -75, y: 1.2, z: 27.3}
+    - {x: -1.5, y: 1.2, z: 27.3}
+    - {x: -1.5, y: 1.2, z: -50.7}
+    - {x: 75, y: 1.2, z: -50.7}
+  - Waypoints:
+    - {x: 75, y: 1.2, z: -47.7}
+    - {x: 1.5, y: 1.2, z: -47.7}
+    - {x: 1.5, y: 1.2, z: 27.3}
+    - {x: 75, y: 1.2, z: 27.3}
+  - Waypoints:
+    - {x: 75, y: 1.2, z: 30.3}
+    - {x: -1.5, y: 1.2, z: 30.3}
+    - {x: -1.5, y: 1.2, z: -50.7}
+    - {x: 75, y: 1.2, z: -50.7}
+--- !u!4 &333323681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333323679}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &334951890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5376,11 +5498,14 @@ MonoBehaviour:
   onHandBread: {fileID: 0}
   MaxBread: 5
   curBread: 0
+  throwPathRaycast: {fileID: 0}
   throwCooldownTime: 0
   isCooldown: 0
-  throwForce: 10
   reloadTime: 1
   breadTMP: {fileID: 2073861529}
+  OnBreadCountChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &625021483
 Animator:
   serializedVersion: 7
@@ -17422,50 +17547,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 786644bd3d3825f4e85270e37d38630d, type: 3}
---- !u!1 &2091570775
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2091570777}
-  - component: {fileID: 2091570776}
-  m_Layer: 0
-  m_Name: '@Context'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2091570776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2091570775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76fca4cb785f1144ba85300766eb927d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::rlacjfghks95_GameSceneContext
---- !u!4 &2091570777
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2091570775}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2099337644
 GameObject:
   m_ObjectHideFlags: 0
@@ -18356,7 +18437,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 2091570777}
+  - {fileID: 333323681}
   - {fileID: 27331243}
   - {fileID: 293573844}
   - {fileID: 2046272347}

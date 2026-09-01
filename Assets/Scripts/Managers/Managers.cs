@@ -14,6 +14,8 @@ public class Managers : MonoBehaviour
         }
     }
 
+    static private GameObject _gameObject;
+
     private readonly DeliverManager _deliverManager = new();
     private readonly PoolManager _poolManager = new();
     private readonly ResourceManager _resourceManager = new();

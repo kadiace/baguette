@@ -3,6 +3,7 @@ using UnityEngine;
 public class VillagerInteractionController : MonoBehaviour
 {
     GameObject _roof;
+    public GameObject Roof { set { _roof = value; } }
 
     Color _originHouseColor;
 
@@ -11,11 +12,6 @@ public class VillagerInteractionController : MonoBehaviour
     UI_DeliveryCard _deliveryCard;
 
     public UI_DeliveryCard DeliveryCard { set { _deliveryCard = value; } }
-
-    private void Start()
-    {
-        _roof = transform.parent.gameObject;
-    }
 
 
     private void OnTriggerEnter(Collider other)
