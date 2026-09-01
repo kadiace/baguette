@@ -98,7 +98,7 @@ public class JHTmpWeaponHandler : MonoBehaviour
             isCooldown = true;
             CountEventInvoke();
             //빵 던지기
-            BreadPrefs.ThrowBaguette(throwForce);
+            BreadPrefs.ThrowBaguette();
             //빵 재장전
             // weaponHandlerAni.Play("ReloadBaguette");
             //시간 측정

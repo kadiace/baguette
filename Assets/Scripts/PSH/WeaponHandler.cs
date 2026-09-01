@@ -22,8 +22,6 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private float throwCooldownTime;
     [Tooltip("쿨타임 여부")]
     [SerializeField] private bool isCooldown = false;
-    [Tooltip("빵 던지는 힘(속도)")]
-    [SerializeField] private float throwForce;
     [Tooltip("빵 재장전 시간")]
     [SerializeField] private float reloadTime;
 
@@ -120,7 +118,7 @@ public class WeaponHandler : MonoBehaviour
             isCooldown = true;
             CountEventInvoke();
             //빵 던지기
-            onHandBread.ThrowBaguette(throwForce);
+            onHandBread.ThrowBaguette();
             onHandBread = null;
             //빵 재장전
             weaponHandlerAni.Play("ReloadBaguette");
@@ -191,12 +189,12 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     IEnumerator ThrowBreadCoroutine()
     {        
-        throwPathRaycast.HideThrowPath();
         //재장전 시간 동안 조준 상태 유지
         yield return new WaitForSeconds(reloadTime);
 
         //카메라 줌 아웃(3인칭으로 변경)
         camController.CameraAim(false);
         yield return null;
+        throwPathRaycast.HideThrowPath();
     }
 }
