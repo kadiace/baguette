@@ -19,7 +19,9 @@ public class rlacjfghks95_GameSceneContext : MonoBehaviour
             yield return new WaitForSeconds(3f);
 
             Debug.Log("생성 시도");
-            Managers.Deliver.GenerateDeliveryCard();
+            Define.HouseColor color = Managers.Deliver.GenerateDeliveryCard();
+            // House 지붕에 color 적용
+            // 참고: Define.HouseColors.Colors[color] 로 Color32, 컬러 코드 값 추출 가능
         }
     }
 }
