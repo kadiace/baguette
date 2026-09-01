@@ -38,6 +38,7 @@ public class CarController : Poolable
         if (_step == _path.Count)
         {
             Destroy(gameObject);
+            return;
         }
 
         Vector3 diff = _path[_step] - transform.position;
