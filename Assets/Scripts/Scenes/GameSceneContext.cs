@@ -8,13 +8,7 @@ public class rlacjfghks95_GameSceneContext : MonoBehaviour
 
     private void Start()
     {
-        Time.timeScale = 1f;
-
         Debug.Log("[rlacjfghks95_GameSceneContext] Game scene initialized.");
-    }
-
-    private void Update()
-    {
         StartCoroutine(GenerateNewDeliveryCard());
     }
 
@@ -22,7 +16,7 @@ public class rlacjfghks95_GameSceneContext : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3f);
 
             Debug.Log("생성 시도");
             Managers.Deliver.GenerateDeliveryCard();
