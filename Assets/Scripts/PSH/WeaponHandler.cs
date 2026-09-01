@@ -16,7 +16,9 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("현재 빵 보유 횟수, 자동으로 초기화")]
     [SerializeField] private int curBread;
     [Header("원거리 공격 정보")]
-    [Header("원거리 공격 경로(Raycast)")]
+    [Tooltip("발사 각도 측정용")]
+    [SerializeField] private Transform fireAngleTransform;
+    [Tooltip("원거리 공격 경로(Raycast)")]
     [SerializeField] private BreadThrowPathRaycast throwPathRaycast;
     [Tooltip("쿨타임")]
     [SerializeField] private float throwCooldownTime;
@@ -78,7 +80,7 @@ public class WeaponHandler : MonoBehaviour
         CountEventInvoke();
 
         //빵 프리팹 생성
-        Debug.Log("빵 굽는 중...");
+        Debug.Log("빵 꺼내는 중...");
         onHandBread = Instantiate(BreadPrefs, transform);
         //빵 위치 조정
         onHandBread.transform.localPosition = new Vector3(0.62f, 0.2f, 0.7f);
@@ -117,6 +119,8 @@ public class WeaponHandler : MonoBehaviour
             //curBread--;
             isCooldown = true;
             CountEventInvoke();
+            //발사 각도 전달하기
+            onHandBread.SetFireAngle(fireAngleTransform.forward);
             //빵 던지기
             onHandBread.ThrowBaguette();
             onHandBread = null;
