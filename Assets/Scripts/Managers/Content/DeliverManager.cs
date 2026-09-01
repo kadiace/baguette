@@ -19,19 +19,19 @@ public class DeliverManager
     /// <summary>
     /// 새로운 배달을 추가
     /// </summary>
-    public Define.HouseColor GenerateDeliveryCard()
+    public UI_DeliveryCard GenerateDeliveryCard()
     {
         if (_deliveryCards.Count >= _maxLength)
-            return Define.HouseColor.Unknown;
+            return null;
 
         UI_DeliveryCard deliveryCard = Managers.UI.CreateUI<UI_DeliveryCard>(_deliveriesBackground.transform, "Components");
 
-        Define.HouseColor color = (Define.HouseColor)UnityEngine.Random.Range(0,
+        Define.HouseColor color = (Define.HouseColor)UnityEngine.Random.Range(1,
             Enum.GetValues(typeof(Define.HouseColor)).Length);
 
         while (_deliveryCards.Exists(card => card.Color == color))
         {
-            color = (Define.HouseColor)UnityEngine.Random.Range(0,
+            color = (Define.HouseColor)UnityEngine.Random.Range(1,
                 Enum.GetValues(typeof(Define.HouseColor)).Length);
         }
 
@@ -39,18 +39,15 @@ public class DeliverManager
 
         _deliveryCards.Add(deliveryCard);
         RefreshDeliveriesLayout();
-        return color;
+        return deliveryCard;
     }
 
-    public void EnterHome(Define.HouseColor color)
+    public void CompleteDelivery(UI_DeliveryCard deliveryCard)
     {
-        UI_DeliveryCard deliveryCard = _deliveryCards.Find(card => card.Color == color);
-
-        if (deliveryCard == null)
-            return;
-
         // deliveryCard reward 만큼 보상 획득, 바게트 차감
+
         // deliveryCard 리스트에서 제거 및 Destroy
+        DestoryDeliveryCard(deliveryCard);
     }
 
     public void DestoryDeliveryCard(UI_DeliveryCard deliveryCard)
