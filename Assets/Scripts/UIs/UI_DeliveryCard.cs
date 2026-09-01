@@ -4,15 +4,19 @@ using UnityEngine.UI;
 
 public class UI_DeliveryCard : UI_Base
 {
+    enum Images
+    {
+        House,
+    }
+
     enum Texts
     {
-        Address,
         Reward,
         Quantity,
         Time
     }
 
-    private string _address;
+    private Define.HouseColor _color;
     private int _reward;
     private int _quantity;
     private float _time;
@@ -20,6 +24,7 @@ public class UI_DeliveryCard : UI_Base
     public override void Init()
     {
         Bind<TextMeshProUGUI>(typeof(Texts));
+        Bind<Image>(typeof(Images));
     }
 
     private void Update()
@@ -40,18 +45,17 @@ public class UI_DeliveryCard : UI_Base
     }
 
     public void SetCard(
-        string address,
+        Define.HouseColor color,
         float time,
         int quantity,
         int reward
     )
     {
-        _address = address;
+        _color = color;
         _reward = reward;
         _quantity = quantity;
         _time = time;
 
-        GetText((int)Texts.Address).GetComponent<TextMeshProUGUI>().text = _address;
         GetText((int)Texts.Reward).GetComponent<TextMeshProUGUI>().text = $"{_reward} €";
         GetText((int)Texts.Quantity).GetComponent<TextMeshProUGUI>().text = $"Baguette × {_quantity}";
         SetTime();
