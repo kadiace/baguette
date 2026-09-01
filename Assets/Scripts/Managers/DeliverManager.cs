@@ -19,7 +19,7 @@ public class DeliverManager
         Managers.UI.CreateUI<UI_DeliveryCard>();
     }
 
-    public void EnterHome(Define.Address address)
+    public void EnterHome(Define.HouseColor color)
     {
         for (int i = 0; i < MaxLength; i++)
         {

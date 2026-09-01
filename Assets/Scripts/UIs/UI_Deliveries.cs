@@ -19,24 +19,4 @@ public class UI_Deliveries : UI_Base
     {
 
     }
-
-    public void GenerateDeliveryCard()
-    {
-        UI_DeliveryCard deliveryCard = Managers.UI.CreateUI<UI_DeliveryCard>(gameObject.transform);
-    }
-
-    public void EnterHome(Define.Address address)
-    {
-        for (int i = 0; i < MaxLength; i++)
-        {
-            UI_DeliveryCard deliveryCards = _deliveryCards[i];
-
-        }
-    }
-
-    public void DestoryDeliveryCard(UI_DeliveryCard deliveryCard)
-    {
-        DeliveryCards.Remove(deliveryCard);
-        Destroy(deliveryCard);
-    }
 }
