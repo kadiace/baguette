@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
@@ -18,24 +19,26 @@ public class ShopManager : MonoBehaviour
     private int curButter;
 
     [Tooltip("음료수 가격")]
-    [SerializeField] private float DrinkPrice = 2.00f;
+    [SerializeField] private float drinkPrice = 2.00f;
     [Tooltip("버터 가격")]
-    [SerializeField] private float ButterPrice = 3.50f;
+    [SerializeField] private float butterPrice = 3.50f;
     [Tooltip("에어컨 가격")]
-    [SerializeField] private float AirConditionerPrice = 10.00f;
+    [SerializeField] private float airConditionerPrice = 10.00f;
 
 
-    [Tooltip("현재 가격 Text")]
-    [SerializeField] private TMPro.TextMeshProUGUI priceText;
+    [Tooltip("현재 돈 Text")]
+    [SerializeField] private TMPro.TextMeshProUGUI curMoneyText;
 
 
     #region 스탯 강화 관련 변수
     [Tooltip("최대 체력 강화 구매 버튼")]
-    [SerializeField] private GameObject HealthButton;
+    [SerializeField] private Button healthButton;
     [Tooltip("최대 체력 강화 레벨")]
-    [SerializeField] private int HealthLevel = 1;
+    [SerializeField] private int healthLevel = 1;
     [Tooltip("최대 체력 강화 가격")]
-    [SerializeField] private float HealthPrice = 5.00f;
+    [SerializeField] private float healthPrice = 5.00f;
+    [Tooltip("최대 체력 강화 가격 텍스트")]
+    [SerializeField] private TMPro.TextMeshProUGUI healthPriceText;
     [Tooltip("현재 체력 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI healthText;
     [Tooltip("레벨업 시 체력 수치 Text")]
@@ -43,21 +46,25 @@ public class ShopManager : MonoBehaviour
 
 
     [Tooltip("빵 소지 최대치 구매 버튼")]
-    [SerializeField] private GameObject BreadButton;
+    [SerializeField] private Button breadButton;
     [Tooltip("빵 소지 최대치 강화 레벨")]
-    [SerializeField] private int BreadLevel = 1;
+    [SerializeField] private int breadLevel = 1;
     [Tooltip("빵 소지 최대치 강화 가격")]
-    [SerializeField] private float BreadPrice = 5.00f;
+    [SerializeField] private float breadPrice = 5.00f;
+        [Tooltip("빵 소지 최대치 강화 가격 텍스트")]
+    [SerializeField] private TMPro.TextMeshProUGUI breadPriceText;
     [Tooltip("현재 빵 소지 최대치 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI breadText;
     [Tooltip("레벨업 시 빵 소지 최대치 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI breadUpgradeText;
     [Tooltip("이동속도 강화 구매 버튼")]
-    [SerializeField] private GameObject SpeedButton;
+    [SerializeField] private Button speedButton;
     [Tooltip("이동속도 강화 레벨")]
-    [SerializeField] private int SpeedLevel = 1;
+    [SerializeField] private int speedLevel = 1;
     [Tooltip("이동속도 강화 가격")]
-    [SerializeField] private float SpeedPrice = 5.00f;
+    [SerializeField] private float speedPrice = 22.50f;
+        [Tooltip("이동속도 강화 가격 텍스트")]
+    [SerializeField] private TMPro.TextMeshProUGUI speedPriceText;
     [Tooltip("현재 이동속도 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI speedText;
     [Tooltip("레벨업 시 이동속도 수치 Text")]
@@ -66,29 +73,32 @@ public class ShopManager : MonoBehaviour
 
     #region 소모품 강화 관련 변수
     [Tooltip("음료수 구매 버튼")]
-    [SerializeField] private GameObject DrinkButton;
+    [SerializeField] private Button drinkButton;
     [Tooltip("음료수 개수")]
 
-    [SerializeField] private int DrinkEach = 1;
+    [SerializeField] private int drinkEach = 1;
+    [Tooltip("음료수 개수 Text")]
+    [SerializeField] private TMPro.TextMeshProUGUI drinkEachText;
     [Tooltip("버터 구매 버튼")]
-    [SerializeField] private GameObject ButterButton;
+    [SerializeField] private Button butterButton;
     [Tooltip("버터 개수")]
 
-    [SerializeField] private int ButterEach = 1;
+    [SerializeField] private int butterEach = 1;
+    [Tooltip("버터 개수 Text")]
+    [SerializeField] private TMPro.TextMeshProUGUI butterEachText;
     #endregion
 
     #region 에어컨 관련 변수
     [Tooltip("에어컨 구매 버튼")]
-    [SerializeField] private GameObject AirConditionerButton;
+    [SerializeField] private Button airConditionerButton;
     #endregion
 
     void Start()
     {
-        moneyManager = GetComponent<MoneyManager>();
-        supplyManager = GetComponent<SupplyManager>();
-        curMoney = moneyManager.GetCurrentMoney();
-        curDrink = supplyManager.GetDrinkCount();
-        curButter = supplyManager.GetButterCount();
+        GetCurrentValues();
+        curMoney = 99999.00f;
+        //InitValueText();
+        SetValueText();
         ButtonInitiate();
     }
 
@@ -98,105 +108,240 @@ public class ShopManager : MonoBehaviour
         
     }
 
+    #region 값 가져오고 초기 세팅
+    /// <summary>
+    /// 현재 소지한 돈, 음료, 버터 값 가져오기
+    /// </summary>
+    public void GetCurrentValues()
+    {
+        curMoney = moneyManager.GetCurrentMoney();
+        curDrink = supplyManager.GetDrinkCount();
+        curButter = supplyManager.GetButterCount();
+    }
+    /// <summary>
+    /// 현재 소지한 돈, 체력, 빵 개수, 이동속도 수치 텍스트 변수 가져오기
+    /// </summary>
+    // public void InitValueText()
+    // {
+    //     // 스탯
+    //     priceText = GameObject.Find("PriceText").GetComponent<TMPro.TextMeshProUGUI>();
+    //     healthText = GameObject.Find("BeforeHealth").GetComponent<TMPro.TextMeshProUGUI>();
+    //     healthUpgradeText = GameObject.Find("AfterHealth").GetComponent<TMPro.TextMeshProUGUI>();
+    //     healthPriceText = GameObject.Find("HealthPrice").GetComponent<TMPro.TextMeshProUGUI>();
+    //     breadText = GameObject.Find("BeforeBread").GetComponent<TMPro.TextMeshProUGUI>();
+    //     breadUpgradeText = GameObject.Find("AfterBread").GetComponent<TMPro.TextMeshProUGUI>();
+    //     breadPriceText = GameObject.Find("BreadPrice").GetComponent<TMPro.TextMeshProUGUI>();
+    //     speedText = GameObject.Find("BeforeSpeed").GetComponent<TMPro.TextMeshProUGUI>();
+    //     speedUpgradeText = GameObject.Find("AfterSpeed").GetComponent<TMPro.TextMeshProUGUI>();
+    //     speedPriceText = GameObject.Find("SpeedPrice").GetComponent<TMPro.TextMeshProUGUI>();
+
+    //     // 소모품
+    //     drinkEachText = GameObject.Find("DrinkEach").GetComponent<TMPro.TextMeshProUGUI>();
+    //     butterEachText = GameObject.Find("ButterEach").GetComponent<TMPro.TextMeshProUGUI>();
+    // }
+    /// <summary>
+    /// 현재 소지한 돈, 전체 텍스트 값 세팅
+    /// </summary>
+    public void SetValueText()
+    {
+        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        SetHealthValueText();
+        SetBreadValueText();
+        SetSpeedValueText();
+        drinkEachText.text = drinkEach.ToString();
+        butterEachText.text = butterEach.ToString();
+    }
+    /// <summary>
+    /// 현재 소지한 체력 텍스트 값 세팅
+    /// </summary>
+    public void SetHealthValueText()
+    {
+        healthText.text = player.GetComponent<PlayerController>().GetMaxHealth().ToString();
+        healthUpgradeText.text = (player.GetComponent<PlayerController>().GetMaxHealth() + 1).ToString();
+        healthPriceText.text = "€ " + healthPrice.ToString("F2");
+    }
+    /// <summary>
+    /// 현재 소지한 빵 소지 최대치 텍스트 값 세팅
+    /// </summary>
+    public void SetBreadValueText()
+    {
+        breadText.text = breadCounter.GetMaxBread().ToString();
+        breadUpgradeText.text = (breadCounter.GetMaxBread() + 2).ToString();
+        breadPriceText.text = "€ " + breadPrice.ToString("F2");
+    }
+    /// <summary>
+    /// 현재 소지한 이동속도 텍스트 값 세팅
+    /// </summary>
+    public void SetSpeedValueText()
+    {
+        speedText.text = (1 + (speedLevel - 1) * 0.1f).ToString("F1");
+        speedUpgradeText.text = (1 + speedLevel * 0.1f).ToString("F1");
+        speedPriceText.text = "€ " + speedPrice.ToString("F2");
+    }
+
+
     /// <summary>
     /// 모든 버튼을 활성화합니다.
     /// </summary>
     public void ButtonInitiate()
-    {
-        if(curMoney < HealthPrice || HealthLevel >= 11)
+    {   
+        Debug.Log("ButtonInitiate() 호출");
+        if(curMoney < healthPrice || healthLevel >= 11)
         {
-            HealthButton.SetActive(false);
+            healthButton.interactable = false;
         }
         else
         {
-            HealthButton.SetActive(true);
+            healthButton.interactable = true;
         }
 
-        if(curMoney < BreadPrice || BreadLevel >= 11)
+        if(curMoney < breadPrice || breadLevel >= 11)
         {
-            BreadButton.SetActive(false);
+            breadButton.interactable = false;
         }
         else
         {
-            BreadButton.SetActive(true);
+            breadButton.interactable = true;
         }
 
-        if(curMoney < SpeedPrice || SpeedLevel >= 5)
+        if(curMoney < speedPrice || speedLevel >= 5)
         {
-            SpeedButton.SetActive(false);
+            speedButton.interactable = false;
         }
         else
         {
-            SpeedButton.SetActive(true);
+            speedButton.interactable = true;
         }
 
-        if(curMoney < DrinkPrice)
+        if(curMoney < drinkPrice)
         {
-            DrinkButton.SetActive(false);
+            drinkButton.interactable = false;
         }
         else
         {
-            DrinkButton.SetActive(true);
+            drinkButton.interactable = true;
         }
 
-        if(curMoney < ButterPrice)
+        if(curMoney < butterPrice)
         {
-            ButterButton.SetActive(false);
+            butterButton.interactable = false;
         }
         else
         {
-            ButterButton.SetActive(true);
+            butterButton.interactable = true;
         }
 
-        if(curMoney < AirConditionerPrice)
+        if(curMoney < airConditionerPrice)
         {
-            AirConditionerButton.SetActive(false);
+            airConditionerButton.interactable = false;
         }
         else
         {
-            AirConditionerButton.SetActive(true);
+            airConditionerButton.interactable = true;
         }
     }
+    #endregion
 
     #region 레벨에 따른 가격, 능력치 세팅 함수
     /// <summary>
     /// 최대 체력 레벨에 따른 능력치 및 가격 세팅
     /// </summary>
-    public void setHealthValue()
+    public void SetHealthValue()
     {
-        // 체력은 레벨별로 4 + 레벨, 최대 11레벨까지(최대치 15). 업그레이드 가격은 레벨별로 5 + 레벨 * 2.5
-        if (HealthLevel >= 11)
+        // 체력은 레벨별로 5 + 레벨 * 1, 최대 11레벨까지(최대치 15). 업그레이드 가격은 레벨별로 5 + 레벨 * 2.5
+        if (healthLevel >= 10)
         {
+            healthText.text = 15.ToString();
+            healthUpgradeText.text = 15.ToString();
+            healthPriceText.text = "MAX";
+            Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
+            Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
             return;
         }
-        player.GetComponent<PlayerController>().SetMaxHealth(4 + HealthLevel);
-        HealthPrice = 5 + HealthLevel * 2.5f;
+
+        curMoney -= healthPrice;
+        healthLevel += 1;
+
+        player.GetComponent<PlayerController>().SetMaxHealth(5 + (healthLevel - 1));
+        healthPrice = 5 + (healthLevel - 1) * 2.5f;
+
+        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        SetHealthValueText();
+
+        Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
+        Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
     }
     /// <summary>
     /// 빵 소지 최대치 레벨에 따른 능력치 및 가격 세팅
     /// </summary>
-    public void setBreadValue()
+    public void SetBreadValue()
     {
         // 빵 소지 최대치는 레벨별로 5 + 레벨 * 2, 최대 11레벨까지(최대치 25). 업그레이드 가격은 레벨별로 5 + 레벨 * 2.5
-        if (BreadLevel >= 11)
+        if (breadLevel >= 10)
         {
+            breadText.text = 25.ToString();
+            breadUpgradeText.text = 25.ToString();
+            breadPriceText.text = "MAX";
+            Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
+            Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
             return;
         }
-        breadCounter.SetMaxBread(5 + BreadLevel * 2);
-        BreadPrice = 5 + BreadLevel * 2.5f;
+        curMoney -= breadPrice;
+        breadLevel += 1;
+
+        breadCounter.SetMaxBread(5 + (breadLevel - 1) * 2);
+        breadPrice = 5 + (breadLevel - 1) * 2.5f;
+
+        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        SetBreadValueText();
+
+        Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
+        Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
     }
     /// <summary>
     /// 이동속도 레벨에 따른 능력치 및 가격 세팅
     /// </summary>
-    public void setSpeedValue()
+    public void SetSpeedValue()
     {
         // 이동속도는 레벨별로 1 + 레벨 * 0.1, 최대 5레벨까지(최대치 1.5). 업그레이드 가격은 레벨별로 15 + 레벨 * 7.5
-        if (SpeedLevel >= 5)
+        if (speedLevel >= 5)
         {
+            speedText.text = 1.5.ToString();
+            speedUpgradeText.text = 1.5.ToString();
+            speedPriceText.text = "MAX";
             return;
         }
-        player.GetComponent<PlayerController>().setPlayerSpeed(1 + SpeedLevel * 0.1f);
-        SpeedPrice = 15 + SpeedLevel * 7.5f;
+        curMoney -= speedPrice;
+        speedLevel += 1;
+
+        player.GetComponent<PlayerController>().setPlayerSpeed(1 + (speedLevel - 1) * 0.1f);
+        speedPrice = 15 + (speedLevel - 1) * 7.5f;
+
+        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        SetSpeedValueText();
+    }
+
+    public void SetDrinkValue()
+    {
+        curMoney -= drinkPrice;
+        supplyManager.SetDrinkCount(supplyManager.GetDrinkCount() + 1);
+        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        drinkEachText.text = supplyManager.GetDrinkCount().ToString();
+    }
+
+    public void SetButterValue()
+    {
+        curMoney -= butterPrice;
+        supplyManager.SetButterCount(supplyManager.GetButterCount() + 1);
+        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        butterEachText.text = supplyManager.GetButterCount().ToString();
+    }
+
+    public void SetAirConditionerValue()
+    {
+        curMoney -= airConditionerPrice;
+        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        airConditionerButton.interactable = false;
     }
     #endregion
 }

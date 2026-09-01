@@ -55,9 +55,19 @@ public class BreadCounter : MonoBehaviour
         UpdateBreadCounter(currentBread);
     }
 
-    public void GetMaxBread()
+    public int GetMaxBread()
     {
-        maxBread = JHTmpPlayerWeaponHandler.GetMaxBread();
+        return maxBread;
+    }
+
+    public void SetCurrentBread(int newCurrentBread)
+    {
+        currentBread = newCurrentBread;
         UpdateBreadCounter(currentBread);
+    }
+
+    public int GetCurrentBread()
+    {
+        return currentBread;
     }
 }
