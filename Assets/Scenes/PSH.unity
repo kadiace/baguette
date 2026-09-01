@@ -198,6 +198,7 @@ MonoBehaviour:
   isCooldown: 0
   throwForce: 2000
   reloadTime: 1
+  breadTMP: {fileID: 1124577647}
 --- !u!1 &165188479
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,7 +781,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
     m_Priority: 0
-  meleeAni: {fileID: 160150702}
+  weaponHandlerAni: {fileID: 160150702}
   isThrowReady: 0
   rightClickTime: 0
   aimTime: 1.5
@@ -829,11 +830,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3192825985473028765, guid: 0c8de91f24b68ee4796e1fc5906cba8c, type: 3}
       propertyPath: m_Name
-      value: Baguette(Throw)
+      value: "Baguette(\uC704\uCE58 \uD655\uC778\uC6A9)"
       objectReference: {fileID: 0}
     - target: {fileID: 3192825985473028765, guid: 0c8de91f24b68ee4796e1fc5906cba8c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4515814471483075604, guid: 0c8de91f24b68ee4796e1fc5906cba8c, type: 3}
       propertyPath: m_LocalPosition.x

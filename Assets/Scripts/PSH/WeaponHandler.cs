@@ -24,10 +24,14 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("빵 재장전 시간")]
     [SerializeField] private float reloadTime;
 
+    [Header("위치 확인용 빵(테스트 후 제거 예정)")]
+    public GameObject breadTMP;
+
 
     //시작 시점에 빵 갯수 초기화  
     void Start()
     {
+        breadTMP.SetActive(false);
         curBread = 99999;
         CreateBread(0);
     }
@@ -60,10 +64,12 @@ public class WeaponHandler : MonoBehaviour
         if(type == 0)
             curBread--;
 
-        //빵 생성 위치 계산
-        Vector3 handPos = transform.position + new Vector3(0.62f, 0.2f, 0.7f);
         //빵 프리팹 생성
-        onHandBread = Instantiate(BreadPrefs, handPos, transform.rotation, transform);
+        onHandBread = Instantiate(BreadPrefs, transform);
+        //빵 위치 조정
+        onHandBread.transform.localPosition = new Vector3(0.62f, 0.2f, 0.7f);
+        onHandBread.transform.localRotation = Quaternion.identity;
+        onHandBread.transform.localScale = Vector3.one;
     }
 
 #endregion
@@ -127,8 +133,5 @@ public class WeaponHandler : MonoBehaviour
         //카메라 줌 아웃(3인칭으로 변경)
         camController.CameraAim(false);
         yield return null;
-
-        //조준 방향 초기화
-        //transform.parent.rotation = Quaternion.identity;
     }
 }

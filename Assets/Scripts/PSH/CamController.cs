@@ -56,6 +56,8 @@ public class CamController : MonoBehaviour
                 //카메라 위치 조절 및 시선 고정
                 transform.position = player.transform.position + (camRotation * camOffset);
                 transform.LookAt(player.transform.position + Vector3.up * 1f);
+                //무기 상 하 방향 초기화
+                weapon.localRotation = Quaternion.Euler(0, 0, 0);
             }
         }
     }
