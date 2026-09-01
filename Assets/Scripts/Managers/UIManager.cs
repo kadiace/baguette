@@ -9,21 +9,16 @@ public class UIManager
     {
         get
         {
-            GameObject root = GameObject.Find("@UI_Root");
-            if (root == null)
-            {
-                root = new GameObject { name = "@UI_Root" };
-                root.AddComponent<Managers>();
-            }
+            GameObject root = GameObject.Find("@App");
             return root;
         }
     }
 
-    public T CreateUI<T>(Transform parent = null, string name = null) where T : UI_Base
+    public T CreateUI<T>(Transform parent = null, string path = null, string name = null) where T : UI_Base
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
-        GameObject go = Managers.Resource.Instantiate($"UIs/SubItems/{name}");
+        GameObject go = Managers.Resource.Instantiate($"UIs/{path}/{name}");
 
         if (parent != null)
             go.transform.SetParent(parent);
