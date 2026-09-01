@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     #region 플레이어 상태값 by.Jeehoon
     [Header("플레이어 상태")]
     public bool isDead = false;
-    
+    public bool isGround = true;
     [SerializeField] float walkSpeed;
     [Tooltip("플레이어 최대 체력")]
     [SerializeField] private int maxHealth = 5;
@@ -115,10 +115,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void JumpPlayer()
     {
-        //TODO: 이미 점프 중일 때는 점프 불가하도록 처리 필요
-        
-        if(jumpInput.triggered)
+        if(!isGround)
+            return;
+
+        if (jumpInput.triggered)
+        {
             pRigid.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            isGround = false;
+        }
     }
 
     /// <summary>
@@ -208,4 +212,11 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+            isGround = true;
+    }
+
 }
