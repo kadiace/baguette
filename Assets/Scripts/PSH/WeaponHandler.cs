@@ -16,6 +16,8 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("현재 빵 보유 횟수, 자동으로 초기화")]
     [SerializeField] private int curBread;
     [Header("원거리 공격 정보")]
+    [Header("원거리 공격 경로(Raycast)")]
+    [SerializeField] private BreadThrowPathRaycast throwPathRaycast;
     [Tooltip("쿨타임")]
     [SerializeField] private float throwCooldownTime;
     [Tooltip("쿨타임 여부")]
@@ -78,6 +80,7 @@ public class WeaponHandler : MonoBehaviour
         CountEventInvoke();
 
         //빵 프리팹 생성
+        Debug.Log("빵 굽는 중...");
         onHandBread = Instantiate(BreadPrefs, transform);
         //빵 위치 조정
         onHandBread.transform.localPosition = new Vector3(0.62f, 0.2f, 0.7f);
@@ -118,6 +121,7 @@ public class WeaponHandler : MonoBehaviour
             CountEventInvoke();
             //빵 던지기
             onHandBread.ThrowBaguette(throwForce);
+            onHandBread = null;
             //빵 재장전
             weaponHandlerAni.Play("ReloadBaguette");
             //시간 측정
@@ -125,9 +129,23 @@ public class WeaponHandler : MonoBehaviour
             StartCoroutine(ThrowBreadCoroutine());
         }
     }
+
+    /// <summary>
+    /// 던지기 쿨타임 여부 반환
+    /// </summary>
+    /// <returns></returns>
+    public bool IsCooldown()
+    {
+        return isCooldown;
+    }
+
+    public void ShowThrowPath()
+    {
+        throwPathRaycast.DrowThrowPath();
+    }
 #endregion
 
-#region 빵 개수 관련 by.Jeehoon
+#region 빵 개수 관련 by.Jaehoon
     /// <summary>
     /// 현재 빵 개수를 반환합니다.
     /// </summary>
@@ -163,7 +181,7 @@ public class WeaponHandler : MonoBehaviour
         float curCoolTime = 0;
         while (curCoolTime < throwCooldownTime){
             curCoolTime++;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.2f);
         }
         isCooldown = false;
     }
@@ -172,7 +190,8 @@ public class WeaponHandler : MonoBehaviour
     /// 조준 상태 유지 코루틴(재장전 시간 연동)
     /// </summary>
     IEnumerator ThrowBreadCoroutine()
-    {
+    {        
+        throwPathRaycast.HideThrowPath();
         //재장전 시간 동안 조준 상태 유지
         yield return new WaitForSeconds(reloadTime);
 

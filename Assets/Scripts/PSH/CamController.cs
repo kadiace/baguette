@@ -21,6 +21,18 @@ public class CamController : MonoBehaviour
     [Tooltip("상 하 회전 (1인칭 시)")]
     public Transform weapon; 
 
+    /// <summary>
+    /// 컨포넌트 할당 시 자동으로 변수 값 할당
+    /// </summary>
+    void Reset()
+    {
+        camRotateSpeed = 30f;
+        //외부 게임오브젝트들 설정
+        player = GameObject.Find("PlayerTemp");
+        //weapon = player.transform.Find("WeaponHandler").transform;
+        //scopeTransform = player.transform.Find("FirstPersonCamPos").transform;
+    }
+
     public void FreezeCam()
     {
         isOver = true;

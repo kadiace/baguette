@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Baguette
   breadAni: {fileID: 8115568364553372203}
   breadRigid: {fileID: 3049601950239516692}
+  explodeTime: 3
 --- !u!54 &3049601950239516692
 Rigidbody:
   m_ObjectHideFlags: 0

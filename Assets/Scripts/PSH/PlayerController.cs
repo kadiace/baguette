@@ -38,6 +38,14 @@ public class PlayerController : MonoBehaviour
     public UnityEvent<int> OnHealthChanged;
     #endregion
 
+    /// <summary>
+    /// 컨포넌트 할당 시 자동으로 변수 값 할당
+    /// </summary>
+    void Reset()
+    {
+        
+    }
+
 
     private void Awake(){
         pRigid = GetComponent<Rigidbody>();
@@ -106,6 +114,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void JumpPlayer()
     {
+        //TODO: 이미 점프 중일 때는 점프 불가하도록 처리 필요
+        
         if(jumpInput.triggered)
             pRigid.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
     }
@@ -117,7 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         //좌 "클릭"
         if (Input.GetMouseButtonDown(0)){
-            if(isThrowReady)
+            if(isThrowReady || weaponHandler.IsCooldown())
                 return;
             weaponHandler.MeleeAttack();
             weaponHandlerAni.Play("SwingDiagonal");
@@ -129,6 +139,7 @@ public class PlayerController : MonoBehaviour
             if (rightClickTime >= aimTime){
                 isThrowReady = true;
                 camController.CameraAim(true);
+                weaponHandler.ShowThrowPath();
             }
             
         }
@@ -143,7 +154,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region 플레이어 체력 변동 & 사망 by.Jeehoon
+    #region 플레이어 체력 변동 & 사망 by.Jaehoon
     /// <summary>
     /// 현재 체력 변동 이벤트를 Invoke합니다.
     /// </summary>
