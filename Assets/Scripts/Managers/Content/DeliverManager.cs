@@ -1,14 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
+public class DeliveryPair
+{
+    public UI_DeliveryCard Card;
+    public GameObject House;
+    public VillagerInteractionController Villager;
+    public Color OriginHouseColor;
+}
 
 public class DeliverManager
 {
     private GameObject _deliveriesBackground;
     private int _maxLength = 3;
-    private List<UI_DeliveryCard> _deliveryCards = new();
+    private List<DeliveryPair> _deliveries = new();
 
-    public List<UI_DeliveryCard> DeliveryCards { get { return _deliveryCards; } }
+    public List<DeliveryPair> Deliveries { get { return _deliveries; } }
 
     public void Init()
     {
@@ -16,20 +25,21 @@ public class DeliverManager
         _deliveriesBackground = deliveries.transform.Find("Background").gameObject;
     }
 
-    /// <summary>
-    /// 새로운 배달을 추가
-    /// </summary>
-    public UI_DeliveryCard GenerateDeliveryCard()
+    public bool IsFull()
     {
-        if (_deliveryCards.Count >= _maxLength)
-            return null;
+        return _deliveries.Count >= _maxLength;
+    }
 
+    public void GenerateDeliveryCard(GameObject house)
+    {
+        // Card
         UI_DeliveryCard deliveryCard = Managers.UI.CreateUI<UI_DeliveryCard>(_deliveriesBackground.transform, "Components");
 
         Define.HouseColor color = (Define.HouseColor)UnityEngine.Random.Range(1,
             Enum.GetValues(typeof(Define.HouseColor)).Length);
 
-        while (_deliveryCards.Exists(card => card.Color == color))
+        while (_deliveries.Select(x => x.Card)
+            .ToList().Exists(card => card.Color == color))
         {
             color = (Define.HouseColor)UnityEngine.Random.Range(1,
                 Enum.GetValues(typeof(Define.HouseColor)).Length);
@@ -37,36 +47,98 @@ public class DeliverManager
 
         deliveryCard.SetCard(color, 1 * 60f, 5, 5);
 
-        _deliveryCards.Add(deliveryCard);
+        // House
+        Transform selectedRoof = house.transform.Find("Roof");
+        Transform selectedVillager = house.transform.Find("Villager");
+
+        Renderer[] renderers = selectedRoof.GetComponentsInChildren<Renderer>();
+        Color originHouseColor = renderers[0].material.color;
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material.color = Define.HouseColors.Colors[deliveryCard.Color];
+        }
+
+        GameObject trigger = selectedVillager.Find("Trigger").gameObject;
+        trigger.SetActive(true);
+
+        VillagerInteractionController villagerInteractionController = trigger.GetorAddComponent<VillagerInteractionController>();
+        villagerInteractionController.Roof = selectedRoof.gameObject;
+
+        // Deliver Manager
+        _deliveries.Add(new DeliveryPair
+        {
+            Card = deliveryCard,
+            House = house,
+            Villager = villagerInteractionController,
+            OriginHouseColor = originHouseColor
+        });
         RefreshDeliveriesLayout();
-        return deliveryCard;
     }
 
-    public void CompleteDelivery(UI_DeliveryCard deliveryCard)
+    public void CompleteDelivery(WeaponHandler weaponHandler, VillagerInteractionController villager)
     {
+        // Reduce bread
+        int curBread = weaponHandler.curBread;
+        DeliveryPair pair = _deliveries.Find(delivery => delivery.Villager == villager);
+        UI_DeliveryCard deliveryCard = pair.Card;
+        Color originHouseColor = pair.OriginHouseColor;
+
+        if (curBread < deliveryCard.Quantity)
+            return;
+
+        int newBread = curBread - deliveryCard.Quantity;
+        weaponHandler.curBread = newBread;
+
         // deliveryCard 리스트에서 제거 및 Destroy
-        DestroyDeliveryCard(deliveryCard);
+        DestroyDelivery(pair);
+
+        // Earn Money
+        Managers.Money.Money = Managers.Money.Money + deliveryCard.Reward;
     }
 
-    public void DestroyDeliveryCard(UI_DeliveryCard deliveryCard)
+    public void DestroyDelivery(UI_DeliveryCard deliveryCard)
     {
-        DeliveryCards.Remove(deliveryCard);
-        RefreshDeliveriesLayout();
+        DeliveryPair pair = _deliveries.Find(delivery => delivery.Card == deliveryCard);
+        DestroyDelivery(pair);
+    }
+
+    public void DestroyDelivery(DeliveryPair pair)
+    {
+        UI_DeliveryCard deliveryCard = pair.Card;
+        GameObject house = pair.House;
+        VillagerInteractionController villager = pair.Villager;
+        Color originHouseColor = pair.OriginHouseColor;
+
+        // Restore roof color
+        Transform roof = house.transform.Find("Roof");
+        Renderer[] renderers = roof.GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material.color = originHouseColor;
+        }
+
+        // Inactive villager trigger
+        villager.gameObject.SetActive(false);
+
+        // Destroy UI Card
         Managers.Resource.Destroy(deliveryCard.transform.gameObject);
+
+        _deliveries.Remove(pair);
+        RefreshDeliveriesLayout();
     }
 
     public bool IsHouseDuplicated(GameObject house)
     {
-        return _deliveryCards.Exists(card => card.House == house);
+        return _deliveries.Exists(delivery => delivery.House == house);
     }
 
     private void RefreshDeliveriesLayout()
     {
         RectTransform container = _deliveriesBackground.GetComponent<RectTransform>();
-        container.sizeDelta = new Vector2(container.sizeDelta.x, 60f + (80f * _deliveryCards.Count));
-        for (int i = 0; i < _deliveryCards.Count; i++)
+        container.sizeDelta = new Vector2(container.sizeDelta.x, 60f + (80f * _deliveries.Count));
+        for (int i = 0; i < _deliveries.Count; i++)
         {
-            RectTransform rect = _deliveryCards[i].GetComponent<RectTransform>();
+            RectTransform rect = _deliveries[i].Card.GetComponent<RectTransform>();
 
             // Scale 1, 1, 1
             rect.localScale = Vector3.one;
