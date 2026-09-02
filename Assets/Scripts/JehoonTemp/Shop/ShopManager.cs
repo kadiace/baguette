@@ -318,16 +318,17 @@ public class ShopManager : MonoBehaviour
 
         float newPlayerSpeed = 10 * (1 + (speedLevel - 1) * 0.1f);
         // 파워업 여부에 따라 바로 플레이어 스피드를 설정할지, 혹은 파워업 종료 후 복귀속도를 바꿀지 결정
+        Debug.Log("IsDrinkPowerUp: " + powerUpManager.GetIsDrinkPowerUp());
         if (powerUpManager.GetIsDrinkPowerUp())
         {
             // 파워업이 되어 있다면 파워업 종료 후 복귀 속도를 바꾼다
             powerUpManager.SetPlayerInitialSpeed(newPlayerSpeed);
-            Debug.Log("파워업 도중 이동속도 강화: " + newPlayerSpeed);
         }
         else
         {
             // 파워업이 안돼 있으면 바로 플레이어 이동속도를 바꾼다
             player.GetComponent<PlayerController>().SetPlayerSpeed(newPlayerSpeed);
+            powerUpManager.SetPlayerInitialSpeed(newPlayerSpeed);
         }
         speedPrice = 15 + (speedLevel - 1) * 7.5f;
 
