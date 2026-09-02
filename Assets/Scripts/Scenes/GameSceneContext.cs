@@ -17,31 +17,11 @@ public class GameSceneContext : MonoBehaviour
     [SerializeField]
     private List<TrafficPath> _paths;
 
-    private List<Vector3> _spawnPositions = new()
-    {
-        new Vector3(11.0725107f,1f,-34.3516426f),
-        new Vector3(11.0725107f,1f,-34.3516426f),
-        new Vector3(-14f,1f,-53.7999992f),
-        new Vector3(-21.6000004f,1f,-13f),
-        new Vector3(-31.7000008f,1f,-4.69999981f),
-        new Vector3(33f,1f,-24.6000004f),
-        new Vector3(6.9000001f,1f,10.1999998f),
-        new Vector3(40.7999992f,1f,-1.79999995f),
-        new Vector3(28.7999992f,1f,55.4000015f),
-        new Vector3(35.2000008f,1f,-73.4000015f),
-        new Vector3(-46.7999992f,1f,-49.0999985f),
-        new Vector3(-43f,1f,-33.5f),
-        new Vector3(-61.5999985f,1f,4.80000019f),
-        new Vector3(59.2000008f,1f,-14.8000002f),
-        new Vector3(-53f,1f,53.7000008f),
-    };
-
     private void Start()
     {
         Time.timeScale = 0f;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        SpawnInitPickPocket();
 
         StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
         StartCoroutine(RepeatAction(5f, SpawnTraffic));
@@ -94,19 +74,10 @@ public class GameSceneContext : MonoBehaviour
         car.Path = _paths[UnityEngine.Random.Range(0, _paths.Count)].Waypoints;
     }
 
-    private void SpawnInitPickPocket()
-    {
-        foreach (Vector3 spawnPosition in _spawnPositions)
-        {
-            GameObject go = Managers.Resource.Instantiate("Pickpocket");
-            go.transform.position = spawnPosition;
-            EnemyController pickPocket = go.GetorAddComponent<EnemyController>();
-        }
-    }
-
     private void SpawnPickPocket()
     {
-        if (Managers.Pool.GetStackSize("Pickpocket") >= 15)
+        int upgradeLevel = (_breadCounter.GetMaxBread() - 5) / 2;
+        if (Managers.Pool.GetStackSize("Pickpocket") >= 6 + 1 * upgradeLevel)
             return;
         GameObject go = Managers.Resource.Instantiate("Pickpocket");
         EnemyController pickPocket = go.GetorAddComponent<EnemyController>();
