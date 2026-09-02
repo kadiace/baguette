@@ -43,6 +43,7 @@ public class CarController : Poolable
         if (_step == _path.Count)
         {
             Managers.Resource.Destroy(gameObject);
+            _step = 1;
             return;
         }
 
