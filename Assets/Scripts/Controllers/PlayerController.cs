@@ -44,11 +44,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Reset()
     {
-        
+
     }
 
 
-    private void Awake(){
+    private void Awake()
+    {
         pRigid = GetComponent<Rigidbody>();
     }
 
@@ -67,7 +68,8 @@ public class PlayerController : MonoBehaviour
         //mouseInput.Enable();
     }
 
-    void Update(){
+    void Update()
+    {
         CheckKeyboardInput();
     }
 
@@ -77,7 +79,7 @@ public class PlayerController : MonoBehaviour
     void CheckKeyboardInput()
     {
         //사망 시 입력 무시
-        if (isDead) 
+        if (isDead)
             return;
         MovePlayer();
         JumpPlayer();
@@ -92,22 +94,35 @@ public class PlayerController : MonoBehaviour
     {
         movePos = moveInput.ReadValue<Vector2>();
 
-        if (movePos.sqrMagnitude > 0.001f)
-        {
-            //카메라 시선 방향 확인
-            Vector3 camForward = cameraTransform.forward;
-            Vector3 camRight = cameraTransform.right;
+        if (movePos.sqrMagnitude < 0.001f)
+            return;
 
-            camForward.y = 0f;
-            camRight.y = 0f;
+        // 기존에 있던 수평 속도 제거
+        Vector3 currentVel = pRigid.linearVelocity;
+        currentVel.x = 0;
+        currentVel.z = 0;
+        pRigid.linearVelocity = currentVel;
 
-            camForward.Normalize();
-            camRight.Normalize();
+        //카메라 시선 방향 확인
+        Vector3 camForward = cameraTransform.forward;
+        Vector3 camRight = cameraTransform.right;
 
-            //플레이어 이동 위치 설정 및 이동
-            Vector3 movementDirection = (camForward * movePos.y) + (camRight * movePos.x);
-            transform.Translate(movementDirection * Time.deltaTime * walkSpeed, Space.World);
-        }
+        camForward.y = 0f;
+        camRight.y = 0f;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        //플레이어 이동 위치 설정 및 이동
+        Vector3 movementDirection = (camForward * movePos.y) + (camRight * movePos.x);
+        transform.Translate(movementDirection * Time.deltaTime * walkSpeed, Space.World);
+
+        // [-70, 70] 내부에 있도록 보정
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -70f, 70f);
+        pos.z = Mathf.Clamp(pos.z, -70f, 70f);
+
+        transform.position = pos;
     }
 
     /// <summary>
@@ -115,7 +130,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void JumpPlayer()
     {
-        if(!isGround)
+        if (!isGround)
             return;
 
         if (jumpInput.triggered)
@@ -131,8 +146,9 @@ public class PlayerController : MonoBehaviour
     void AttackPlayer()
     {
         //좌 "클릭"
-        if (Input.GetMouseButtonDown(0)){
-            if(isThrowReady || weaponHandler.IsCooldown())
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isThrowReady || weaponHandler.IsCooldown())
                 return;
             weaponHandler.MeleeAttack();
             weaponHandlerAni.Play("SwingDiagonal");
@@ -141,12 +157,12 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetMouseButton(1))
         {
             rightClickTime += Time.deltaTime;
-            if (rightClickTime >= aimTime){
+            if (rightClickTime >= aimTime)
+            {
                 isThrowReady = true;
                 camController.CameraAim(true);
                 weaponHandler.ShowThrowPath();
             }
-            
         }
         // 우클릭 해제 시 카메라 줌아웃
         else if (Input.GetMouseButtonUp(1))
@@ -156,7 +172,6 @@ public class PlayerController : MonoBehaviour
             isThrowReady = false;
         }
     }
-
     #endregion
 
     #region 플레이어 체력 변동 & 사망 by.Jaehoon
@@ -176,7 +191,7 @@ public class PlayerController : MonoBehaviour
         //currentHealth -= damage;
         if (currentHealth < 0)
         {
-            currentHealth = 0;            
+            currentHealth = 0;
         }
 
         HealthEventInvoke();
@@ -214,7 +229,7 @@ public class PlayerController : MonoBehaviour
     /// 최대 체력 설정. 최대 체력 변경 시 현재 체력도 최대치로 초기화
     /// </summary>
     /// <param name="newMaxHealth"></param>
-        public void SetMaxHealth(int newMaxHealth)
+    public void SetMaxHealth(int newMaxHealth)
     {
         maxHealth = newMaxHealth;
         currentHealth = maxHealth; // 체력도 최대치로 초기화
