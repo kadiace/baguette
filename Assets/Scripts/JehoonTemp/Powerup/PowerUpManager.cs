@@ -42,9 +42,9 @@ public class PowerUpManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI butterBuffTimeText;
 
     [Tooltip("몬스터 음료수 파워업 적용 시간")]
-    [SerializeField] private float drinkBuffTime = 3.0f;
+    [SerializeField] private float drinkBuffTime = 30.0f;
     [Tooltip("버터 파워업 적용 시간")]
-    [SerializeField] private float butterBuffTime = 6.0f;
+    [SerializeField] private float butterBuffTime = 60.0f;
 
     [Tooltip("현재 몬스터 파워업중인지 체크하기 위한 bool")]
     [SerializeField] private bool isDrinkPowerUp = false;
@@ -60,8 +60,8 @@ public class PowerUpManager : MonoBehaviour
         playerInitialSpeed = playerController.GetPlayerSpeed();
         playerPowerUpSpeed = playerInitialSpeed * 1.2f;
 
-        drinkAmountText.text = drinkAmount.ToString();
-        butterAmountText.text = butterAmount.ToString();
+        drinkAmountText.text = "x" + drinkAmount.ToString();
+        butterAmountText.text = "x" + butterAmount.ToString();
 
         drinkBuffPanel.SetActive(false);
         butterBuffPanel.SetActive(false);
@@ -79,7 +79,7 @@ public class PowerUpManager : MonoBehaviour
             if (drinkAmount > 0)
             {
                 drinkAmount -= 1;
-                drinkAmountText.text = drinkAmount.ToString();
+                drinkAmountText.text = "x" + drinkAmount.ToString();
                 supplyManager.SetDrinkCount(drinkAmount);
                 Debug.Log("키 입력 확인: Q");
                 StartCoroutine(DrinkPowerUp());
@@ -96,7 +96,7 @@ public class PowerUpManager : MonoBehaviour
             if (butterAmount > 0)
             {
                 butterAmount -= 1;
-                butterAmountText.text = butterAmount.ToString();
+                butterAmountText.text = "x" + butterAmount.ToString();
                 supplyManager.SetButterCount(butterAmount);
                 Debug.Log("키 입력 확인: E");
                 StartCoroutine(ButterPowerUp());
@@ -184,12 +184,13 @@ public class PowerUpManager : MonoBehaviour
 
             playerPowerUpSpeed = playerInitialSpeed * 1.2f;
             playerController.SetPlayerSpeed(playerPowerUpSpeed);
-            Debug.Log("파워업 시작 시 초기 속도: " + playerInitialSpeed + "\n파워업 적용 속도: " + playerPowerUpSpeed);
 
             remainingTime -= Time.deltaTime;
 
             yield return null;
         }
+
+        Debug.Log("파워업 시작 시 초기 속도: " + playerInitialSpeed + "\n파워업 적용 속도: " + playerPowerUpSpeed);
 
         drinkBuffPanel.SetActive(false);
         playerController.SetPlayerSpeed(playerInitialSpeed);
@@ -227,7 +228,7 @@ public class PowerUpManager : MonoBehaviour
     public void SetDrinkValue()
     {
         drinkAmount = supplyManager.GetDrinkCount();
-        drinkAmountText.text = drinkAmount.ToString();
+        drinkAmountText.text = "x" + drinkAmount.ToString();
     }
 
     /// <summary>
@@ -236,6 +237,6 @@ public class PowerUpManager : MonoBehaviour
     public void SetButterValue()
     {
         butterAmount = supplyManager.GetButterCount();
-        butterAmountText.text = butterAmount.ToString();
+        butterAmountText.text = "x" + butterAmount.ToString();
     }
 }
