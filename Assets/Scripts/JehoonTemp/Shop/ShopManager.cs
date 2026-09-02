@@ -187,7 +187,6 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     public void ButtonInitiate()
     {
-        // Debug.Log("ButtonInitiate() 호출");
         if (Managers.Money.Money < healthPrice || healthLevel >= 11)
         {
             healthButton.interactable = false;
@@ -255,8 +254,6 @@ public class ShopManager : MonoBehaviour
         {
             SetHealthValueText();
             ButtonInitiate();
-            Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
-            Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
             return;
         }
 
@@ -269,9 +266,6 @@ public class ShopManager : MonoBehaviour
         curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         SetHealthValueText();
         ButtonInitiate();
-
-        Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
-        Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
     }
     /// <summary>
     /// 빵 소지 최대치 레벨에 따른 능력치 및 가격 세팅
@@ -283,8 +277,6 @@ public class ShopManager : MonoBehaviour
         {
             SetBreadValueText();
             ButtonInitiate();
-            Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
-            Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
             return;
         }
         Managers.Money.Money -= breadPrice;
@@ -296,9 +288,6 @@ public class ShopManager : MonoBehaviour
         curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         SetBreadValueText();
         ButtonInitiate();
-
-        Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
-        Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
     }
     /// <summary>
     /// 이동속도 레벨에 따른 능력치 및 가격 세팅
@@ -318,7 +307,6 @@ public class ShopManager : MonoBehaviour
 
         float newPlayerSpeed = 10 * (1 + (speedLevel - 1) * 0.1f);
         // 파워업 여부에 따라 바로 플레이어 스피드를 설정할지, 혹은 파워업 종료 후 복귀속도를 바꿀지 결정
-        Debug.Log("IsDrinkPowerUp: " + powerUpManager.GetIsDrinkPowerUp());
         if (powerUpManager.GetIsDrinkPowerUp())
         {
             // 파워업이 되어 있다면 파워업 종료 후 복귀 속도를 바꾼다
@@ -347,7 +335,6 @@ public class ShopManager : MonoBehaviour
         Managers.Money.Money -= drinkPrice;
         supplyManager.SetDrinkCount(supplyManager.GetDrinkCount() + 1);
         int drinkCount = supplyManager.GetDrinkCount();
-        Debug.Log("음료수 구매: " + drinkCount);
         onDrinkChanged.Invoke(drinkCount);
         curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         drinkEachText.text = supplyManager.GetDrinkCount().ToString();
