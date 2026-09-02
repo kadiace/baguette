@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using Unity.Profiling;
 
 public class ShopManager : MonoBehaviour
 {
@@ -92,6 +93,7 @@ public class ShopManager : MonoBehaviour
     public UnityEvent<float> InitialSpeedChanged;
     public UnityEvent<int> onDrinkChanged;
     public UnityEvent<int> onButterChanged;
+    public UnityEvent onAirConditionerPurchased;
 
     void Start()
     {
@@ -380,6 +382,7 @@ public class ShopManager : MonoBehaviour
         Managers.Money.Money -= airConditionerPrice;
         curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         ButtonInitiate();
+        onAirConditionerPurchased.Invoke();
     }
     #endregion
 
