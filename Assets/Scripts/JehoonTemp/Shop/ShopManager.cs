@@ -4,8 +4,6 @@ using UnityEngine.Events;
 
 public class ShopManager : MonoBehaviour
 {
-    [Tooltip("현재 소지한 돈, 자원을 관리 - MoneyManager")]
-    [SerializeField] private MoneyManager moneyManager;
     [Tooltip("현재 소지한 음료, 버터를 관리 - SupplyManager")]
     [SerializeField] private SupplyManager supplyManager;
     [Tooltip("체력 관리 HealthCounter")]
@@ -17,7 +15,6 @@ public class ShopManager : MonoBehaviour
     [Tooltip("파워업 적용 도중 이속 업그레이드 시 복귀 이동속도 수정용")]
     [SerializeField] private PowerUpManager powerUpManager;
 
-    private float curMoney;
     private int curDrink;
     private int curButter;
 
@@ -99,7 +96,6 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
         GetCurrentValues();
-        curMoney = 5700.00f;
         //InitValueText();
         SetValueText();
         ButtonInitiate();
@@ -117,7 +113,6 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     public void GetCurrentValues()
     {
-        curMoney = moneyManager.GetCurrentMoney();
         curDrink = supplyManager.GetDrinkCount();
         curButter = supplyManager.GetButterCount();
     }
@@ -126,7 +121,7 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     public void SetValueText()
     {
-        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         SetHealthValueText();
         SetBreadValueText();
         SetSpeedValueText();
@@ -193,7 +188,7 @@ public class ShopManager : MonoBehaviour
     public void ButtonInitiate()
     {
         // Debug.Log("ButtonInitiate() 호출");
-        if (curMoney < healthPrice || healthLevel >= 11)
+        if (Managers.Money.Money < healthPrice || healthLevel >= 11)
         {
             healthButton.interactable = false;
         }
@@ -202,7 +197,7 @@ public class ShopManager : MonoBehaviour
             healthButton.interactable = true;
         }
 
-        if (curMoney < breadPrice || breadLevel >= 11)
+        if (Managers.Money.Money < breadPrice || breadLevel >= 11)
         {
             breadButton.interactable = false;
         }
@@ -211,7 +206,7 @@ public class ShopManager : MonoBehaviour
             breadButton.interactable = true;
         }
 
-        if (curMoney < speedPrice || speedLevel >= 6)
+        if (Managers.Money.Money < speedPrice || speedLevel >= 6)
         {
             speedButton.interactable = false;
         }
@@ -220,7 +215,7 @@ public class ShopManager : MonoBehaviour
             speedButton.interactable = true;
         }
 
-        if (curMoney < drinkPrice)
+        if (Managers.Money.Money < drinkPrice)
         {
             drinkButton.interactable = false;
         }
@@ -229,7 +224,7 @@ public class ShopManager : MonoBehaviour
             drinkButton.interactable = true;
         }
 
-        if (curMoney < butterPrice)
+        if (Managers.Money.Money < butterPrice)
         {
             butterButton.interactable = false;
         }
@@ -238,7 +233,7 @@ public class ShopManager : MonoBehaviour
             butterButton.interactable = true;
         }
 
-        if (curMoney < airConditionerPrice)
+        if (Managers.Money.Money < airConditionerPrice)
         {
             airConditionerButton.interactable = false;
         }
@@ -265,13 +260,13 @@ public class ShopManager : MonoBehaviour
             return;
         }
 
-        curMoney -= healthPrice;
+        Managers.Money.Money -= healthPrice;
         healthLevel += 1;
 
         player.GetComponent<PlayerController>().SetMaxHealth(5 + (healthLevel - 1));
         healthPrice = 5 + (healthLevel - 1) * 2.5f;
 
-        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         SetHealthValueText();
         ButtonInitiate();
 
@@ -292,13 +287,13 @@ public class ShopManager : MonoBehaviour
             Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
             return;
         }
-        curMoney -= breadPrice;
+        Managers.Money.Money -= breadPrice;
         breadLevel += 1;
 
         breadCounter.SetMaxBread(5 + (breadLevel - 1) * 2);
         breadPrice = 5 + (breadLevel - 1) * 2.5f;
 
-        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         SetBreadValueText();
         ButtonInitiate();
 
@@ -317,7 +312,7 @@ public class ShopManager : MonoBehaviour
             ButtonInitiate();
             return;
         }
-        curMoney -= speedPrice;
+        Managers.Money.Money -= speedPrice;
         speedLevel += 1;
 
 
@@ -336,7 +331,7 @@ public class ShopManager : MonoBehaviour
         }
         speedPrice = 15 + (speedLevel - 1) * 7.5f;
 
-        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         SetSpeedValueText();
         ButtonInitiate();
     }
@@ -348,12 +343,12 @@ public class ShopManager : MonoBehaviour
 
     public void AddDrinkValue()
     {
-        curMoney -= drinkPrice;
+        Managers.Money.Money -= drinkPrice;
         supplyManager.SetDrinkCount(supplyManager.GetDrinkCount() + 1);
         int drinkCount = supplyManager.GetDrinkCount();
         Debug.Log("음료수 구매: " + drinkCount);
         onDrinkChanged.Invoke(drinkCount);
-        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         drinkEachText.text = supplyManager.GetDrinkCount().ToString();
         ButtonInitiate();
     }
@@ -365,19 +360,24 @@ public class ShopManager : MonoBehaviour
 
     public void AddButterValue()
     {
-        curMoney -= butterPrice;
+        Managers.Money.Money -= butterPrice;
         supplyManager.SetButterCount(supplyManager.GetButterCount() + 1);
         int butterCount = supplyManager.GetDrinkCount();
         onButterChanged.Invoke(butterCount);
-        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         butterEachText.text = supplyManager.GetButterCount().ToString();
         ButtonInitiate();
     }
 
+    public void SetMoneyValue()
+    {
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
+    }
+
     public void SetAirConditionerValue()
     {
-        curMoney -= airConditionerPrice;
-        curMoneyText.text = "€ " + curMoney.ToString("F2");
+        Managers.Money.Money -= airConditionerPrice;
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         ButtonInitiate();
     }
     #endregion
