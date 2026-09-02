@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int currentHealth = 5;
     [Tooltip("플레이어 체력 변동 이벤트")]
     public UnityEvent<int> OnHealthChanged;
+    public UnityEvent PlayerDied;
 
     public ShopKeeper shop;
     #endregion
