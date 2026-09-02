@@ -190,7 +190,7 @@ public class ShopManager : MonoBehaviour
     public void ButtonInitiate()
     {   
         Debug.Log("ButtonInitiate() 호출");
-        if(curMoney < healthPrice || healthLevel >= 10)
+        if(curMoney < healthPrice || healthLevel >= 11)
         {
             healthButton.interactable = false;
         }
@@ -199,7 +199,7 @@ public class ShopManager : MonoBehaviour
             healthButton.interactable = true;
         }
 
-        if(curMoney < breadPrice || breadLevel >= 10)
+        if(curMoney < breadPrice || breadLevel >= 11)
         {
             breadButton.interactable = false;
         }
