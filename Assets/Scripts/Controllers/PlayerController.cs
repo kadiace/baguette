@@ -199,6 +199,16 @@ public class PlayerController : MonoBehaviour
             //둘 다 있을 경우 가까운 가게 선택
             if (shop != null && bread != null)
             {
+                float distShop = (transform.position - shop.transform.position).sqrMagnitude;
+                float distBread = (transform.position - bread.transform.position).sqrMagnitude;
+
+                if (distShop < distBread)
+                    shop.ShowStore();
+                else
+                {
+                    gameObject.GetComponentInChildren<OverHeadIconHandler>().StartShowBread();
+                    weaponHandler.SupplyBread();
+                }
 
             }
             else if (shop != null)
@@ -206,7 +216,6 @@ public class PlayerController : MonoBehaviour
             else
             {
                 gameObject.GetComponentInChildren<OverHeadIconHandler>().StartShowBread();
-
                 weaponHandler.SupplyBread();
             }
         }
@@ -315,7 +324,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Floor"))
             isGround = true;
     }
 

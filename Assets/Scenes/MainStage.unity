@@ -772,7 +772,7 @@ GameObject:
   - component: {fileID: 28738857}
   m_Layer: 0
   m_Name: Cube (11)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5805,7 +5805,7 @@ GameObject:
   - component: {fileID: 267088734}
   m_Layer: 0
   m_Name: Cube (13)
-  m_TagString: Wall
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7443,7 +7443,7 @@ GameObject:
   - component: {fileID: 354376945}
   m_Layer: 0
   m_Name: Cube (9)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8660,7 +8660,7 @@ GameObject:
   - component: {fileID: 400814634}
   m_Layer: 0
   m_Name: Quad
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10348,7 +10348,7 @@ GameObject:
   - component: {fileID: 502882309}
   m_Layer: 0
   m_Name: Cube (14)
-  m_TagString: Wall
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10668,7 +10668,7 @@ GameObject:
   - component: {fileID: 523432430}
   m_Layer: 0
   m_Name: Cube (8)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14271,7 +14271,7 @@ GameObject:
   - component: {fileID: 703836532}
   m_Layer: 0
   m_Name: Cube (8)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19566,7 +19566,7 @@ GameObject:
   - component: {fileID: 996657525}
   m_Layer: 0
   m_Name: Cube (7)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25747,7 +25747,7 @@ GameObject:
   - component: {fileID: 1324555330}
   m_Layer: 0
   m_Name: Cube (9)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27888,7 +27888,7 @@ GameObject:
   - component: {fileID: 1435725786}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28571,7 +28571,7 @@ GameObject:
   - component: {fileID: 1469654688}
   m_Layer: 0
   m_Name: church
-  m_TagString: Wall
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32479,7 +32479,7 @@ GameObject:
   - component: {fileID: 1608775153}
   m_Layer: 0
   m_Name: Cube (12)
-  m_TagString: Wall
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37235,8 +37235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f99bbb87f602d4ea204e3977d21758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatissierInteractionController
-  weaponHandler: {fileID: 921402739}
-  overHeadIconHandler: {fileID: 1489775458}
 --- !u!1 &1772304223
 GameObject:
   m_ObjectHideFlags: 0
@@ -42237,7 +42235,7 @@ GameObject:
   - component: {fileID: 2023952813}
   m_Layer: 0
   m_Name: Cube (9)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45376,7 +45374,7 @@ GameObject:
   - component: {fileID: 2140538505}
   m_Layer: 0
   m_Name: Cube (8)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
