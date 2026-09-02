@@ -3973,7 +3973,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3869465869290020351, guid: 5ba423f9508536a498ef4f6a3f347890, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 5ba423f9508536a498ef4f6a3f347890, type: 3}
 --- !u!1 &182935554
 GameObject:
@@ -6542,6 +6545,10 @@ PrefabInstance:
       propertyPath: shopOnOFF
       value: 
       objectReference: {fileID: 1201289353}
+    - target: {fileID: 1989627934175293808, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
+      propertyPath: m_text
+      value: Press "F"
+      objectReference: {fileID: 0}
     - target: {fileID: 2079597399424321158, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7096,6 +7103,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   shop: {fileID: 0}
+  bread: {fileID: 0}
 --- !u!54 &349606020
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -33750,6 +33758,7 @@ MonoBehaviour:
   healthCounter: {fileID: 746025016}
   breadCounter: {fileID: 1729445577}
   player: {fileID: 349606018}
+  wHandler: {fileID: 921402739}
   powerUpManager: {fileID: 1423602425}
   drinkPrice: 2
   butterPrice: 3.5
