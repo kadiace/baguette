@@ -35,11 +35,15 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("빵 개수 변경 이벤트")]
     public UnityEvent<int> OnBreadCountChanged = new UnityEvent<int>();
 
+    void Awake()
+    {
+        SetBread(MaxBread);
+    }
+
     //시작 시점에 빵 갯수 초기화  
     void Start()
     {
         breadTMP.SetActive(false);
-        curBread = MaxBread;
         CreateBread(0);
         //UI 표시 빵 갯수 초기화
         CountEventInvoke();

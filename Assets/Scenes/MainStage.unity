@@ -6403,7 +6403,7 @@ MonoBehaviour:
   jumpHeight: 10
   isDead: 0
   isGround: 1
-  walkSpeed: 10
+  walkSpeed: 20
   maxHealth: 5
   currentHealth: 5
   OnHealthChanged:
@@ -31875,7 +31875,7 @@ MonoBehaviour:
   player: {fileID: 349606018}
   playerName: Player
   JHTmpPlayerWeaponHandler: {fileID: 921402739}
-  currentBread: 9999
+  currentBread: 5
   maxBread: 5
   breadCountText: {fileID: 1729445578}
 --- !u!114 &1729445578
