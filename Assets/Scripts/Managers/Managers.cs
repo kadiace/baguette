@@ -66,5 +66,6 @@ public class Managers : MonoBehaviour
 
     public static void Clear()
     {
+        Pool.Clear();
     }
 }
