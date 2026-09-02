@@ -235,6 +235,7 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         isDead = true;
+        PlayerDied.Invoke();
     }
     /// <summary>
     /// 현재 체력 반환
