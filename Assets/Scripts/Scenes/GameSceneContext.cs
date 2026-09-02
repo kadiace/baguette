@@ -37,8 +37,9 @@ public class GameSceneContext : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 0f;
+        // Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
         SpawnInitPickPocket();
 
         StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
