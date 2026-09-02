@@ -47,10 +47,8 @@ public class PoolManager
 
             poolable.gameObject.SetActive(true);
 
-            if (parent == null)
-                poolable.transform.parent = GameObject.Find("@App").transform;
-
-            poolable.transform.parent = parent;
+            poolable.transform.parent = parent != null ?
+                parent : GameObject.Find($"{poolable.gameObject.name}_Root").transform;
             poolable.IsUsing = true;
             return poolable;
         }
