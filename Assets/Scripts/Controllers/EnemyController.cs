@@ -45,11 +45,8 @@ public class EnemyController : Poolable
         //Debug.Log($"충돌 감지: {other.gameObject}");
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("플레이어 탐지");
             player.TakeDamage(1);
-            Debug.Log("플레이어가 적에게 피해를 입었습니다. 현재 체력: " + player.GetCurrentHealth());
             StartCoroutine(StillTriggeredCoroutine());
-            Debug.Log("Coroutine 시작");
         }
     }
 
@@ -57,7 +54,6 @@ public class EnemyController : Poolable
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("플레이어가 적과 접촉을 끊었습니다.");
             // StopCoroutine(StillTriggeredCoroutine());
             StopAllCoroutines();
         }
@@ -99,7 +95,6 @@ public class EnemyController : Poolable
             if (player != null && player.GetCurrentHealth() > 0)
             {
                 player.TakeDamage(1);
-                Debug.Log("플레이어가 계속 적에게 피해를 입습니다. 현재 체력: " + player.GetCurrentHealth());
             }
         }
     }
