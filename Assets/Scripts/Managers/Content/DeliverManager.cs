@@ -44,8 +44,6 @@ public class DeliverManager
 
     public void CompleteDelivery(UI_DeliveryCard deliveryCard)
     {
-        // deliveryCard reward 만큼 보상 획득, 바게트 차감
-
         // deliveryCard 리스트에서 제거 및 Destroy
         DestroyDeliveryCard(deliveryCard);
     }
