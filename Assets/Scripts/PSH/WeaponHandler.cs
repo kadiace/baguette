@@ -30,7 +30,7 @@ public class WeaponHandler : MonoBehaviour
     [Header("위치 확인용 빵(테스트 후 제거 예정)")]
     public GameObject breadTMP;
 
-       // UI에 전달할 이벤트
+    // UI에 전달할 이벤트
     [Tooltip("빵 개수 변경 이벤트")]
     public UnityEvent<int> OnBreadCountChanged = new UnityEvent<int>();
 
@@ -44,7 +44,7 @@ public class WeaponHandler : MonoBehaviour
         CountEventInvoke();
     }
 
-#region 빵 사용 관련
+    #region 빵 사용 관련
 
     /// <summary>
     /// 빵 충전/보급
@@ -68,13 +68,13 @@ public class WeaponHandler : MonoBehaviour
 
     public void CreateBread(int type)
     {
-        if(curBread <= 0)
+        if (curBread <= 0)
         {
             Debug.Log("빵이 없습니다.");
             return;
         }
 
-        if(type == 0)
+        if (type == 0)
             curBread--;
 
         CountEventInvoke();
@@ -88,9 +88,9 @@ public class WeaponHandler : MonoBehaviour
         onHandBread.transform.localScale = Vector3.one;
     }
 
-#endregion
+    #endregion
 
-#region 빵 공격 관련
+    #region 빵 공격 관련
     /// <summary>
     /// 근접 공격
     /// </summary>
@@ -105,11 +105,13 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void ThrowBread()
     {
-        if (isCooldown){
+        if (isCooldown)
+        {
             Debug.Log("아직 쿨타임이 남았습니다.");
             return;
         }
-        else if (curBread <= 0){
+        else if (curBread <= 0)
+        {
             Debug.Log("빵이 없습니다.");
             return;
         }
@@ -145,9 +147,9 @@ public class WeaponHandler : MonoBehaviour
     {
         throwPathRaycast.DrowThrowPath();
     }
-#endregion
+    #endregion
 
-#region 빵 개수 관련 by.Jaehoon
+    #region 빵 개수 관련 by.Jaehoon
     /// <summary>
     /// 현재 빵 개수를 반환합니다.
     /// </summary>
@@ -172,7 +174,7 @@ public class WeaponHandler : MonoBehaviour
         OnBreadCountChanged.Invoke(curBread);
         //Debug.Log("현재 빵 개수: " + curBread);
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// 던지기 쿨타임 코루틴
@@ -181,7 +183,8 @@ public class WeaponHandler : MonoBehaviour
     {
 
         float curCoolTime = 0;
-        while (curCoolTime < throwCooldownTime){
+        while (curCoolTime < throwCooldownTime)
+        {
             curCoolTime++;
             yield return new WaitForSeconds(1.2f);
         }
@@ -192,7 +195,7 @@ public class WeaponHandler : MonoBehaviour
     /// 조준 상태 유지 코루틴(재장전 시간 연동)
     /// </summary>
     IEnumerator ThrowBreadCoroutine()
-    {        
+    {
         //재장전 시간 동안 조준 상태 유지
         yield return new WaitForSeconds(reloadTime);
 
