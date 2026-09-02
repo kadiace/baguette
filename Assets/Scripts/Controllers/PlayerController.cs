@@ -41,7 +41,10 @@ public class PlayerController : MonoBehaviour
     public UnityEvent<int> OnHealthChanged;
     public UnityEvent PlayerDied;
 
+    [Header("상호작용 할 가게")]
     public ShopKeeper shop;
+    public Patissier bread;
+    //
     #endregion
 
     /// <summary>
@@ -191,15 +194,24 @@ public class PlayerController : MonoBehaviour
     {
         if (interactionInput.triggered)
         {
-            //상호작용 가능한 상태에서 키를 입력하면 상점 사용 호출
-            if (shop != null)
+            //둘 다 있을 경우 가까운 가게 선택
+            if (shop != null && bread != null)
+            {
+
+            }
+            else if (shop != null)
                 shop.ShowStore();
+            else
+                weaponHandler.SupplyBread();
         }
     }
 
     public void SetShopInteration(ShopKeeper shopKeeper) => shop = shopKeeper;
-
     public void RemoveShopInteration() => shop = null;
+    public void SetBreadShopInteration(Patissier patissier) => bread = patissier;
+    public void RemoveBreadShopInteration() => bread = null;
+
+
     #endregion
 
     #region 플레이어 체력 변동 & 사망 by.Jaehoon

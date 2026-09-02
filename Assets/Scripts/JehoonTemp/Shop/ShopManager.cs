@@ -13,6 +13,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private BreadCounter breadCounter;
     [Tooltip("플레이어")]
     [SerializeField] private GameObject player;
+    [Tooltip("플레이어 웨폰 헨들러")]
+    [SerializeField] private WeaponHandler wHandler;
     [Tooltip("파워업 적용 도중 이속 업그레이드 시 복귀 이동속도 수정용")]
     [SerializeField] private PowerUpManager powerUpManager;
 
@@ -289,6 +291,10 @@ public class ShopManager : MonoBehaviour
             Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
             return;
         }
+        //플레이어 빵 최대 갯수 증가
+        wHandler.UpgradeMaxBread(2);
+
+        //UI에 표시 글 수정
         Managers.Money.Money -= breadPrice;
         breadLevel += 1;
 

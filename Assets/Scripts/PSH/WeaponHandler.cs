@@ -67,7 +67,6 @@ public class WeaponHandler : MonoBehaviour
     public void UpgradeMaxBread(int amount)
     {
         MaxBread += amount;
-        curBread = MaxBread;
         CountEventInvoke();
     }
 
