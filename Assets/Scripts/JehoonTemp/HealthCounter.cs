@@ -13,7 +13,7 @@ public class HealthCounter : MonoBehaviour
     [SerializeField] private int maxPlayerHealth;
 
     [Tooltip("플레이어 오브젝트 이름")]
-    [SerializeField] private string playerName = "PlayerTemp";
+    [SerializeField] private string playerName;
 
     [Tooltip("현재 체력 칸 prefab")]
     [SerializeField] private GameObject HealthPrefab;

@@ -825,6 +825,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   IsUsing: 1
   player: {fileID: 0}
+  enemyRigid: {fileID: 9214358072406595231}
+  maxHP: 3
+  curHP: 0
   _moveSpeed: 10
   onPlayerDamaged:
     m_PersistentCalls:

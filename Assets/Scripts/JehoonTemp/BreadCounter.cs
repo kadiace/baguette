@@ -6,7 +6,7 @@ public class BreadCounter : MonoBehaviour
     [SerializeField] private GameObject player;
 
     [Tooltip("플레이어 오브젝트 이름")]
-    [SerializeField] private string playerName = "PlayerTemp";
+    [SerializeField] private string playerName;
 
     [Tooltip("플레이어 WeaponHandler")]
     [SerializeField] private WeaponHandler JHTmpPlayerWeaponHandler;
@@ -36,7 +36,7 @@ public class BreadCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     /// <summary>

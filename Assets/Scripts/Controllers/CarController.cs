@@ -88,6 +88,18 @@ public class CarController : Poolable
         forceDir.Normalize();
         rb.AddForce(carVelocity * 0.1f + forceDir * _collisionForce + Vector3.up * _floatForce, ForceMode.Impulse);
 
+        if (other.CompareTag("Player"))
+        {
+            PlayerController player = other.GetComponent<PlayerController>();
+            player.TakeDamage(1);
+        }
+        else if (other.CompareTag("Enemy"))
+        {
+            EnemyController enemy = other.GetComponent<EnemyController>();
+            enemy.EnemyHit(3);
+        }
+        //플레이어 피격
+
         _collidedObjects.Add(go);
     }
 }

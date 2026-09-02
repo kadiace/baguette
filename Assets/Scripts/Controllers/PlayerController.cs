@@ -190,7 +190,8 @@ public class PlayerController : MonoBehaviour
     /// <param name="damage">받은 피해량</param>
     public void TakeDamage(int damage)
     {
-        //currentHealth -= damage;
+        currentHealth -= damage;
+        Debug.Log("플레이어 피격");
         if (currentHealth < 0)
         {
             currentHealth = 0;

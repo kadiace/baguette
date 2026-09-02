@@ -20,7 +20,7 @@ public class EnemyController : Poolable
     void Start()
     {
         curHP = maxHP;
-        player = GameObject.Find("PlayerTemp").GetComponent<PlayerController>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
         _rb = gameObject.GetorAddComponent<Rigidbody>();
         onPlayerDamaged = new UnityEvent<int>();
     }
@@ -59,7 +59,10 @@ public class EnemyController : Poolable
             StopAllCoroutines();
         }
     }
-
+    /// <summary>
+    /// 적 피격, 최대 HP: 3
+    /// </summary>
+    /// <param name="damage"></param>
     public void EnemyHit(float damage)
     {
         curHP -= damage;
