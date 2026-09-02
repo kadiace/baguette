@@ -38,7 +38,6 @@ public class ShopKeeper : MonoBehaviour
         if (!other.gameObject.CompareTag("Player"))
             return;
 
-        Debug.Log("플레이어 감지");
         player = other.transform;
         keyhintUI.SetActive(true);
         other.GetComponent<PlayerController>().SetShopInteration(this);
