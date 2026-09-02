@@ -5,7 +5,7 @@ using UnityEngine;
 public class CarController : Poolable
 {
     [SerializeField]
-    private float _speed = 60f;
+    private float _speed = 120f;
 
 
     [SerializeField] private float _collisionForce = 5f;

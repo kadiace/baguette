@@ -52,6 +52,11 @@ public class PoolManager
             poolable.IsUsing = true;
             return poolable;
         }
+
+        public int GetStackSize()
+        {
+            return _poolStack.Count;
+        }
     }
     readonly Dictionary<string, Pool> _pool = new();
     Transform _root;
@@ -97,6 +102,14 @@ public class PoolManager
             return null;
         return _pool[name].Original;
     }
+
+    public int GetStackSize(string name)
+    {
+        if (!_pool.ContainsKey(name))
+            return 0;
+        return _pool[name].GetStackSize();
+    }
+
 
     public void Clear()
     {

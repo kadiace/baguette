@@ -11,7 +11,7 @@ public class EnemyController : Poolable
     [Tooltip("적 상태")]
     [SerializeField] float maxHP;
     [SerializeField] float curHP;
-    [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float _moveSpeed = 20f;
     [SerializeField] private float deadDelay;
 
     private Rigidbody _rb;
