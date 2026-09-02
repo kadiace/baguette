@@ -30,7 +30,7 @@ public class DeliverManager
         return _deliveries.Count >= _maxLength;
     }
 
-    public void GenerateDeliveryCard(GameObject house)
+    public void GenerateDeliveryCard(GameObject house, int maxBread)
     {
         // Card
         UI_DeliveryCard deliveryCard = Managers.UI.CreateUI<UI_DeliveryCard>(_deliveriesBackground.transform, "Components");
@@ -45,7 +45,17 @@ public class DeliverManager
                 Enum.GetValues(typeof(Define.HouseColor)).Length);
         }
 
-        deliveryCard.SetCard(color, 1 * 60f, 5, 5);
+        // Pick quantity
+        int upgradeLevel = (maxBread - 5) / 2;
+        int minQuantity = Mathf.RoundToInt(maxBread * 0.2f); // 1/5
+        int maxQuantity = Mathf.RoundToInt(maxBread * 0.4f); // 2/5
+        int requiredBread = UnityEngine.Random.Range(minQuantity, maxQuantity + 1);
+
+        int reward = 180
+           + upgradeLevel * 2
+           + requiredBread * 20;
+
+        deliveryCard.SetCard(color, 1 * 60f, requiredBread, reward);
 
         // House
         Transform selectedRoof = house.transform.Find("Roof");

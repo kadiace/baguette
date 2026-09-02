@@ -6257,6 +6257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fca4cb785f1144ba85300766eb927d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::rlacjfghks95_GameSceneContext
+  _breadCounter: {fileID: 1729445577}
   _paths:
   - Waypoints:
     - {x: 52.4, y: 1.2, z: -75}
