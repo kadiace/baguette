@@ -85,9 +85,10 @@ public class DeliverManager
         RefreshDeliveriesLayout();
     }
 
-    public void CompleteDelivery(WeaponHandler weaponHandler, VillagerInteractionController villager)
+    public void CompleteDelivery(PlayerController player, VillagerInteractionController villager)
     {
         // Reduce bread
+        WeaponHandler weaponHandler = player.weaponHandler;
         int curBread = weaponHandler.curBread;
         DeliveryPair pair = _deliveries.Find(delivery => delivery.Villager == villager);
         UI_DeliveryCard deliveryCard = pair.Card;
@@ -97,6 +98,9 @@ public class DeliverManager
             return;
 
         weaponHandler.SetBread(curBread - deliveryCard.Quantity);
+
+        // Increase Health
+        player.IncreaseHealth();
 
         // deliveryCard 리스트에서 제거 및 Destroy
         DestroyDelivery(pair);

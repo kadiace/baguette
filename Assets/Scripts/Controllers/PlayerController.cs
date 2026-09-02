@@ -257,6 +257,18 @@ public class PlayerController : MonoBehaviour
     {
         return currentHealth;
     }
+
+    public void IncreaseHealth()
+    {
+        SetCurrentHealth(1);
+    }
+
+    public void SetCurrentHealth(int count)
+    {
+        currentHealth += count;
+        HealthEventInvoke();
+    }
+
     /// <summary>
     /// 최대 체력 반환
     /// </summary>

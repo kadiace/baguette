@@ -21,6 +21,7 @@ public class VillagerInteractionController : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        Managers.Deliver.CompleteDelivery(other.GetOrAddComponent<PlayerController>().weaponHandler, this);
+        PlayerController player = other.GetOrAddComponent<PlayerController>();
+        Managers.Deliver.CompleteDelivery(player, this);
     }
 }
