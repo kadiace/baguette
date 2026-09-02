@@ -97,6 +97,12 @@ public class DeliverManager
         if (curBread < deliveryCard.Quantity)
             return;
 
+        OverHeadIconHandler overHeadIconHandler = player.GetComponentInChildren<OverHeadIconHandler>();
+        if (!overHeadIconHandler.isEuroShown)
+        {
+            overHeadIconHandler.StartShowEuro();
+        }
+
         weaponHandler.SetBread(curBread - deliveryCard.Quantity);
 
         // Increase Health

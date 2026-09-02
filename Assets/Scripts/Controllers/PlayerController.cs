@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -202,7 +203,11 @@ public class PlayerController : MonoBehaviour
             else if (shop != null)
                 shop.ShowStore();
             else
+            {
+                gameObject.GetComponentInChildren<OverHeadIconHandler>().StartShowBread();
+
                 weaponHandler.SupplyBread();
+            }
         }
     }
 

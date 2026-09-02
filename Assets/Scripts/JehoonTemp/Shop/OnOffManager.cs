@@ -29,6 +29,8 @@ public class OnOffManager : MonoBehaviour
             ShopPanel.GetComponent<ShopManager>().SetButterValue();
             ShopPanel.GetComponent<ShopManager>().SetMoneyValue();
 
+            ShopPanel.GetComponent<ShopManager>().ButtonInitiate();
+
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             ShopPanel.SetActive(true);
