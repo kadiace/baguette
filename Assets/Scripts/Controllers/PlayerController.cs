@@ -122,7 +122,10 @@ public class PlayerController : MonoBehaviour
         //플레이어 이동 위치 설정 및 이동
         Vector3 movementDirection = (camForward * movePos.y) + (camRight * movePos.x);
         transform.Translate(movementDirection * Time.deltaTime * walkSpeed, Space.World);
+    }
 
+    private void FixedUpdate()
+    {
         // [-70, 70] 내부에 있도록 보정
         Vector3 pos = transform.position;
         pos.x = Mathf.Clamp(pos.x, -70f, 70f);

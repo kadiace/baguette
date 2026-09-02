@@ -4,7 +4,8 @@ public class Util
 {
     public static T GetorAddComponent<T>(GameObject go) where T : Component
     {
-        return go.GetComponent<T>() ?? go.AddComponent<T>();
+        T component = go.GetComponent<T>();
+        return component ? component : go.AddComponent<T>();
     }
 
     public static GameObject FindChild(GameObject go, string name = null, bool recursive = false)
