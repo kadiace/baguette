@@ -6,7 +6,7 @@ public class RestartScene : MonoBehaviour
 {
     public void RestartNow()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Managers.Scene.LoadScene(Define.Scene.MainStage);
     }
     public void RestartAfter3Seconds()
     {
@@ -17,6 +17,6 @@ public class RestartScene : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Managers.Scene.LoadScene(Define.Scene.MainStage);
     }
 }
