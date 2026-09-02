@@ -200,5 +200,6 @@ public class WeaponHandler : MonoBehaviour
         camController.CameraAim(false);
         yield return null;
         throwPathRaycast.HideThrowPath();
+        MinimapManager.Instance.ShowMinimap();
     }
 }
