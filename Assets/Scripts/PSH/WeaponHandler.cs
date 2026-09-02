@@ -39,7 +39,7 @@ public class WeaponHandler : MonoBehaviour
     void Start()
     {
         breadTMP.SetActive(false);
-        curBread = 99999; //테스트용: curBread = MaxBread;
+        curBread = MaxBread;
         CreateBread(0);
         //UI 표시 빵 갯수 초기화
         CountEventInvoke();
@@ -85,6 +85,12 @@ public class WeaponHandler : MonoBehaviour
         onHandBread.transform.localPosition = new Vector3(0.62f, 0.2f, 0.7f);
         onHandBread.transform.localRotation = Quaternion.identity;
         onHandBread.transform.localScale = Vector3.one;
+    }
+
+    public void SetBread(int count)
+    {
+        curBread = count;
+        CountEventInvoke();
     }
 
     #endregion
