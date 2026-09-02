@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class WeaponHandler : MonoBehaviour
 {
@@ -96,9 +97,18 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void MeleeAttack()
     {
-        //애니메이션과 콜라이더를 통해 처리
         Debug.Log("빵 휘두르기! \n          효과가 별로인 듯하다...");
     }
+
+    /// <summary>
+    /// 애니메이션에서 호출할 근접 시작 알림
+    /// </summary>
+    public void StartMeleeAttack() => onHandBread.StartSwingBaguette();
+
+    /// <summary>
+    /// 애니메이션에서 호출할 근접 공격 종료 알림
+    /// </summary>
+    public void EndMeleeAttack() => onHandBread.EndSwingBaguette();
 
     /// <summary>
     /// 빵 던지기
