@@ -8,7 +8,7 @@ public class CarController : Poolable
     private float _speed = 60f;
 
 
-    [SerializeField] private float _collisionForce = 0.5f;
+    [SerializeField] private float _collisionForce = 5f;
     [SerializeField] private float _floatForce = 15f;
 
     private Rigidbody _rb;
@@ -44,11 +44,12 @@ public class CarController : Poolable
         {
             Managers.Resource.Destroy(gameObject);
             _step = 1;
+            _collidedObjects.Clear();
             return;
         }
 
-        Vector3 diff = _path[_step] - transform.position;
-        if (diff.magnitude < 0.1f)
+        Vector3 delta = _path[_step] - transform.position;
+        if (delta.magnitude < 0.1f)
         {
             transform.position = _path[_step];
             _step += 1;
@@ -60,7 +61,7 @@ public class CarController : Poolable
             _path[_step],
             _speed * Time.deltaTime
         );
-        Quaternion rotation = Quaternion.LookRotation(diff.normalized, Vector3.up);
+        Quaternion rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
 
         _rb.MovePosition(nextPosition);
         _rb.MoveRotation(rotation);
@@ -68,25 +69,24 @@ public class CarController : Poolable
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!(other.CompareTag("Player") || other.CompareTag("Enemy")))
+            return;
+
         GameObject go = other.gameObject;
         if (_collidedObjects.Contains(go))
-        {
-            Debug.Log("Already collide");
             return;
-        }
 
         Rigidbody rb = other.attachedRigidbody;
-
         if (rb == null)
             return;
 
         Vector3 delta = rb.transform.position - transform.position;
         delta.y = 0;
+        Vector3 carVelocity = (_path[_step] - transform.position).normalized * _speed;
         Vector3 forceDir = delta.normalized;
 
         forceDir.Normalize();
-
-        rb.AddForce(forceDir * _collisionForce + Vector3.up * _floatForce, ForceMode.Impulse);
+        rb.AddForce(carVelocity * 0.1f + forceDir * _collisionForce + Vector3.up * _floatForce, ForceMode.Impulse);
 
         _collidedObjects.Add(go);
     }

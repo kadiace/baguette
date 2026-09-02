@@ -17,10 +17,9 @@ public class GameSceneContext : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("[GameSceneContext] Game scene initialized.");
         StartCoroutine(RepeatAction(3f, GenerateNewDeliveryCard));
         StartCoroutine(RepeatAction(1f, SpawnTraffic));
-        StartCoroutine(RepeatAction(0.5f, SpawnPickPocket));
+        StartCoroutine(RepeatAction(1f, SpawnPickPocket));
     }
 
     private IEnumerator RepeatAction(float period, Action function)
@@ -91,7 +90,7 @@ public class GameSceneContext : MonoBehaviour
 
     private void SpawnPickPocket()
     {
-        GameObject go = Managers.Resource.Instantiate("EnemyTemp");
+        GameObject go = Managers.Resource.Instantiate("Pickpocket");
         EnemyController pickPocket = go.GetorAddComponent<EnemyController>();
         go.transform.position = GetRandomEdgePosition();
 
