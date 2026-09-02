@@ -9,7 +9,8 @@ public class Baguette : MonoBehaviour
     [Tooltip("빵 날리기용 빵")]
     public GameObject breadForVisual;
     [Tooltip("빵 설치용 빵")]
-    [SerializeField] GameObject breadForStuck;
+    [SerializeField] GameObject breadForStuckRigid;
+    [SerializeField] Transform breadForStuckVisual;
     [Header("빵 상태")]
     bool isThrow = false;
     bool isStuck = false;
@@ -22,7 +23,7 @@ public class Baguette : MonoBehaviour
     {
         //Time.timeScale = 0.3f;    //테스트용:
         breadRigid.isKinematic = true;
-        breadForStuck.SetActive(false);
+        breadForStuckRigid.SetActive(false);
     }
 
     /// <summary>
@@ -52,19 +53,21 @@ public class Baguette : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("Ground") && isThrow)
+        if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Ground")) && isThrow)
         {
-            Debug.Log("빵이 땅에 닿음");
-            Destroy(gameObject);   
+            Debug.Log("빵 고정");
+            SetStuck(collision);   
         }
         else if (collision.gameObject.CompareTag("Enemy")){
             //TODO: 적에게 피해주기
         }
-        else if (collision.gameObject.CompareTag("Wall") && isThrow)
+        /*
+        else if (collision.gameObject.CompareTag("Ground") && isThrow)
         {
-            Debug.Log("빵이 벽에 닿음");
-            SetStuck(collision);
+            Debug.Log("빵이 땅에 닿음");
+            //Destroy(gameObject);
         }
+        */
     }
     #region 빵 고정 관련
     public void SetFireAngle(Vector3 forwardDirection){
@@ -77,38 +80,52 @@ public class Baguette : MonoBehaviour
     /// 벽에 고정시키기
     /// </summary>
     public void SetStuck(Collider wallCollider)
-    {   //던지기용 빵 자폭 멈추기
+    {   
+        //던지기용 빵 자폭 멈추기
         StopAllCoroutines();    
         isStuck = true;
 
-        //Raycast로 박힌 위치 계산
+        //던진 각도
+        Quaternion actualRotatingVisualRotation = breadForVisual.transform.rotation;
+
+        //Raycast로 박힌 위치 및 벽 수직 회전 계산
         Ray ray = new Ray(transform.position - transform.forward * 1.5f, transform.forward);
         RaycastHit hit;
         Vector3 stickPosition = transform.position;
+        Quaternion wallPerpendicularRotation = transform.rotation;
 
-        if (wallCollider.Raycast(ray, out hit, 3.0f)){
-        float stickOutDistance = 0.3f; 
-        stickPosition = hit.point + (hit.normal * stickOutDistance);
+        if (wallCollider.Raycast(ray, out hit, 3.0f))
+        {
+            float stickOutDistance = 0.3f; 
+            stickPosition = hit.point + (hit.normal * stickOutDistance);
+
+            Quaternion lookWall = Quaternion.LookRotation(-hit.normal, Vector3.up);
+
+            wallPerpendicularRotation = lookWall * Quaternion.Euler(90f, 0f, 0f);
         }
 
-    // 2. 발판용 빵 세팅
-    breadForStuck.transform.SetParent(null);
-    breadForStuck.transform.position = stickPosition;
+        //물리 발판 세팅
+        breadForStuckRigid.transform.SetParent(null);
+        breadForStuckRigid.transform.position = stickPosition;
+        breadForStuckRigid.transform.rotation = wallPerpendicularRotation;
 
+        //시각 발판 각도 설정
+        if (breadForStuckVisual != null){
+            breadForStuckVisual.rotation = actualRotatingVisualRotation;
+        }
 
-        //발판용 빵 설치하기
-        breadForStuck.transform.SetParent(null);
-        breadForStuck.SetActive(true);
-        //발판은 벽에 고정되어야 하므로 Rigidbody를 Kinematic으로 고정
-        Rigidbody stuckRigid = breadForStuck.GetComponent<Rigidbody>();
+        //발판 활성화 및 물리 고정
+        breadForStuckRigid.SetActive(true);
+        Rigidbody stuckRigid = breadForStuckRigid.GetComponent<Rigidbody>();
         if (stuckRigid != null)
         {
             stuckRigid.isKinematic = true;
         }
-
+        
         //던지기용 빵 비활성화
         Destroy(gameObject);
     }
+
     #endregion
 
     IEnumerator DestroyAfterTime()

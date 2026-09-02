@@ -54,15 +54,19 @@ public class BreadThrowPathRaycast : MonoBehaviour
                 hitDotMarker.transform.position = hit.point + (hit.normal * 0.01f);
                 hitDotMarker.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
 
-                //마커 크기 조절: 카메라와의 거리에 따라 마커 크기 조절 (플레아어에게는 거리에 상관 없이 항상 같은 크기로 보임)
+                //카메라와의 거리에 따라 마커 크기 조절 (플레아어에게는 거리에 상관 없이 항상 같은 크기로 보임)
                 Camera cam = Camera.main;
                 if (cam != null)
                 {
-                    //카메라와의 실제 거리 계산
-                    float distanceToCamera = Mathf.Sqrt(Vector3.Distance(cam.transform.position, hitDotMarker.transform.position * 5f));
-                
-                    //거리에 비례한 스케일 적용
-                    hitDotMarker.transform.localScale = Vector3.one * (distanceToCamera * markerScale);
+                    //카메라와의 정확한 선형 거리 계산 (위치 좌표에 * 5f 제거)
+                    float distanceToCamera = Vector3.Distance(cam.transform.position, hitDotMarker.transform.position);
+
+                    //화면에 표시될 반경 크기 계산
+                    float radius = distanceToCamera * markerScale;
+
+                    //실린더의 두께(Y축)는 얇게 고정하고, 넓이(X, Z)만 거리에 맞춰 조절
+                    float thickness = radius * 0.1f;
+                    hitDotMarker.transform.localScale = new Vector3(radius, thickness, radius);
                 }
             }
         }

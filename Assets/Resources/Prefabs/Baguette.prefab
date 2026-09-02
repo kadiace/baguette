@@ -51,7 +51,8 @@ MonoBehaviour:
   breadAni: {fileID: 8115568364553372203}
   breadRigid: {fileID: 1612873478765492355}
   breadForVisual: {fileID: 4991467971936218174}
-  breadForStuck: {fileID: 6831884730963072871}
+  breadForStuckRigid: {fileID: 6831884730963072871}
+  breadForStuckVisual: {fileID: 9126883712371449115}
   flySpeed: 40
   explodeTime: 3
   fireAngle: {x: 0, y: 0, z: 0}
@@ -315,5 +316,10 @@ Transform:
 --- !u!1 &6831884730963072871 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3192825985473028765, guid: 77a8cbf68b1071245934e23273856537, type: 3}
+  m_PrefabInstance: {fileID: 8250744763934422522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9126883712371449115 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 876439166668990689, guid: 77a8cbf68b1071245934e23273856537, type: 3}
   m_PrefabInstance: {fileID: 8250744763934422522}
   m_PrefabAsset: {fileID: 0}

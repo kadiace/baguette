@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="damage">받은 피해량</param>
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        //currentHealth -= damage;
         if (currentHealth < 0)
         {
             currentHealth = 0;            
