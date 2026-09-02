@@ -190,7 +190,7 @@ public class ShopManager : MonoBehaviour
     public void ButtonInitiate()
     {   
         Debug.Log("ButtonInitiate() 호출");
-        if(curMoney < healthPrice || healthLevel >= 11)
+        if(curMoney < healthPrice || healthLevel >= 10)
         {
             healthButton.interactable = false;
         }
@@ -199,7 +199,7 @@ public class ShopManager : MonoBehaviour
             healthButton.interactable = true;
         }
 
-        if(curMoney < breadPrice || breadLevel >= 11)
+        if(curMoney < breadPrice || breadLevel >= 10)
         {
             breadButton.interactable = false;
         }
@@ -285,10 +285,6 @@ public class ShopManager : MonoBehaviour
         {
             SetBreadValueText();
             ButtonInitiate();
-            // breadText.text = 25.ToString();
-            // breadUpgradeText.text = 25.ToString();
-            // breadPriceText.text = "MAX";
-            // breadButton.interactable = false;
             Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
             Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
             return;
