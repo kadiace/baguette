@@ -28,6 +28,9 @@ public class OnOffManager : MonoBehaviour
             ShopPanel.GetComponent<ShopManager>().SetDrinkValue();
             ShopPanel.GetComponent<ShopManager>().SetButterValue();
             ShopPanel.GetComponent<ShopManager>().SetMoneyValue();
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             ShopPanel.SetActive(true);
         }
         else
@@ -35,6 +38,8 @@ public class OnOffManager : MonoBehaviour
             powerUpManager.SetDrinkValue();
             powerUpManager.SetButterValue();
             ShopPanel.SetActive(false);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }
