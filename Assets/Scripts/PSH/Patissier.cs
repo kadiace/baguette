@@ -27,18 +27,21 @@ public class Patissier : MonoBehaviour
     //키 힌트 보여주기
     void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.CompareTag("Player"))
+        PlayerController player = other.GetComponentInParent<PlayerController>();
+        if (player == null || !other.transform.root.CompareTag("Player"))
             return;
-        target = Camera.main.transform;
         keyhintUI.SetActive(true);
+        target = Camera.main.transform;
         other.GetComponent<PlayerController>().SetBreadShopInteration(this);
     }
 
     //키 힌트 숨기기
     void OnTriggerExit(Collider other)
     {
-        if (!other.gameObject.CompareTag("Player"))
+        PlayerController player = other.GetComponentInParent<PlayerController>();
+        if (player == null || !other.transform.root.CompareTag("Player"))
             return;
+
         target = null;
         keyhintUI.SetActive(false);
         other.GetComponent<PlayerController>().RemoveBreadShopInteration();
