@@ -16,7 +16,6 @@ public class VillagerInteractionController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("VillagerInteractionController: OnTriggerEnter");
         gameObject.SetActive(false);
 
         Renderer[] renderers = _roof.GetComponentsInChildren<Renderer>();
