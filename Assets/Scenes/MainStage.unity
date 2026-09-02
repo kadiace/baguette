@@ -7088,7 +7088,7 @@ MonoBehaviour:
   weaponHandlerAni: {fileID: 921402737}
   isThrowReady: 0
   rightClickTime: 0
-  aimTime: 0.7
+  aimTime: 0.0001
   movePos: {x: 0, y: 0}
   jumpHeight: 10
   isDead: 0

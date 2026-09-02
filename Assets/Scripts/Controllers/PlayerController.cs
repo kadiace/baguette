@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public bool isThrowReady = false;
     [SerializeField] private float rightClickTime = 0f;
     [Tooltip("조준을 위한 우클릭 유지 시간")]
-    [SerializeField] private float aimTime = 1.5f;
+    [SerializeField] private float aimTime;
     [Tooltip("플레이어 이동 방향")]
     [SerializeField] Vector2 movePos;
     [SerializeField] float jumpHeight;
