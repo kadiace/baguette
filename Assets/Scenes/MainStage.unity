@@ -6402,7 +6402,7 @@ MonoBehaviour:
   rightClickTime: 0
   aimTime: 0.7
   movePos: {x: 0, y: 0}
-  jumpHeight: 6
+  jumpHeight: 10
   isDead: 0
   isGround: 1
   walkSpeed: 10

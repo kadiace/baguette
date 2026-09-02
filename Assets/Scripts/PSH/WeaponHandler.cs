@@ -117,7 +117,7 @@ public class WeaponHandler : MonoBehaviour
         }
         else
         {
-            //curBread--;
+            curBread--;
             isCooldown = true;
             CountEventInvoke();
             //발사 각도 전달하기
