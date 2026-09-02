@@ -31,9 +31,9 @@ public class Baguette : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(isThrow && !isStuck)
+        if (isThrow && !isStuck)
             transform.Translate(Vector3.forward * flySpeed * Time.deltaTime);
-        if(isStuck)
+        if (isStuck)
             Debug.Log("빵이 벽에 고정됨");
     }
 
@@ -56,9 +56,10 @@ public class Baguette : MonoBehaviour
         if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Ground")) && isThrow)
         {
             Debug.Log("빵 고정");
-            SetStuck(collision);   
+            SetStuck(collision);
         }
-        else if (collision.gameObject.CompareTag("Enemy")){
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
             //TODO: 적에게 피해주기
         }
         /*
@@ -70,8 +71,10 @@ public class Baguette : MonoBehaviour
         */
     }
     #region 빵 고정 관련
-    public void SetFireAngle(Vector3 forwardDirection){
-        if (forwardDirection != Vector3.zero){
+    public void SetFireAngle(Vector3 forwardDirection)
+    {
+        if (forwardDirection != Vector3.zero)
+        {
             transform.rotation = Quaternion.LookRotation(forwardDirection);
         }
     }
@@ -80,9 +83,9 @@ public class Baguette : MonoBehaviour
     /// 벽에 고정시키기
     /// </summary>
     public void SetStuck(Collider wallCollider)
-    {   
+    {
         //던지기용 빵 자폭 멈추기
-        StopAllCoroutines();    
+        StopAllCoroutines();
         isStuck = true;
 
         //던진 각도
@@ -96,7 +99,7 @@ public class Baguette : MonoBehaviour
 
         if (wallCollider.Raycast(ray, out hit, 3.0f))
         {
-            float stickOutDistance = 0.3f; 
+            float stickOutDistance = 0.3f;
             stickPosition = hit.point + (hit.normal * stickOutDistance);
 
             Quaternion lookWall = Quaternion.LookRotation(-hit.normal, Vector3.up);
@@ -110,7 +113,8 @@ public class Baguette : MonoBehaviour
         breadForStuckRigid.transform.rotation = wallPerpendicularRotation;
 
         //시각 발판 각도 설정
-        if (breadForStuckVisual != null){
+        if (breadForStuckVisual != null)
+        {
             breadForStuckVisual.rotation = actualRotatingVisualRotation;
         }
 
@@ -121,7 +125,7 @@ public class Baguette : MonoBehaviour
         {
             stuckRigid.isKinematic = true;
         }
-        
+
         //던지기용 빵 비활성화
         Destroy(gameObject);
     }
