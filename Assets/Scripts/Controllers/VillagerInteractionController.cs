@@ -62,6 +62,6 @@ public class VillagerInteractionController : MonoBehaviour
         Managers.Deliver.CompleteDelivery(_deliveryCard);
 
         // 8. deliveryCard 에서 reward 만큼 보상 획득 (제훈 > 보상은 어디서 관리하세요?)
-
+        Managers.Money.Money = Managers.Money.Money + _deliveryCard.Reward;
     }
 }

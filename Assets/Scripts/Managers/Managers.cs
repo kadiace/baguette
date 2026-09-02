@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -14,16 +13,15 @@ public class Managers : MonoBehaviour
         }
     }
 
-    static private GameObject _gameObject;
-
     private readonly DeliverManager _deliverManager = new();
+    private readonly MoneyManager _moneyManager = new();
     private readonly PoolManager _poolManager = new();
     private readonly ResourceManager _resourceManager = new();
     private readonly SceneManagerEx _sceneManager = new();
     private readonly UIManager _uiManager = new();
 
-
     public static DeliverManager Deliver => Instance._deliverManager;
+    public static MoneyManager Money => Instance._moneyManager;
     public static PoolManager Pool => Instance._poolManager;
     public static ResourceManager Resource => Instance._resourceManager;
     public static SceneManagerEx Scene => Instance._sceneManager;
@@ -62,6 +60,7 @@ public class Managers : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
         _deliverManager.Init();
+        _moneyManager.Init();
         _poolManager.Init();
     }
 

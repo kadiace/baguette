@@ -27,6 +27,7 @@ public class OnOffManager : MonoBehaviour
         {
             ShopPanel.GetComponent<ShopManager>().SetDrinkValue();
             ShopPanel.GetComponent<ShopManager>().SetButterValue();
+            ShopPanel.GetComponent<ShopManager>().SetMoneyValue();
             ShopPanel.SetActive(true);
         }
         else
