@@ -86,8 +86,7 @@ public class DeliverManager
         if (curBread < deliveryCard.Quantity)
             return;
 
-        int newBread = curBread - deliveryCard.Quantity;
-        weaponHandler.curBread = newBread;
+        weaponHandler.SetBread(curBread - deliveryCard.Quantity);
 
         // deliveryCard 리스트에서 제거 및 Destroy
         DestroyDelivery(pair);

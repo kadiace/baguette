@@ -26,7 +26,7 @@ public class MoneyManager
 
     public void Init()
     {
-        _money = 5700f;
+        _money = 100f;
         _drinkCount = 5;
         _butterCount = 5;
     }
