@@ -163,4 +163,10 @@ public class DeliverManager
             );
         }
     }
+
+    public void Clear()
+    {
+        while (_deliveries.Count > 0)
+            DestroyDelivery(_deliveries[_deliveries.Count - 1]);
+    }
 }
