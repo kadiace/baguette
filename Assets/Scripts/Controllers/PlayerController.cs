@@ -174,6 +174,7 @@ public class PlayerController : MonoBehaviour
                 isThrowReady = true;
                 camController.CameraAim(true);
                 weaponHandler.ShowThrowPath();
+                weaponHandler.StartAimingTime();
                 MinimapManager.Instance.HideMinimap();
             }
 
