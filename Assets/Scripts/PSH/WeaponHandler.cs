@@ -52,6 +52,8 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void SupplyBread()
     {
+
+        Debug.Log("탄 충전 요청 받음");
         curBread = MaxBread;
         CountEventInvoke();
     }
