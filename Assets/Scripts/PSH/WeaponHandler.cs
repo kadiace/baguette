@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
-using Unity.VisualScripting;
 
 public class WeaponHandler : MonoBehaviour
 {
@@ -21,6 +20,10 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private Transform fireAngleTransform;
     [Tooltip("원거리 공격 경로(Raycast)")]
     [SerializeField] private BreadThrowPathRaycast throwPathRaycast;
+    [Tooltip("줌 유지 시간")]
+    Coroutine aimingKeepTimeCoroutine;
+    [SerializeField] private float aimingKeepTime;
+    [SerializeField] private float curKeepTime;
     [Tooltip("쿨타임")]
     [SerializeField] private float throwCooldownTime;
     [Tooltip("쿨타임 여부")]
@@ -120,9 +123,16 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void ThrowBread()
     {
-        if (isCooldown)
+        if (aimingKeepTimeCoroutine != null)
         {
-            // 아직 쿨타임이 남았을때
+            StopCoroutine(aimingKeepTimeCoroutine);
+            aimingKeepTimeCoroutine = null;
+        }
+
+        if (isCooldown || (curKeepTime < aimingKeepTime))
+        {
+            camController.CameraAim(false);
+            RemoveThrowPath();
             return;
         }
         else if (curBread < 1)
@@ -199,6 +209,15 @@ public class WeaponHandler : MonoBehaviour
     }
     #endregion
 
+    public void StartAimingTime()
+    {
+        if (aimingKeepTimeCoroutine != null)
+            return;
+
+        aimingKeepTimeCoroutine = StartCoroutine(CheckAimingTime());
+    }
+
+    #region 코루틴 (시간 측정)
     /// <summary>
     /// 던지기 쿨타임 코루틴
     /// </summary>
@@ -228,4 +247,18 @@ public class WeaponHandler : MonoBehaviour
         RemoveThrowPath();
         MinimapManager.Instance.ShowMinimap();
     }
+
+    IEnumerator CheckAimingTime()
+    {
+        curKeepTime = 0.0f;
+        float interval = 0.1f;
+
+        //재장전 시간 동안 조준 상태 유지
+        while (true)
+        {
+            curKeepTime += interval;
+            yield return new WaitForSeconds(interval);
+        }
+    }
+    #endregion
 }

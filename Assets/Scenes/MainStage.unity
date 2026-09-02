@@ -7362,7 +7362,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d512bfb27b1443941a52037df44d34af, type: 2}
+  - {fileID: 2100000, guid: 2ffae7b4588b04449b0879003ccb7e08, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11340,7 +11340,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d512bfb27b1443941a52037df44d34af, type: 2}
+  - {fileID: 2100000, guid: 2ffae7b4588b04449b0879003ccb7e08, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18300,6 +18300,8 @@ MonoBehaviour:
   curBread: 0
   fireAngleTransform: {fileID: 1303219960}
   throwPathRaycast: {fileID: 1843347792}
+  aimingKeepTime: 0.7
+  curKeepTime: 0
   throwCooldownTime: 0.1
   isCooldown: 0
   reloadTime: 1
