@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     #region 플레이어 조작(이동, 공격)  *회전은 카메라에서 조절
     /// <summary>
-    /// 플레이어 이동
+    /// 플레이어 이동 (Rigid 사용)
     /// </summary>
     void MovePlayer()
     {
@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
                 isThrowReady = true;
                 camController.CameraAim(true);
                 weaponHandler.ShowThrowPath();
-                MinimapManager.Instance.HideMinimap();
+                //MinimapManager.Instance.HideMinimap();
             }
         }
         // 우클릭 해제 시 카메라 줌아웃

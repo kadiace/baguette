@@ -6,7 +6,11 @@ public class EnemyController : Poolable
 {
     [Tooltip("플레이어")]
     [SerializeField] private PlayerController player;
-    [Tooltip("적 이동 속도")]
+    [Header("적 컨포넌트")]
+    [SerializeField] Rigidbody enemyRigid;
+    [Tooltip("적 상태")]
+    [SerializeField] float maxHP;
+    [SerializeField] float curHP;
     [SerializeField] private float _moveSpeed = 10f;
 
     private Rigidbody _rb;
@@ -15,6 +19,7 @@ public class EnemyController : Poolable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        curHP = maxHP;
         player = GameObject.Find("PlayerTemp").GetComponent<PlayerController>();
         _rb = gameObject.GetorAddComponent<Rigidbody>();
         onPlayerDamaged = new UnityEvent<int>();
@@ -52,6 +57,19 @@ public class EnemyController : Poolable
             Debug.Log("플레이어가 적과 접촉을 끊었습니다.");
             // StopCoroutine(StillTriggeredCoroutine());
             StopAllCoroutines();
+        }
+    }
+
+    public void EnemyHit(float damage)
+    {
+        curHP -= damage;
+        //피격 액션 넣기
+        enemyRigid.AddForce(Vector3.forward * 10.0f, ForceMode.Impulse);
+        enemyRigid.AddForce(Vector3.up * 12.0f, ForceMode.Impulse);
+        if (curHP <= 0)
+        {
+            //적 사망 액션(?)
+            Destroy(gameObject);
         }
     }
 

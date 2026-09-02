@@ -53,6 +53,9 @@ MonoBehaviour:
   breadForVisual: {fileID: 4991467971936218174}
   breadForStuckRigid: {fileID: 6831884730963072871}
   breadForStuckVisual: {fileID: 9126883712371449115}
+  meleeDamage: 1
+  throwDamage: 3
+  curDamage: 0
   flySpeed: 40
   explodeTime: 3
   fireAngle: {x: 0, y: 0, z: 0}
@@ -75,8 +78,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
-  m_Height: 1
+  m_Radius: 0.15
+  m_Height: 1.15
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1612873478765492355
@@ -237,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3192825985473028765, guid: 77a8cbf68b1071245934e23273856537, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4107578045809506474, guid: 77a8cbf68b1071245934e23273856537, type: 3}
       propertyPath: stuckTime
