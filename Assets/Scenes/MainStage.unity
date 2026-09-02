@@ -6403,7 +6403,7 @@ MonoBehaviour:
   jumpHeight: 10
   isDead: 0
   isGround: 1
-  walkSpeed: 20
+  walkSpeed: 10
   maxHealth: 5
   currentHealth: 5
   OnHealthChanged:

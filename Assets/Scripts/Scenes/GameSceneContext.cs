@@ -41,7 +41,7 @@ public class GameSceneContext : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         SpawnInitPickPocket();
 
-        StartCoroutine(RepeatAction(3f, GenerateNewDeliveryCard));
+        StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
         StartCoroutine(RepeatAction(5f, SpawnTraffic));
         StartCoroutine(RepeatAction(2f, SpawnPickPocket));
     }
@@ -104,7 +104,7 @@ public class GameSceneContext : MonoBehaviour
 
     private void SpawnPickPocket()
     {
-        if (Managers.Pool.GetStackSize("Pickpocket") >= 20)
+        if (Managers.Pool.GetStackSize("Pickpocket") >= 15)
             return;
         GameObject go = Managers.Resource.Instantiate("Pickpocket");
         EnemyController pickPocket = go.GetorAddComponent<EnemyController>();
