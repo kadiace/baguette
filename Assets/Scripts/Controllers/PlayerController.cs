@@ -213,7 +213,6 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log("플레이어 피격");
         if (currentHealth < 0)
         {
             currentHealth = 0;
@@ -232,7 +231,6 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        Debug.Log("플레이어 사망");
     }
     /// <summary>
     /// 현재 체력 반환
