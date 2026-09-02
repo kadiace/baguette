@@ -18,8 +18,6 @@ public class PatissierInteractionController : MonoBehaviour
         {
             return;
         }
-        Debug.Log("플레이어 들어옴");
-
         // 2. collider를 player 스크립트로 연결
         PlayerController playerController = other.GetComponentInParent<PlayerController>();
 
