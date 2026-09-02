@@ -150,7 +150,6 @@ public class PlayerController : MonoBehaviour
         {
             if (isThrowReady || weaponHandler.IsCooldown())
                 return;
-            weaponHandler.MeleeAttack();
             weaponHandlerAni.Play("SwingDiagonal");
         }
         //우 "클릭"

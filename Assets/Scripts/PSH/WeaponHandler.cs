@@ -52,8 +52,6 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void SupplyBread()
     {
-
-        Debug.Log("탄 충전 요청 받음");
         curBread = MaxBread;
         CountEventInvoke();
     }
@@ -73,7 +71,6 @@ public class WeaponHandler : MonoBehaviour
     {
         if (curBread <= 0)
         {
-            Debug.Log("빵이 없습니다.");
             return;
         }
 
@@ -83,7 +80,6 @@ public class WeaponHandler : MonoBehaviour
         CountEventInvoke();
 
         //빵 프리팹 생성
-        Debug.Log("빵 꺼내는 중...");
         onHandBread = Instantiate(BreadPrefs, transform);
         //빵 위치 조정
         onHandBread.transform.localPosition = new Vector3(0.62f, 0.2f, 0.7f);
@@ -94,14 +90,6 @@ public class WeaponHandler : MonoBehaviour
     #endregion
 
     #region 빵 공격 관련
-    /// <summary>
-    /// 근접 공격
-    /// </summary>
-    public void MeleeAttack()
-    {
-        Debug.Log("빵 휘두르기! \n          효과가 별로인 듯하다...");
-    }
-
     /// <summary>
     /// 애니메이션에서 호출할 근접 시작 알림
     /// </summary>
@@ -119,17 +107,16 @@ public class WeaponHandler : MonoBehaviour
     {
         if (isCooldown)
         {
-            Debug.Log("아직 쿨타임이 남았습니다.");
+            // 아직 쿨타임이 남았을때
             return;
         }
         else if (curBread <= 0)
         {
-            Debug.Log("빵이 없습니다.");
+            // 빵이 없을때
             return;
         }
         else
         {
-            Debug.Log("빵 던지기! \n        효과가 굉장했다!");
             //curBread--;
             isCooldown = true;
             CountEventInvoke();
@@ -184,7 +171,6 @@ public class WeaponHandler : MonoBehaviour
     private void CountEventInvoke()
     {
         OnBreadCountChanged.Invoke(curBread);
-        //Debug.Log("현재 빵 개수: " + curBread);
     }
     #endregion
 
