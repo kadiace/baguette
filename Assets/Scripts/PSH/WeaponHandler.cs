@@ -44,7 +44,7 @@ public class WeaponHandler : MonoBehaviour
     void Start()
     {
         breadTMP.SetActive(false);
-        CreateBread(0);
+        CreateBread(1);
         //UI 표시 빵 갯수 초기화
         CountEventInvoke();
     }
@@ -71,6 +71,10 @@ public class WeaponHandler : MonoBehaviour
         CountEventInvoke();
     }
 
+    /// <summary>
+    /// 빵 생성 (초기화 및 애니메이션에서 호출)
+    /// </summary>
+    /// <param name="type"></param>
     public void CreateBread(int type)
     {
         if (curBread <= 0)
@@ -94,6 +98,8 @@ public class WeaponHandler : MonoBehaviour
     public void SetBread(int count)
     {
         curBread = count;
+        if (curBread == 0)
+            camController.CameraAim(false);
         CountEventInvoke();
     }
 
@@ -120,14 +126,15 @@ public class WeaponHandler : MonoBehaviour
             // 아직 쿨타임이 남았을때
             return;
         }
-        else if (curBread <= 0)
+        else if (curBread < 1)
         {
-            // 빵이 없을때
+            //던지기 직전에 빵이 없으면 줌 해제
+            camController.CameraAim(false);
+            RemoveThrowPath();
             return;
         }
         else
         {
-            curBread--;
             isCooldown = true;
             CountEventInvoke();
             //발사 각도 전달하기
@@ -156,6 +163,15 @@ public class WeaponHandler : MonoBehaviour
     {
         throwPathRaycast.DrowThrowPath();
     }
+
+    /// <summary>
+    /// 내부에서 사용할 경로 제거
+    /// </summary>
+    void RemoveThrowPath()
+    {
+        throwPathRaycast.HideThrowPath();
+    }
+
     #endregion
 
     #region 빵 개수 관련 by.Jaehoon
@@ -210,7 +226,7 @@ public class WeaponHandler : MonoBehaviour
         //카메라 줌 아웃(3인칭으로 변경)
         camController.CameraAim(false);
         yield return null;
-        throwPathRaycast.HideThrowPath();
+        RemoveThrowPath();
         MinimapManager.Instance.ShowMinimap();
     }
 }
