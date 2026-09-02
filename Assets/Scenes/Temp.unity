@@ -2555,7 +2555,7 @@ MonoBehaviour:
   rightClickTime: 0
   aimTime: 0.7
   movePos: {x: 0, y: 0}
-  jumpHeight: 5
+  jumpHeight: 6
   isDead: 0
   isGround: 1
   walkSpeed: 10
@@ -12788,6 +12788,14 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2699469696776315896, guid: 0c8de91f24b68ee4796e1fc5906cba8c, type: 3}
+      propertyPath: m_Height
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2699469696776315896, guid: 0c8de91f24b68ee4796e1fc5906cba8c, type: 3}
+      propertyPath: m_Radius
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 3049601950239516692, guid: 0c8de91f24b68ee4796e1fc5906cba8c, type: 3}
       propertyPath: m_IsKinematic
       value: 0
@@ -13478,7 +13486,7 @@ GameObject:
   - component: {fileID: 1716630227}
   m_Layer: 0
   m_Name: Plaza
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
