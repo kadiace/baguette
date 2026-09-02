@@ -172,6 +172,8 @@ public class PlayerController : MonoBehaviour
             rightClickTime += Time.deltaTime;
             if (rightClickTime >= aimTime)
             {
+                if (weaponHandler.curBread < 1)
+                    return;
                 isThrowReady = true;
                 camController.CameraAim(true);
                 weaponHandler.ShowThrowPath();
