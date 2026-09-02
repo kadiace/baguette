@@ -14,7 +14,7 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("최대 빵 보유 갯수")]
     [SerializeField] private int MaxBread = 5;
     [Tooltip("현재 빵 보유 횟수, 자동으로 초기화")]
-    [SerializeField] private int curBread;
+    [SerializeField] public int curBread;
     [Header("원거리 공격 정보")]
     [Tooltip("발사 각도 측정용")]
     [SerializeField] private Transform fireAngleTransform;

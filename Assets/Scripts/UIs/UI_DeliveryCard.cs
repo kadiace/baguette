@@ -24,6 +24,8 @@ public class UI_DeliveryCard : UI_Base
 
     public GameObject House { get { return _house; } set { _house = value; } }
     public Define.HouseColor Color { get { return _color; } }
+    public int Reward { get { return _reward; } }
+    public int Quantity { get { return _quantity; } }
 
     public override void Init()
     {
