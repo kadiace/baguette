@@ -117,7 +117,7 @@ public class EnemyController : Poolable
             return;
         }
         float step = _moveSpeed * Time.deltaTime;
-        Vector3 nextPos = Vector3.MoveTowards(transform.position, player.transform.position, step);
+        Vector3 nextPos = Vector3.MoveTowards(_rb.position, player.transform.position, step);
         delta.y = 0;
         Quaternion rotation = Quaternion.LookRotation(delta, Vector3.up);
 

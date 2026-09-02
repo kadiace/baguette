@@ -11,7 +11,6 @@ public class CarController : Poolable
     [SerializeField] private float _collisionForce = 5f;
     [SerializeField] private float _floatForce = 15f;
 
-    private Rigidbody _rb;
     private readonly HashSet<GameObject> _collidedObjects = new();
 
     private int _step = 1;
@@ -29,11 +28,6 @@ public class CarController : Poolable
         }
     }
 
-    private void Start()
-    {
-        _rb = gameObject.GetOrAddComponent<Rigidbody>();
-    }
-
     private void Update()
     {
         if (_path == null)
@@ -49,22 +43,22 @@ public class CarController : Poolable
         }
 
         Vector3 delta = _path[_step] - transform.position;
-        if (delta.magnitude < 0.1f)
+        if (delta.magnitude < 0.01f)
         {
             transform.position = _path[_step];
             _step += 1;
             return;
         }
 
-        Vector3 nextPosition = Vector3.MoveTowards(
+        transform.position = Vector3.MoveTowards(
             transform.position,
             _path[_step],
             _speed * Time.deltaTime
         );
-        Quaternion rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
-
-        _rb.MovePosition(nextPosition);
-        _rb.MoveRotation(rotation);
+        if (delta.sqrMagnitude > 0.001f)
+        {
+            transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -347,7 +347,6 @@ GameObject:
   - component: {fileID: 6831992654795151847}
   - component: {fileID: 1344902248935609042}
   - component: {fileID: 5917266623709404758}
-  - component: {fileID: 470534690554059605}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -391,7 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
   IsUsing: 1
-  _speed: 60
+  _speed: 30
   _collisionForce: 5
   _floatForce: 20
 --- !u!65 &5917266623709404758
@@ -415,33 +414,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 2.93, z: 4.5}
   m_Center: {x: 0, y: -0.5, z: 0.4}
---- !u!54 &470534690554059605
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1076495446623009727}
-  serializedVersion: 5
-  m_Mass: 30
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 84
-  m_CollisionDetection: 0
 --- !u!1 &1103582280126607305
 GameObject:
   m_ObjectHideFlags: 0
