@@ -25,9 +25,7 @@ public class EnemyController : Poolable
     {
         FollowPlayer();
         if (OutOfBounds())
-        {
             Managers.Resource.Destroy(gameObject);
-        }
     }
 
     #region 플레이어 몸체와 접촉 - 피해 여부 판단
@@ -85,7 +83,8 @@ public class EnemyController : Poolable
         }
         float step = _moveSpeed * Time.deltaTime;
         Vector3 nextPos = Vector3.MoveTowards(transform.position, player.transform.position, step);
-        Quaternion rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+        delta.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(delta, Vector3.up);
 
         _rb.MovePosition(nextPos);
         _rb.MoveRotation(rotation);
@@ -94,7 +93,7 @@ public class EnemyController : Poolable
 
     private bool OutOfBounds()
     {
-        return transform.position.x < -75 && transform.position.x > 75
-        && transform.position.z < -75 && transform.position.z > 75;
+        return transform.position.x < -75 || transform.position.x > 75
+        || transform.position.z < -75 || transform.position.z > 75;
     }
 }
