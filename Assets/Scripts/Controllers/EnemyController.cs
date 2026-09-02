@@ -41,8 +41,10 @@ public class EnemyController : Poolable
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "PlayerTemp")
+        //Debug.Log($"충돌 감지: {other.gameObject}");
+        if (other.gameObject.name == "Player")
         {
+            Debug.Log("플레이어 탐지");
             player.TakeDamage(1);
             Debug.Log("플레이어가 적에게 피해를 입었습니다. 현재 체력: " + player.GetCurrentHealth());
             StartCoroutine(StillTriggeredCoroutine());
@@ -52,7 +54,7 @@ public class EnemyController : Poolable
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name == "PlayerTemp")
+        if (other.gameObject.name == "Player")
         {
             Debug.Log("플레이어가 적과 접촉을 끊었습니다.");
             // StopCoroutine(StillTriggeredCoroutine());
@@ -63,12 +65,13 @@ public class EnemyController : Poolable
     /// 적 피격, 최대 HP: 3
     /// </summary>
     /// <param name="damage"></param>
-    public void EnemyHit(float damage)
+    public void EnemyHit(float damage /*, Vector3 attackerPos*/)
     {
         curHP -= damage;
         //피격 액션 넣기
         enemyRigid.AddForce(Vector3.forward * 10.0f, ForceMode.Impulse);
         enemyRigid.AddForce(Vector3.up * 12.0f, ForceMode.Impulse);
+
         if (curHP <= 0)
         {
             //적 사망 액션(?)
@@ -83,6 +86,7 @@ public class EnemyController : Poolable
     {
         while (true)
         {
+            Debug.Log("플레이어 공격");
             yield return new WaitForSeconds(1f); // 1초 대기
             if (player != null && player.GetCurrentHealth() > 0)
             {
