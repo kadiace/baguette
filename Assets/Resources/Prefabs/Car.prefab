@@ -461,7 +461,7 @@ MonoBehaviour:
   IsUsing: 1
   _speed: 60
   _collisionForce: 0.1
-  _floatForce: 15
+  _floatForce: 20
 --- !u!65 &5917266623709404758
 BoxCollider:
   m_ObjectHideFlags: 0
