@@ -1,13 +1,18 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CarController : Poolable
 {
     [SerializeField]
-    private float _speed = 30f;
+    private float _speed = 60f;
 
 
-    [SerializeField] private float _targetScale = 10f;
+    [SerializeField] private float _collisionForce = 0.5f;
+    [SerializeField] private float _floatForce = 15f;
+
+    private Rigidbody _rb;
+    private readonly HashSet<GameObject> _collidedObjects = new();
 
     private int _step = 1;
     private List<Vector3> _path;
@@ -24,11 +29,11 @@ public class CarController : Poolable
         }
     }
 
-
     private void Start()
     {
-
+        _rb = gameObject.GetOrAddComponent<Rigidbody>();
     }
+
     private void Update()
     {
         if (_path == null)
@@ -37,7 +42,7 @@ public class CarController : Poolable
 
         if (_step == _path.Count)
         {
-            Destroy(gameObject);
+            Managers.Resource.Destroy(gameObject);
             return;
         }
 
@@ -49,23 +54,39 @@ public class CarController : Poolable
             return;
         }
 
-        transform.position = Vector3.MoveTowards(
+        Vector3 nextPosition = Vector3.MoveTowards(
             transform.position,
             _path[_step],
             _speed * Time.deltaTime
         );
-        transform.rotation = Quaternion.LookRotation(diff.normalized, Vector3.up);
+        Quaternion rotation = Quaternion.LookRotation(diff.normalized, Vector3.up);
+
+        _rb.MovePosition(nextPosition);
+        _rb.MoveRotation(rotation);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Vector3 closestPoint = other.ClosestPoint(transform.position);
-        Vector3 forceDirection = closestPoint - transform.position;
-        forceDirection += Vector3.up;
+        GameObject go = other.gameObject;
+        if (_collidedObjects.Contains(go))
+        {
+            Debug.Log("Already collide");
+            return;
+        }
 
-        forceDirection.Normalize();
-        Debug.Log($"{forceDirection}");
+        Rigidbody rb = other.attachedRigidbody;
 
-        other.attachedRigidbody.AddForce(forceDirection * _targetScale, ForceMode.VelocityChange);
+        if (rb == null)
+            return;
+
+        Vector3 delta = rb.transform.position - transform.position;
+        delta.y = 0;
+        Vector3 forceDir = delta.normalized;
+
+        forceDir.Normalize();
+
+        rb.AddForce(forceDir * _collisionForce + Vector3.up * _floatForce, ForceMode.Impulse);
+
+        _collidedObjects.Add(go);
     }
 }

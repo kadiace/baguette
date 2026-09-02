@@ -7,16 +7,16 @@ public class EnemyController : Poolable
     [Tooltip("플레이어")]
     [SerializeField] private PlayerController player;
     [Tooltip("적 이동 속도")]
-    [SerializeField] private float enemySpeed = 3f;
+    [SerializeField] private float _moveSpeed = 10f;
 
-    private Rigidbody enemyRigid;
+    private Rigidbody _rb;
 
     public UnityEvent<int> onPlayerDamaged;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.Find("PlayerTemp").GetComponent<PlayerController>();
-        enemyRigid = GetComponent<Rigidbody>();
+        _rb = gameObject.GetorAddComponent<Rigidbody>();
         onPlayerDamaged = new UnityEvent<int>();
     }
 
@@ -24,6 +24,10 @@ public class EnemyController : Poolable
     void Update()
     {
         FollowPlayer();
+        if (OutOfBounds())
+        {
+            Managers.Resource.Destroy(gameObject);
+        }
     }
 
     #region 플레이어 몸체와 접촉 - 피해 여부 판단
@@ -74,8 +78,23 @@ public class EnemyController : Poolable
     #region 플레이어 추적
     private void FollowPlayer()
     {
-        float step = enemySpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+        Vector3 delta = player.transform.position - transform.position;
+        if (delta.magnitude < 1f)
+        {
+            return;
+        }
+        float step = _moveSpeed * Time.deltaTime;
+        Vector3 nextPos = Vector3.MoveTowards(transform.position, player.transform.position, step);
+        Quaternion rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+
+        _rb.MovePosition(nextPos);
+        _rb.MoveRotation(rotation);
     }
     #endregion
+
+    private bool OutOfBounds()
+    {
+        return transform.position.x < -75 && transform.position.x > 75
+        && transform.position.z < -75 && transform.position.z > 75;
+    }
 }

@@ -41,7 +41,7 @@ public class UI_DeliveryCard : UI_Base
 
         if (_time <= 0f)
         {
-            Managers.Deliver.DestoryDeliveryCard(this);
+            Managers.Deliver.DestroyDeliveryCard(this);
             return;
         }
 

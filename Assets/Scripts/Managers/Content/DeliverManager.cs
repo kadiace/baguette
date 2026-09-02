@@ -47,14 +47,14 @@ public class DeliverManager
         // deliveryCard reward 만큼 보상 획득, 바게트 차감
 
         // deliveryCard 리스트에서 제거 및 Destroy
-        DestoryDeliveryCard(deliveryCard);
+        DestroyDeliveryCard(deliveryCard);
     }
 
-    public void DestoryDeliveryCard(UI_DeliveryCard deliveryCard)
+    public void DestroyDeliveryCard(UI_DeliveryCard deliveryCard)
     {
         DeliveryCards.Remove(deliveryCard);
         RefreshDeliveriesLayout();
-        Managers.Resource.Destory(deliveryCard.transform.gameObject);
+        Managers.Resource.Destroy(deliveryCard.transform.gameObject);
     }
 
     public bool IsHouseDuplicated(GameObject house)

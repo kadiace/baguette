@@ -99,14 +99,14 @@ public class GameSceneContext : MonoBehaviour
 
     private Vector3 GetRandomEdgePosition()
     {
-        float r = UnityEngine.Random.Range(-75f, 75f);
+        float r = UnityEngine.Random.Range(-70f, 70f);
 
         return UnityEngine.Random.Range(0, 4) switch
         {
-            0 => new Vector3(75f, 1f, r),
-            1 => new Vector3(-75f, 1f, r),
-            2 => new Vector3(r, 1f, 75f),
-            _ => new Vector3(r, 1f, -75f),
+            0 => new Vector3(70f, 1f, r),
+            1 => new Vector3(-70f, 1f, r),
+            2 => new Vector3(r, 1f, 70f),
+            _ => new Vector3(r, 1f, -70f),
         };
     }
 }
