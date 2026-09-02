@@ -12,6 +12,9 @@ public class TrafficPath
 public class GameSceneContext : MonoBehaviour
 {
     [SerializeField]
+    private BreadCounter _breadCounter;
+
+    [SerializeField]
     private List<TrafficPath> _paths;
 
     private List<Vector3> _spawnPositions = new()
@@ -31,8 +34,6 @@ public class GameSceneContext : MonoBehaviour
         new Vector3(-61.5999985f,1f,4.80000019f),
         new Vector3(59.2000008f,1f,-14.8000002f),
         new Vector3(-53f,1f,53.7000008f),
-
-
     };
 
     private void Start()
@@ -81,7 +82,7 @@ public class GameSceneContext : MonoBehaviour
             selectedHouse = houseList[UnityEngine.Random.Range(0, houseList.Count)];
         }
 
-        Managers.Deliver.GenerateDeliveryCard(selectedHouse);
+        Managers.Deliver.GenerateDeliveryCard(selectedHouse, _breadCounter.GetMaxBread());
     }
 
     private void SpawnTraffic()
