@@ -164,6 +164,7 @@ public class PlayerController : MonoBehaviour
                 weaponHandler.ShowThrowPath();
                 MinimapManager.Instance.HideMinimap();
             }
+
         }
         // 우클릭 해제 시 카메라 줌아웃
         else if (Input.GetMouseButtonUp(1))
@@ -237,10 +238,19 @@ public class PlayerController : MonoBehaviour
         HealthEventInvoke();
     }
     /// <summary>
+    /// 플레이어의 이동속도 전달
+    /// </summary>
+    /// <returns></returns>
+    public float GetPlayerSpeed()
+    {
+        return walkSpeed;
+    }
+
+    /// <summary>
     /// 플레이어 속도 설정
     /// </summary>
     /// <param name="newSpeed"></param>
-    public void setPlayerSpeed(float newSpeed)
+    public void SetPlayerSpeed(float newSpeed)
     {
         walkSpeed = newSpeed;
     }

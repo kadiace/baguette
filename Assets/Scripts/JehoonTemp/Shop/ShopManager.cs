@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class ShopManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private BreadCounter breadCounter;
     [Tooltip("플레이어")]
     [SerializeField] private GameObject player;
+    [Tooltip("파워업 적용 도중 이속 업그레이드 시 복귀 이동속도 수정용")]
+    [SerializeField] private PowerUpManager powerUpManager;
 
     private float curMoney;
     private int curDrink;
@@ -51,7 +54,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private int breadLevel = 1;
     [Tooltip("빵 소지 최대치 강화 가격")]
     [SerializeField] private float breadPrice = 5.00f;
-        [Tooltip("빵 소지 최대치 강화 가격 텍스트")]
+    [Tooltip("빵 소지 최대치 강화 가격 텍스트")]
     [SerializeField] private TMPro.TextMeshProUGUI breadPriceText;
     [Tooltip("현재 빵 소지 최대치 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI breadText;
@@ -63,7 +66,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private int speedLevel = 1;
     [Tooltip("이동속도 강화 가격")]
     [SerializeField] private float speedPrice = 22.50f;
-        [Tooltip("이동속도 강화 가격 텍스트")]
+    [Tooltip("이동속도 강화 가격 텍스트")]
     [SerializeField] private TMPro.TextMeshProUGUI speedPriceText;
     [Tooltip("현재 이동속도 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI speedText;
@@ -74,16 +77,12 @@ public class ShopManager : MonoBehaviour
     #region 소모품 강화 관련 변수
     [Tooltip("음료수 구매 버튼")]
     [SerializeField] private Button drinkButton;
-    [Tooltip("음료수 개수")]
 
-    [SerializeField] private int drinkEach = 0;
     [Tooltip("음료수 개수 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI drinkEachText;
     [Tooltip("버터 구매 버튼")]
     [SerializeField] private Button butterButton;
-    [Tooltip("버터 개수")]
 
-    [SerializeField] private int butterEach = 0;
     [Tooltip("버터 개수 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI butterEachText;
     #endregion
@@ -92,6 +91,10 @@ public class ShopManager : MonoBehaviour
     [Tooltip("에어컨 구매 버튼")]
     [SerializeField] private Button airConditionerButton;
     #endregion
+
+    public UnityEvent<float> InitialSpeedChanged;
+    public UnityEvent<int> onDrinkChanged;
+    public UnityEvent<int> onButterChanged;
 
     void Start()
     {
@@ -105,7 +108,7 @@ public class ShopManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     #region 값 가져오고 초기 세팅
@@ -127,8 +130,8 @@ public class ShopManager : MonoBehaviour
         SetHealthValueText();
         SetBreadValueText();
         SetSpeedValueText();
-        drinkEachText.text = drinkEach.ToString();
-        butterEachText.text = butterEach.ToString();
+        drinkEachText.text = curDrink.ToString();
+        butterEachText.text = curButter.ToString();
     }
     /// <summary>
     /// 현재 소지한 체력 텍스트 값 세팅
@@ -188,9 +191,9 @@ public class ShopManager : MonoBehaviour
     /// 조건에 맞춰 초기 버튼 활성화
     /// </summary>
     public void ButtonInitiate()
-    {   
-        Debug.Log("ButtonInitiate() 호출");
-        if(curMoney < healthPrice || healthLevel >= 11)
+    {
+        // Debug.Log("ButtonInitiate() 호출");
+        if (curMoney < healthPrice || healthLevel >= 11)
         {
             healthButton.interactable = false;
         }
@@ -199,7 +202,7 @@ public class ShopManager : MonoBehaviour
             healthButton.interactable = true;
         }
 
-        if(curMoney < breadPrice || breadLevel >= 11)
+        if (curMoney < breadPrice || breadLevel >= 11)
         {
             breadButton.interactable = false;
         }
@@ -208,7 +211,7 @@ public class ShopManager : MonoBehaviour
             breadButton.interactable = true;
         }
 
-        if(curMoney < speedPrice || speedLevel >= 6)
+        if (curMoney < speedPrice || speedLevel >= 6)
         {
             speedButton.interactable = false;
         }
@@ -217,7 +220,7 @@ public class ShopManager : MonoBehaviour
             speedButton.interactable = true;
         }
 
-        if(curMoney < drinkPrice)
+        if (curMoney < drinkPrice)
         {
             drinkButton.interactable = false;
         }
@@ -226,7 +229,7 @@ public class ShopManager : MonoBehaviour
             drinkButton.interactable = true;
         }
 
-        if(curMoney < butterPrice)
+        if (curMoney < butterPrice)
         {
             butterButton.interactable = false;
         }
@@ -235,7 +238,7 @@ public class ShopManager : MonoBehaviour
             butterButton.interactable = true;
         }
 
-        if(curMoney < airConditionerPrice)
+        if (curMoney < airConditionerPrice)
         {
             airConditionerButton.interactable = false;
         }
@@ -317,7 +320,20 @@ public class ShopManager : MonoBehaviour
         curMoney -= speedPrice;
         speedLevel += 1;
 
-        player.GetComponent<PlayerController>().setPlayerSpeed(10 * (1 + (speedLevel - 1) * 0.1f));
+
+        float newPlayerSpeed = 10 * (1 + (speedLevel - 1) * 0.1f);
+        // 파워업 여부에 따라 바로 플레이어 스피드를 설정할지, 혹은 파워업 종료 후 복귀속도를 바꿀지 결정
+        if (powerUpManager.GetIsDrinkPowerUp())
+        {
+            // 파워업이 되어 있다면 파워업 종료 후 복귀 속도를 바꾼다
+            powerUpManager.SetPlayerInitialSpeed(newPlayerSpeed);
+            Debug.Log("파워업 도중 이동속도 강화: " + newPlayerSpeed);
+        }
+        else
+        {
+            // 파워업이 안돼 있으면 바로 플레이어 이동속도를 바꾼다
+            player.GetComponent<PlayerController>().SetPlayerSpeed(newPlayerSpeed);
+        }
         speedPrice = 15 + (speedLevel - 1) * 7.5f;
 
         curMoneyText.text = "€ " + curMoney.ToString("F2");
@@ -327,8 +343,16 @@ public class ShopManager : MonoBehaviour
 
     public void SetDrinkValue()
     {
+        drinkEachText.text = supplyManager.GetDrinkCount().ToString();
+    }
+
+    public void AddDrinkValue()
+    {
         curMoney -= drinkPrice;
         supplyManager.SetDrinkCount(supplyManager.GetDrinkCount() + 1);
+        int drinkCount = supplyManager.GetDrinkCount();
+        Debug.Log("음료수 구매: " + drinkCount);
+        onDrinkChanged.Invoke(drinkCount);
         curMoneyText.text = "€ " + curMoney.ToString("F2");
         drinkEachText.text = supplyManager.GetDrinkCount().ToString();
         ButtonInitiate();
@@ -336,8 +360,15 @@ public class ShopManager : MonoBehaviour
 
     public void SetButterValue()
     {
+        butterEachText.text = supplyManager.GetButterCount().ToString();
+    }
+
+    public void AddButterValue()
+    {
         curMoney -= butterPrice;
         supplyManager.SetButterCount(supplyManager.GetButterCount() + 1);
+        int butterCount = supplyManager.GetDrinkCount();
+        onButterChanged.Invoke(butterCount);
         curMoneyText.text = "€ " + curMoney.ToString("F2");
         butterEachText.text = supplyManager.GetButterCount().ToString();
         ButtonInitiate();
