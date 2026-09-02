@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     public InputAction moveInput;
     [Tooltip("Space")]
     public InputAction jumpInput;
+    [Tooltip("상호작용 키")]
+    public InputAction interactionInput;
     [Tooltip("공격 애니메이션(웨폰 헨들러)")]
     public Animator weaponHandlerAni;
     public bool isThrowReady = false;
@@ -37,6 +39,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int currentHealth = 5;
     [Tooltip("플레이어 체력 변동 이벤트")]
     public UnityEvent<int> OnHealthChanged;
+
+    public ShopKeeper shop;
     #endregion
 
     /// <summary>
@@ -65,6 +69,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput.Enable();
         jumpInput.Enable();
+        interactionInput.Enable();
         //mouseInput.Enable();
     }
 
@@ -84,9 +89,10 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         JumpPlayer();
         AttackPlayer();
+        InteractionWithOthers();
     }
 
-    #region 플레이어 조작(이동, 공격)  *회전은 카메라에서 조절
+    #region 플레이어 조작(이동, 공격, 상호작용)  *회전은 카메라에서 조절
     /// <summary>
     /// 플레이어 이동 (Rigid 사용)
     /// </summary>
@@ -173,6 +179,23 @@ public class PlayerController : MonoBehaviour
             isThrowReady = false;
         }
     }
+
+    /// <summary>
+    /// 상호작용 함수 (F 키)
+    /// </summary>
+    void InteractionWithOthers()
+    {
+        if (interactionInput.triggered)
+        {
+            //상호작용 가능한 상태에서 키를 입력하면 상점 사용 호출
+            if (shop != null)
+                shop.ShowStore();
+        }
+    }
+
+    public void SetShopInteration(ShopKeeper shopKeeper) => shop = shopKeeper;
+
+    public void RemoveShopInteration() => shop = null;
     #endregion
 
     #region 플레이어 체력 변동 & 사망 by.Jaehoon
