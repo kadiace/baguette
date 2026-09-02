@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
                 isThrowReady = true;
                 camController.CameraAim(true);
                 weaponHandler.ShowThrowPath();
-                //MinimapManager.Instance.HideMinimap();
+                MinimapManager.Instance.HideMinimap();
             }
         }
         // 우클릭 해제 시 카메라 줌아웃
