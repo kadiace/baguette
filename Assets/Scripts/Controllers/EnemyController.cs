@@ -12,6 +12,7 @@ public class EnemyController : Poolable
     [SerializeField] float maxHP;
     [SerializeField] float curHP;
     [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float deadDelay;
 
     private Rigidbody _rb;
 
@@ -65,18 +66,26 @@ public class EnemyController : Poolable
     /// 적 피격, 최대 HP: 3
     /// </summary>
     /// <param name="damage"></param>
-    public void EnemyHit(float damage /*, Vector3 attackerPos*/)
+    public void EnemyHit(float damage, Vector3? attackerPos = null)
     {
         curHP -= damage;
         //피격 액션 넣기
-        enemyRigid.AddForce(Vector3.forward * 10.0f, ForceMode.Impulse);
-        enemyRigid.AddForce(Vector3.up * 12.0f, ForceMode.Impulse);
-
-        if (curHP <= 0)
+        if (attackerPos != null)
         {
-            //적 사망 액션(?)
-            Destroy(gameObject);
+
+            //피격 방향 계산하기
+            Vector3 knockbackDir = transform.position - attackerPos.Value; //벡터 계산
+            knockbackDir.y = 0f;        //급격 넉백 방지
+            knockbackDir.Normalize();   //정규화
+
+            //피격 방행에 따라 힘 주기
+            enemyRigid.AddForce(knockbackDir * 5.0f, ForceMode.Impulse);
+            enemyRigid.AddForce(Vector3.up * 6.0f, ForceMode.Impulse);
         }
+
+        //사망 처리 요청
+        if (curHP <= 0)
+            StartCoroutine(EnemyDeadAfterTime());
     }
 
     /// <summary>
@@ -86,7 +95,6 @@ public class EnemyController : Poolable
     {
         while (true)
         {
-            Debug.Log("플레이어 공격");
             yield return new WaitForSeconds(1f); // 1초 대기
             if (player != null && player.GetCurrentHealth() > 0)
             {
@@ -94,6 +102,13 @@ public class EnemyController : Poolable
                 Debug.Log("플레이어가 계속 적에게 피해를 입습니다. 현재 체력: " + player.GetCurrentHealth());
             }
         }
+    }
+
+
+    IEnumerator EnemyDeadAfterTime()
+    {
+        yield return new WaitForSeconds(deadDelay);
+        Destroy(gameObject);
     }
 
     #endregion

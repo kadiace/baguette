@@ -86,11 +86,20 @@ public class Baguette : MonoBehaviour
             {
                 return;
             }
-            //*삼항 연산: (조건) ? (true일때 전달할 값) : (false일때 전달할 값)
-            curDamage = isThrow ? throwDamage : meleeDamage;
-            //몬스터 접근 후 데미지 주기
+
             EnemyController enemy = collision.GetComponent<EnemyController>();
-            enemy.EnemyHit(curDamage);
+            if (isThrow)
+            {
+                curDamage = throwDamage;
+                //몬스터 접근 후 데미지 주기
+                //빵을 던져서 맞출 경우, 빵의 position 값을 전달
+                enemy.EnemyHit(curDamage, transform.position);
+            }
+            else
+            {
+                curDamage = meleeDamage;
+                enemy.EnemyHit(curDamage, transform.root.position);
+            }
         }
         /*
         else if (collision.gameObject.CompareTag("Ground") && isThrow)
