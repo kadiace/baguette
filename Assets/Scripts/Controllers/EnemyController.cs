@@ -42,7 +42,7 @@ public class EnemyController : Poolable
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log($"충돌 감지: {other.gameObject}");
-        if (other.gameObject.name == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("플레이어 탐지");
             player.TakeDamage(1);
@@ -54,7 +54,7 @@ public class EnemyController : Poolable
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("플레이어가 적과 접촉을 끊었습니다.");
             // StopCoroutine(StillTriggeredCoroutine());
