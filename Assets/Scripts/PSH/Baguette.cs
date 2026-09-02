@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEditor.EditorTools;
+using Unity.VisualScripting;
 
 public class Baguette : MonoBehaviour
 {
@@ -11,7 +13,15 @@ public class Baguette : MonoBehaviour
     [Tooltip("빵 설치용 빵")]
     [SerializeField] GameObject breadForStuckRigid;
     [SerializeField] Transform breadForStuckVisual;
-    [Header("빵 상태")]
+    [Header("빵 속성")]
+    [Tooltip("근접 공격 시 할당할 데미지")]
+    [SerializeField] float meleeDamage = 1f;
+    [Tooltip("투척 공격 시 할당할 데미지")]
+    [SerializeField] float throwDamage = 3f;
+    [Tooltip("현재 할당된 데미지 (기본: 근접 공격)")]
+    [SerializeField] float curDamage;
+    [Header("현재 빵 상태 (공격, 투척, 부착)")]
+    bool isAttack;
     bool isThrow = false;
     bool isStuck = false;
     [Tooltip("공격 상태 (휘두르기 || 던지기)")]
@@ -21,7 +31,7 @@ public class Baguette : MonoBehaviour
 
     void Awake()
     {
-        //Time.timeScale = 0.3f;    //테스트용:
+        isAttack = false;
         breadRigid.isKinematic = true;
         breadForStuckRigid.SetActive(false);
     }
@@ -37,19 +47,30 @@ public class Baguette : MonoBehaviour
             Debug.Log("빵이 벽에 고정됨");
     }
 
+    #region 공격 관련 (근접 공격, 던지기)
+    /// <summary>
+    /// 공격 상태 ON (근접용)
+    /// </summary>
+    public void StartSwingBaguette() => isAttack = true;
+    /// <summary>
+    /// 공격 상태 OFF (근접용)
+    /// </summary>
+    public void EndSwingBaguette() => isAttack = false;
     /// <summary>
     /// 빵 날리기 (독립, 회전, 자폭 시작)
     /// </summary>
     public void ThrowBaguette()
     {
+        curDamage = throwDamage;
         isThrow = true;
-        //독립시키기
-        transform.SetParent(null);
+        isAttack = true;
+        transform.SetParent(null); //독립시키기
         //회전 애니메이션 실행
         breadAni.Play("Rotate");
         //일정 시간 비행 후 자동 삭제
         StartCoroutine(DestroyAfterTime());
     }
+    #endregion
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -60,7 +81,16 @@ public class Baguette : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
-            //TODO: 적에게 피해주기
+            //플레이어와의 접촉에 의한 공격 방지 장치
+            if (!isAttack)
+            {
+                return;
+            }
+            //*삼항 연산: (조건) ? (true일때 전달할 값) : (false일때 전달할 값)
+            curDamage = isThrow ? throwDamage : meleeDamage;
+            //몬스터 접근 후 데미지 주기
+            EnemyController enemy = collision.GetComponent<EnemyController>();
+            enemy.EnemyHit(curDamage);
         }
         /*
         else if (collision.gameObject.CompareTag("Ground") && isThrow)

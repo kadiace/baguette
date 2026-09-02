@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     #region 플레이어 조작(이동, 공격)  *회전은 카메라에서 조절
     /// <summary>
-    /// 플레이어 이동
+    /// 플레이어 이동 (Rigid 사용)
     /// </summary>
     void MovePlayer()
     {
