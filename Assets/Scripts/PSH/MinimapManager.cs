@@ -9,10 +9,12 @@ public class MinimapManager : MonoBehaviour
     [SerializeField] private GameObject minimapUI;          // 미니맵 전체 루트 오브젝트 (켜고 끄기용)
     [SerializeField] private RectTransform minimapRect;     // 렌더 텍스처를 보여주는 RawImage의 RectTransform
     [SerializeField] private RectTransform playerMark;
+    [SerializeField] private RectTransform playerSight;
 
     [Header("플레이어 및 카메라")]
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Camera minimapCamera;
+    [SerializeField] private Camera mainCamera;
     private void Awake()
     {
         // 싱글톤 중복 방지 및 인스턴스 초기화
@@ -43,6 +45,19 @@ public class MinimapManager : MonoBehaviour
         );
 
         playerMark.anchoredPosition = localPos;
+
+        // Apply main camera rotation
+        float yRotation = mainCamera.transform.eulerAngles.y;
+        float rotation = -yRotation + 45;
+        Vector3 targetEuler = playerSight.transform.eulerAngles;
+        targetEuler.z = rotation;
+
+        playerSight.transform.eulerAngles = targetEuler;
+
+        float width = playerSight.rect.width;
+        playerSight.anchoredPosition = localPos +
+            new Vector2(Mathf.Cos((90 - yRotation) * Mathf.Deg2Rad), Mathf.Sin((90 - yRotation) * Mathf.Deg2Rad))
+            * width / Mathf.Sqrt(2);
     }
 
     /// <summary>
