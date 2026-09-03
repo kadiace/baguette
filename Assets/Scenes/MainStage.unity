@@ -6747,26 +6747,6 @@ PrefabInstance:
       propertyPath: shopOnOFF
       value: 
       objectReference: {fileID: 1201289353}
-    - target: {fileID: 1989627934175293808, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
-      propertyPath: m_text
-      value: Press "F"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2079597399424321158, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: ad3f709940907e04ebf2bde8bb210045, type: 2}
-    - target: {fileID: 4018753454392183233, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4018753454392183233, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4018753454392183233, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.125
-      objectReference: {fileID: 0}
     - target: {fileID: 4018753454392183233, guid: 06a7872c01341564c9cc2e2b6c8cc4cb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.3125

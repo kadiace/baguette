@@ -69,7 +69,7 @@ public class GameSceneContext : MonoBehaviour
     {
         if (Managers.Pool.GetStackSize("Car") >= 10)
             return;
-        GameObject go = Managers.Resource.Instantiate("Car");
+        GameObject go = Managers.Resource.Instantiate("NPCs/Car");
         CarController car = go.GetorAddComponent<CarController>();
         car.Path = _paths[UnityEngine.Random.Range(0, _paths.Count)].Waypoints;
     }
@@ -79,7 +79,7 @@ public class GameSceneContext : MonoBehaviour
         int upgradeLevel = (_breadCounter.GetMaxBread() - 5) / 2;
         if (Managers.Pool.GetStackSize("Pickpocket") >= 6 + 1 * upgradeLevel)
             return;
-        GameObject go = Managers.Resource.Instantiate("Pickpocket");
+        GameObject go = Managers.Resource.Instantiate("NPCs/Pickpocket");
         EnemyController pickPocket = go.GetorAddComponent<EnemyController>();
         go.transform.position = GetRandomEdgePosition();
     }
