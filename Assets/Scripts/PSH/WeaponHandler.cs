@@ -245,7 +245,6 @@ public class WeaponHandler : MonoBehaviour
         camController.CameraAim(false);
         yield return null;
         RemoveThrowPath();
-        MinimapManager.Instance.ShowMinimap();
     }
 
     IEnumerator CheckAimingTime()

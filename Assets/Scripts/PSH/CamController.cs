@@ -42,6 +42,10 @@ public class CamController : MonoBehaviour
     public void CameraAim(bool isAim)
     {
         isZoom = isAim;
+        if (isAim)
+            MinimapManager.Instance.HideMinimap();
+        else
+            MinimapManager.Instance.ShowMinimap();
     }
 
     void LateUpdate()

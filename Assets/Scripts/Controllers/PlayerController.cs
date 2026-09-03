@@ -53,12 +53,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Reset()
     {
-
-    }
-
-
-    private void Awake()
-    {
         pRigid = GetComponent<Rigidbody>();
     }
 
@@ -75,7 +69,6 @@ public class PlayerController : MonoBehaviour
         moveInput.Enable();
         jumpInput.Enable();
         interactionInput.Enable();
-        //mouseInput.Enable();
     }
 
     void Update()
@@ -178,7 +171,7 @@ public class PlayerController : MonoBehaviour
                 camController.CameraAim(true);
                 weaponHandler.ShowThrowPath();
                 weaponHandler.StartAimingTime();
-                MinimapManager.Instance.HideMinimap();
+
             }
 
         }
@@ -215,7 +208,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (shop != null)
                 shop.ShowStore();
-            else
+            else if (bread != null)
             {
                 gameObject.GetComponentInChildren<OverHeadIconHandler>().StartShowBread();
                 weaponHandler.SupplyBread();
