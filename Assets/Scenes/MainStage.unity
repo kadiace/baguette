@@ -5967,7 +5967,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fca4cb785f1144ba85300766eb927d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::rlacjfghks95_GameSceneContext
-  _breadCounter: {fileID: 0}
   _paths:
   - Waypoints:
     - {x: 52.4, y: 1.2, z: -75}
@@ -16572,8 +16571,6 @@ MonoBehaviour:
   weaponHandlerAni: {fileID: 921402737}
   BreadPrefs: {fileID: 329643573421902685, guid: 0c8de91f24b68ee4796e1fc5906cba8c, type: 3}
   onHandBread: {fileID: 0}
-  MaxBread: 5
-  curBread: 0
   fireAngleTransform: {fileID: 1303219960}
   throwPathRaycast: {fileID: 1843347792}
   aimingKeepTime: 0.7
@@ -16582,9 +16579,6 @@ MonoBehaviour:
   isCooldown: 0
   reloadTime: 1
   breadTMP: {fileID: 1531067117}
-  OnBreadCountChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &926989751 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6620680352977540986, guid: e68ae4cd6a5488444b42c0c641986c4d, type: 3}
@@ -31524,7 +31518,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopManager
   supplyManager: {fileID: 1071628255}
   healthCounter: {fileID: 0}
-  breadCounter: {fileID: 0}
   player: {fileID: 349606018}
   wHandler: {fileID: 921402739}
   drinkPrice: 2
@@ -41184,8 +41177,8 @@ SceneRoots:
   - {fileID: 2050517547}
   - {fileID: 1743687734}
   - {fileID: 179700205}
-  - {fileID: 2114623206}
   - {fileID: 315111950}
+  - {fileID: 2114623206}
   - {fileID: 780308384}
   - {fileID: 349606024}
   - {fileID: 1146637721}
