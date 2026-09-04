@@ -16,12 +16,12 @@ public class UI_DeliveryCard : UI_Base
         Time
     }
 
-    private Define.HouseColor _color;
+    private HouseColor _color;
     private int _reward;
     private int _quantity;
     private float _time;
 
-    public Define.HouseColor Color { get { return _color; } }
+    public HouseColor Color { get { return _color; } }
     public int Reward { get { return _reward; } }
     public int Quantity { get { return _quantity; } }
 
@@ -49,7 +49,7 @@ public class UI_DeliveryCard : UI_Base
     }
 
     public void SetCard(
-        Define.HouseColor color,
+        HouseColor color,
         float time,
         int quantity,
         int reward
@@ -62,7 +62,7 @@ public class UI_DeliveryCard : UI_Base
 
         GetText((int)Texts.Reward).GetComponent<TextMeshProUGUI>().text = $"{_reward} €";
         GetText((int)Texts.Quantity).GetComponent<TextMeshProUGUI>().text = $"Baguette × {_quantity}";
-        GetImage((int)Images.House).GetComponent<Image>().color = Define.HouseColors.Colors[_color];
+        GetImage((int)Images.House).GetComponent<Image>().color = HouseColors.Colors[_color];
         SetTime();
     }
 

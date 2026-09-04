@@ -8,8 +8,6 @@ public class OnOffManager : MonoBehaviour
     [SerializeField] GameObject ShopPanel;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    [Tooltip("파워업 소모품 관리 스크립트")]
-    [SerializeField] PowerUpManager powerUpManager;
     void Start()
     {
 
@@ -37,8 +35,6 @@ public class OnOffManager : MonoBehaviour
         }
         else
         {
-            powerUpManager.SetDrinkValue();
-            powerUpManager.SetButterValue();
             ShopPanel.SetActive(false);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;

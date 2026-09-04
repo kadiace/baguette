@@ -11,10 +11,6 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("무기 프리팹(바게트 빵)")]
     public Baguette BreadPrefs;
     public Baguette onHandBread;
-    [Tooltip("최대 빵 보유 갯수")]
-    [SerializeField] private int MaxBread = 5;
-    [Tooltip("현재 빵 보유 횟수, 자동으로 초기화")]
-    [SerializeField] public int curBread;
     [Header("원거리 공격 정보")]
     [Tooltip("발사 각도 측정용")]
     [SerializeField] private Transform fireAngleTransform;
@@ -34,13 +30,9 @@ public class WeaponHandler : MonoBehaviour
     [Header("위치 확인용 빵(테스트 후 제거 예정)")]
     public GameObject breadTMP;
 
-    // UI에 전달할 이벤트
-    [Tooltip("빵 개수 변경 이벤트")]
-    public UnityEvent<int> OnBreadCountChanged = new UnityEvent<int>();
-
     void Awake()
     {
-        SetBread(MaxBread);
+        SetBread();
     }
 
     //시작 시점에 빵 갯수 초기화  
@@ -48,8 +40,6 @@ public class WeaponHandler : MonoBehaviour
     {
         breadTMP.SetActive(false);
         CreateBread(1);
-        //UI 표시 빵 갯수 초기화
-        CountEventInvoke();
     }
 
     #region 빵 사용 관련
@@ -59,8 +49,7 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void SupplyBread()
     {
-        curBread = MaxBread;
-        CountEventInvoke();
+        Managers.Player.PlayerStat.Bread = Managers.Player.PlayerStat.MaxBread;
     }
 
     /// <summary>
@@ -69,8 +58,7 @@ public class WeaponHandler : MonoBehaviour
     /// <param name="amount">증가량</param>
     public void UpgradeMaxBread(int amount)
     {
-        MaxBread += amount;
-        CountEventInvoke();
+        Managers.Player.PlayerStat.MaxBread += amount;
     }
 
     /// <summary>
@@ -79,15 +67,13 @@ public class WeaponHandler : MonoBehaviour
     /// <param name="type"></param>
     public void CreateBread(int type)
     {
-        if (curBread <= 0)
+        if (Managers.Player.PlayerStat.Bread <= 0)
         {
             return;
         }
 
         if (type == 0)
-            curBread--;
-
-        CountEventInvoke();
+            Managers.Player.PlayerStat.Bread--;
 
         //빵 프리팹 생성
         onHandBread = Instantiate(BreadPrefs, transform);
@@ -97,12 +83,10 @@ public class WeaponHandler : MonoBehaviour
         onHandBread.transform.localScale = Vector3.one;
     }
 
-    public void SetBread(int count)
+    public void SetBread()
     {
-        curBread = count;
-        if (curBread == 0)
+        if (Managers.Player.PlayerStat.Bread == 0)
             camController.CameraAim(false);
-        CountEventInvoke();
     }
 
     #endregion
@@ -135,7 +119,7 @@ public class WeaponHandler : MonoBehaviour
             RemoveThrowPath();
             return;
         }
-        else if (curBread < 1)
+        else if (Managers.Player.PlayerStat.Bread < 1)
         {
             //던지기 직전에 빵이 없으면 줌 해제
             camController.CameraAim(false);
@@ -145,7 +129,6 @@ public class WeaponHandler : MonoBehaviour
         else
         {
             isCooldown = true;
-            CountEventInvoke();
             //발사 각도 전달하기
             onHandBread.SetFireAngle(fireAngleTransform.forward);
             //빵 던지기
@@ -181,32 +164,6 @@ public class WeaponHandler : MonoBehaviour
         throwPathRaycast.HideThrowPath();
     }
 
-    #endregion
-
-    #region 빵 개수 관련 by.Jaehoon
-    /// <summary>
-    /// 현재 빵 개수를 반환합니다.
-    /// </summary>
-    /// <returns>현재 빵 개수</returns>
-    public int GetCurrentBread()
-    {
-        return curBread;
-    }
-    /// <summary>
-    /// 최대 빵 개수를 반환합니다.
-    /// </summary>
-    /// <returns>최대 빵 개수</returns>
-    public int GetMaxBread()
-    {
-        return MaxBread;
-    }
-    /// <summary>
-    /// 현재 빵 개수가 변경되었음을 알리는 이벤트를 Invoke합니다.
-    /// </summary>
-    private void CountEventInvoke()
-    {
-        OnBreadCountChanged.Invoke(curBread);
-    }
     #endregion
 
     public void StartAimingTime()

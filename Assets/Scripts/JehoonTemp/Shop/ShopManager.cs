@@ -9,14 +9,10 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private SupplyManager supplyManager;
     [Tooltip("체력 관리 HealthCounter")]
     [SerializeField] private HealthCounter healthCounter;
-    [Tooltip("빵 개수 관리 BreadCounter")]
-    [SerializeField] private BreadCounter breadCounter;
     [Tooltip("플레이어")]
     [SerializeField] private GameObject player;
     [Tooltip("플레이어 웨폰 헨들러")]
     [SerializeField] private WeaponHandler wHandler;
-    [Tooltip("파워업 적용 도중 이속 업그레이드 시 복귀 이동속도 수정용")]
-    [SerializeField] private PowerUpManager powerUpManager;
 
     private int curDrink;
     private int curButter;
@@ -154,8 +150,8 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     public void SetBreadValueText()
     {
-        breadText.text = breadCounter.GetMaxBread().ToString();
-        breadUpgradeText.text = (breadCounter.GetMaxBread() + 2).ToString();
+        breadText.text = Managers.Player.PlayerStat.MaxBread.ToString();
+        breadUpgradeText.text = (Managers.Player.PlayerStat.MaxBread + 2).ToString();
         breadPriceText.text = "€ " + breadPrice.ToString("F2");
 
         if (breadLevel >= 11)
@@ -287,8 +283,8 @@ public class ShopManager : MonoBehaviour
         {
             SetBreadValueText();
             ButtonInitiate();
-            Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
-            Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
+            Debug.Log("Max Bread: " + Managers.Player.PlayerStat.MaxBread);
+            Debug.Log("Current Bread: " + Managers.Player.PlayerStat.Bread);
             return;
         }
         //플레이어 빵 최대 갯수 증가
@@ -298,51 +294,15 @@ public class ShopManager : MonoBehaviour
         Managers.Money.Money -= breadPrice;
         breadLevel += 1;
 
-        breadCounter.SetMaxBread(5 + (breadLevel - 1) * 2);
+        Managers.Player.PlayerStat.MaxBread = 5 + (breadLevel - 1) * 2;
         breadPrice = 5 + (breadLevel - 1) * 2.5f;
 
         curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
         SetBreadValueText();
         ButtonInitiate();
 
-        Debug.Log("Max Bread: " + breadCounter.GetMaxBread());
-        Debug.Log("Current Bread: " + breadCounter.GetCurrentBread());
-    }
-    /// <summary>
-    /// 이동속도 레벨에 따른 능력치 및 가격 세팅
-    /// </summary>
-    public void SetSpeedValue()
-    {
-        // 이동속도는 레벨별로 1 + 레벨 * 0.1, 최대 5레벨까지(최대치 1.5). 업그레이드 가격은 레벨별로 15 + 레벨 * 7.5
-        if (speedLevel >= 6)
-        {
-            SetSpeedValueText();
-            ButtonInitiate();
-            return;
-        }
-        Managers.Money.Money -= speedPrice;
-        speedLevel += 1;
-
-
-        float newPlayerSpeed = 10 * (1 + (speedLevel - 1) * 0.1f);
-        // 파워업 여부에 따라 바로 플레이어 스피드를 설정할지, 혹은 파워업 종료 후 복귀속도를 바꿀지 결정
-        Debug.Log("IsDrinkPowerUp: " + powerUpManager.GetIsDrinkPowerUp());
-        if (powerUpManager.GetIsDrinkPowerUp())
-        {
-            // 파워업이 되어 있다면 파워업 종료 후 복귀 속도를 바꾼다
-            powerUpManager.SetPlayerInitialSpeed(newPlayerSpeed);
-        }
-        else
-        {
-            // 파워업이 안돼 있으면 바로 플레이어 이동속도를 바꾼다
-            player.GetComponent<PlayerController>().SetPlayerSpeed(newPlayerSpeed);
-            powerUpManager.SetPlayerInitialSpeed(newPlayerSpeed);
-        }
-        speedPrice = 15 + (speedLevel - 1) * 7.5f;
-
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
-        SetSpeedValueText();
-        ButtonInitiate();
+        Debug.Log("Max Bread: " + Managers.Player.PlayerStat.MaxBread);
+        Debug.Log("Current Bread: " + Managers.Player.PlayerStat.Bread);
     }
 
     public void SetDrinkValue()

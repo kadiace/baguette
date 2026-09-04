@@ -71,6 +71,11 @@ public class PlayerController : MonoBehaviour
         interactionInput.Enable();
     }
 
+    void Awake()
+    {
+        Managers.Player.PlayerController = this;
+    }
+
     void Update()
     {
         CheckKeyboardInput();
@@ -165,7 +170,7 @@ public class PlayerController : MonoBehaviour
             rightClickTime += Time.deltaTime;
             if (rightClickTime >= aimTime)
             {
-                if (weaponHandler.curBread < 1)
+                if (Managers.Player.PlayerStat.Bread < 1)
                     return;
                 isThrowReady = true;
                 camController.CameraAim(true);

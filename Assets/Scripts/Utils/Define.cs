@@ -1,32 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Define
+public enum Scene
 {
-    public enum Scene
-    {
-        Unknown,
-        MainStage,
-    }
+    Unknown,
+    MainStage,
+}
 
-    public enum HouseColor
-    {
-        Unknown,
-        Red,
-        Green,
-        Yellow,
-        Pink,
-        Blue,
-        Orange,
-        Purple,
-        Cyan,
-        Brown,
+public enum HouseColor
+{
+    Unknown,
+    Red,
+    Green,
+    Yellow,
+    Pink,
+    Blue,
+    Orange,
+    Purple,
+    Cyan,
+    Brown,
+}
 
-    }
-
-    public static class HouseColors
-    {
-        public static readonly Dictionary<HouseColor, Color32> Colors = new()
+public static class HouseColors
+{
+    public static readonly Dictionary<HouseColor, Color32> Colors = new()
         {
             { HouseColor.Red,    new Color32(220, 60, 60, 255) },
             { HouseColor.Green,  new Color32(70, 180, 90, 255) },
@@ -40,5 +37,17 @@ public class Define
 
             { HouseColor.Brown,  new Color32(140, 95, 65, 255) },
         };
-    }
+}
+
+public enum Ability
+{
+    Unknown,
+    Overbooked,
+    RemoteDelivery,
+    QuickThrow,
+    Vigilante,
+    Breadstorm,
+    TripleShot,
+    Carjack,
+    GodamCity,
 }

@@ -9,11 +9,8 @@ public class TrafficPath
     public List<Vector3> Waypoints;
 }
 
-public class GameSceneContext : MonoBehaviour
+public class GameSceneContext : BaseScene
 {
-    [SerializeField]
-    private BreadCounter _breadCounter;
-
     [SerializeField]
     private List<TrafficPath> _paths;
 
@@ -26,6 +23,8 @@ public class GameSceneContext : MonoBehaviour
         StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
         StartCoroutine(RepeatAction(5f, SpawnTraffic));
         StartCoroutine(RepeatAction(2f, SpawnPickPocket));
+
+        Managers.UI.CreateUI<UI_InGame>(null, "Scenes");
     }
 
     private IEnumerator RepeatAction(float period, Action function)
@@ -62,7 +61,7 @@ public class GameSceneContext : MonoBehaviour
             selectedHouse = houseList[UnityEngine.Random.Range(0, houseList.Count)];
         }
 
-        Managers.Deliver.GenerateDeliveryCard(selectedHouse, _breadCounter.GetMaxBread());
+        Managers.Deliver.GenerateDeliveryCard(selectedHouse, Managers.Player.PlayerStat.MaxBread);
     }
 
     private void SpawnTraffic()
@@ -76,7 +75,7 @@ public class GameSceneContext : MonoBehaviour
 
     private void SpawnPickPocket()
     {
-        int upgradeLevel = (_breadCounter.GetMaxBread() - 5) / 2;
+        int upgradeLevel = (Managers.Player.PlayerStat.MaxBread - 5) / 2;
         if (Managers.Pool.GetStackSize("Pickpocket") >= 6 + 1 * upgradeLevel)
             return;
         GameObject go = Managers.Resource.Instantiate("NPCs/Pickpocket");
@@ -95,5 +94,10 @@ public class GameSceneContext : MonoBehaviour
             2 => new Vector3(r, 1f, 70f),
             _ => new Vector3(r, 1f, -70f),
         };
+    }
+
+    public override void Clear()
+    {
+
     }
 }

@@ -17,6 +17,7 @@ public class DeliverManager
     private int _maxLength = 3;
     private List<DeliveryPair> _deliveries = new();
 
+    public int MaxLength { get { return _maxLength; } set { _maxLength = value; } }
     public List<DeliveryPair> Deliveries { get { return _deliveries; } }
 
     public void Init()
@@ -35,14 +36,14 @@ public class DeliverManager
         // Card
         UI_DeliveryCard deliveryCard = Managers.UI.CreateUI<UI_DeliveryCard>(_deliveriesBackground.transform, "Components");
 
-        Define.HouseColor color = (Define.HouseColor)UnityEngine.Random.Range(1,
-            Enum.GetValues(typeof(Define.HouseColor)).Length);
+        HouseColor color = (HouseColor)UnityEngine.Random.Range(1,
+            Enum.GetValues(typeof(HouseColor)).Length);
 
         while (_deliveries.Select(x => x.Card)
             .ToList().Exists(card => card.Color == color))
         {
-            color = (Define.HouseColor)UnityEngine.Random.Range(1,
-                Enum.GetValues(typeof(Define.HouseColor)).Length);
+            color = (HouseColor)UnityEngine.Random.Range(1,
+                Enum.GetValues(typeof(HouseColor)).Length);
         }
 
         // Pick quantity
@@ -65,7 +66,7 @@ public class DeliverManager
         Color originHouseColor = renderers[0].material.color;
         foreach (Renderer renderer in renderers)
         {
-            renderer.material.color = Define.HouseColors.Colors[deliveryCard.Color];
+            renderer.material.color = HouseColors.Colors[deliveryCard.Color];
         }
 
         GameObject trigger = selectedVillager.Find("Trigger").gameObject;
@@ -89,12 +90,11 @@ public class DeliverManager
     {
         // Reduce bread
         WeaponHandler weaponHandler = player.weaponHandler;
-        int curBread = weaponHandler.curBread;
         DeliveryPair pair = _deliveries.Find(delivery => delivery.Villager == villager);
         UI_DeliveryCard deliveryCard = pair.Card;
         Color originHouseColor = pair.OriginHouseColor;
 
-        if (curBread < deliveryCard.Quantity)
+        if (Managers.Player.PlayerStat.Bread < deliveryCard.Quantity)
             return;
 
         OverHeadIconHandler overHeadIconHandler = player.GetComponentInChildren<OverHeadIconHandler>();
@@ -103,7 +103,7 @@ public class DeliverManager
             overHeadIconHandler.StartShowEuro();
         }
 
-        weaponHandler.SetBread(curBread - deliveryCard.Quantity);
+        Managers.Player.PlayerStat.Bread -= deliveryCard.Quantity;
 
         // Increase Health
         player.IncreaseHealth();
@@ -154,7 +154,7 @@ public class DeliverManager
     private void RefreshDeliveriesLayout()
     {
         RectTransform container = _deliveriesBackground.GetComponent<RectTransform>();
-        container.sizeDelta = new Vector2(container.sizeDelta.x, 60f + (80f * _deliveries.Count));
+        container.sizeDelta = new Vector2(container.sizeDelta.x, 60f + (60f * _deliveries.Count));
         for (int i = 0; i < _deliveries.Count; i++)
         {
             RectTransform rect = _deliveries[i].Card.GetComponent<RectTransform>();
@@ -173,13 +173,13 @@ public class DeliverManager
             rect.offsetMin = new Vector2(10f, rect.offsetMin.y);
             rect.offsetMax = new Vector2(-10f, rect.offsetMax.y);
 
-            // Height 80
-            rect.sizeDelta = new Vector2(rect.sizeDelta.x, 80f);
+            // Height 60
+            rect.sizeDelta = new Vector2(rect.sizeDelta.x, 60f);
 
             // Pos Y
             rect.anchoredPosition = new Vector2(
                 rect.anchoredPosition.x,
-                -60f - (80f * i)
+                -60f - (60f * i)
             );
         }
     }

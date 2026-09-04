@@ -64,4 +64,9 @@ public abstract class UI_Base : MonoBehaviour
     {
         return Get<Image>(idx);
     }
+
+    protected Slider GetSlider(int idx)
+    {
+        return Get<Slider>(idx);
+    }
 }

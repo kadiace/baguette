@@ -7,7 +7,7 @@ public class SceneManagerEx
     {
         get { return Object.FindAnyObjectByType<BaseScene>(); }
     }
-    public void LoadScene(Define.Scene name)
+    public void LoadScene(Scene name)
     {
         Managers.Clear();
         SceneManager.LoadScene(Util.GetEnumName(name));
