@@ -24,7 +24,10 @@ public class GameSceneContext : BaseScene
         StartCoroutine(RepeatAction(5f, SpawnTraffic));
         StartCoroutine(RepeatAction(2f, SpawnPickPocket));
 
-        Managers.UI.CreateUI<UI_InGame>(null, "Scenes");
+        Managers.Player.UI_InGame = Managers.UI.CreateUI<UI_InGame>(null, "Scenes");
+        UI_Abilities uI_Abilities = Managers.UI.CreateUI<UI_Abilities>(null, "Scenes");
+        Managers.Player.UI_Abilities = uI_Abilities;
+        Managers.Player.EnableAbilities();
     }
 
     private IEnumerator RepeatAction(float period, Action function)

@@ -66,7 +66,7 @@ public class DeliverManager
         Color originHouseColor = renderers[0].material.color;
         foreach (Renderer renderer in renderers)
         {
-            renderer.material.color = HouseColors.Colors[deliveryCard.Color];
+            renderer.material.color = ColorCatalog.Info[deliveryCard.Color];
         }
 
         GameObject trigger = selectedVillager.Find("Trigger").gameObject;

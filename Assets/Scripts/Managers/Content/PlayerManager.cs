@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +22,11 @@ public class PlayerManager
 {
     private PlayerController _playerController;
     private PlayerStat _playerStat;
+
+    private UI_InGame _uI_InGame;
+    private UI_Abilities _uI_Abilities;
+
+    private Ability?[] _abilityCandidates;
     private Dictionary<int, int> _expTable = new()
     {
         {1, 10},
@@ -31,6 +38,9 @@ public class PlayerManager
 
     public PlayerController PlayerController { get { return _playerController; } set { _playerController = value; } }
     public PlayerStat PlayerStat { get { return _playerStat; } set { _playerStat = value; } }
+    public UI_InGame UI_InGame { get { return _uI_InGame; } set { _uI_InGame = value; } }
+    public UI_Abilities UI_Abilities { get { return _uI_Abilities; } set { _uI_Abilities = value; } }
+    public Ability?[] AbilityCandidates { get { return _abilityCandidates; } set { _abilityCandidates = value; } }
 
     public void Init()
     {
@@ -48,6 +58,9 @@ public class PlayerManager
             ButterAmount = 5,
             Abilities = new()
         };
+        _abilityCandidates = new Ability?[6];
+        GetRandomAbilities(new List<Ability>() { Ability.Vigilante });
+        _abilityCandidates[UnityEngine.Random.Range(0, _abilityCandidates.Length)] = Ability.Vigilante;
     }
 
     public int GetMaxExp()
@@ -74,7 +87,7 @@ public class PlayerManager
         if (levelUp)
         {
             // Turn on ability select window by level with increasedLevel
-
+            EnableAbilities();
         }
     }
 
@@ -109,5 +122,46 @@ public class PlayerManager
     public void TurnOffButterBuff()
     {
         _playerStat.UseButter = false;
+    }
+
+    public void EnableAbilities()
+    {
+        UI_Abilities.gameObject.SetActive(true);
+        for (int i = 0; i < 3; i++)
+            UI_Abilities.UI_AbilityCards[i].SetCard(i);
+
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void DisableAbilities()
+    {
+        UI_Abilities.gameObject.SetActive(false);
+        GetRandomAbilities(_playerStat.Abilities);
+
+        Time.timeScale = 1f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void GetRandomAbilities(List<Ability> excludedAbilities)
+    {
+        List<Ability> pool = ((Ability[])Enum.GetValues(typeof(Ability)))
+            .Where(ability => ability != Ability.Unknown &&
+                !excludedAbilities.Contains(ability)).ToList();
+
+        for (int i = pool.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            (pool[i], pool[j]) = (pool[j], pool[i]);
+        }
+
+        Array.Clear(_abilityCandidates, 0, _abilityCandidates.Length);
+
+        int count = Mathf.Min(_abilityCandidates.Length, pool.Count);
+
+        for (int i = 0; i < count; i++)
+            _abilityCandidates[i] = pool[i];
     }
 }

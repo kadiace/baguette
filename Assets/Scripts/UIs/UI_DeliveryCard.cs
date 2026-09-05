@@ -62,7 +62,7 @@ public class UI_DeliveryCard : UI_Base
 
         GetText((int)Texts.Reward).GetComponent<TextMeshProUGUI>().text = $"{_reward} €";
         GetText((int)Texts.Quantity).GetComponent<TextMeshProUGUI>().text = $"Baguette × {_quantity}";
-        GetImage((int)Images.House).GetComponent<Image>().color = HouseColors.Colors[_color];
+        GetImage((int)Images.House).GetComponent<Image>().color = ColorCatalog.Info[_color];
         SetTime();
     }
 

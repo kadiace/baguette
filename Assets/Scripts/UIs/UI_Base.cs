@@ -69,4 +69,25 @@ public abstract class UI_Base : MonoBehaviour
     {
         return Get<Slider>(idx);
     }
+
+    public static void BindEvent(
+    GameObject go,
+    Action<PointerEventData> action,
+    UIEvent type = UIEvent.Click)
+    {
+        UI_EventHandler evt = go.GetorAddComponent<UI_EventHandler>();
+
+        switch (type)
+        {
+            case UIEvent.Click:
+                evt.OnClickHandler -= action;
+                evt.OnClickHandler += action;
+                break;
+
+            case UIEvent.Drag:
+                evt.OnDragHandler -= action;
+                evt.OnDragHandler += action;
+                break;
+        }
+    }
 }
