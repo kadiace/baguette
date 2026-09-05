@@ -90,7 +90,7 @@ public class CarController : Poolable
         else if (other.CompareTag("Enemy"))
         {
             EnemyController enemy = other.GetComponent<EnemyController>();
-            enemy.EnemyHit(3);
+            enemy.EnemyHit(3, EnemyHitCause.Car);
         }
         //플레이어 피격
 

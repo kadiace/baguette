@@ -62,7 +62,7 @@ public class EnemyController : Poolable
     /// 적 피격, 최대 HP: 3
     /// </summary>
     /// <param name="damage"></param>
-    public void EnemyHit(float damage, Vector3? attackerPos = null)
+    public void EnemyHit(float damage, EnemyHitCause enemyHitCause, Vector3? attackerPos = null)
     {
         curHP -= damage;
         //피격 액션 넣기
@@ -81,7 +81,11 @@ public class EnemyController : Poolable
 
         //사망 처리 요청
         if (curHP <= 0)
+        {
+            if (Managers.Player.PlayerStat.Abilities.Contains(Ability.Vigilante) && enemyHitCause == EnemyHitCause.Player)
+                Managers.Money.Money += 25;
             StartCoroutine(EnemyDeadAfterTime());
+        }
     }
 
     /// <summary>

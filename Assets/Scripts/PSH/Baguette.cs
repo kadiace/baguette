@@ -59,11 +59,8 @@ public class Baguette : MonoBehaviour
     /// </summary>
     public void ThrowBaguette()
     {
-        // Change CapsuleCollider
-        CapsuleCollider capsule = gameObject.GetorAddComponent<CapsuleCollider>();
-        capsule.height = 1.15f;
-        capsule.direction = 1;
-        capsule.center = Vector3.zero;
+        // Destroy CapsuleCollider
+        Destroy(gameObject.GetComponent<CapsuleCollider>());
 
         SphereCollider sphere = gameObject.GetorAddComponent<SphereCollider>();
         sphere.isTrigger = true;
@@ -102,12 +99,12 @@ public class Baguette : MonoBehaviour
                 curDamage = throwDamage;
                 //몬스터 접근 후 데미지 주기
                 //빵을 던져서 맞출 경우, 빵의 position 값을 전달
-                enemy.EnemyHit(curDamage, transform.position);
+                enemy.EnemyHit(curDamage, EnemyHitCause.Player, transform.position);
             }
             else
             {
                 curDamage = meleeDamage;
-                enemy.EnemyHit(curDamage, transform.root.position);
+                enemy.EnemyHit(curDamage, EnemyHitCause.Player, transform.root.position);
             }
         }
         /*

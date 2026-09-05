@@ -72,3 +72,10 @@ public static class AbilityCatalog
             { Ability.ThiefMagnet, ("냄새 맡고\n왔습니다", "향긋한 냄새에 소매치기들이 몰려듭니다. 소매치기가 지금보다 2배 더 늘어납니다.") },
         };
 }
+
+public enum EnemyHitCause
+{
+    Unknown,
+    Player,
+    Car,
+}
