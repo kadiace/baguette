@@ -97,12 +97,6 @@ public class DeliverManager
         if (Managers.Player.PlayerStat.Bread < deliveryCard.Quantity)
             return;
 
-        OverHeadIconHandler overHeadIconHandler = player.GetComponentInChildren<OverHeadIconHandler>();
-        if (!overHeadIconHandler.isEuroShown)
-        {
-            overHeadIconHandler.StartShowEuro();
-        }
-
         Managers.Player.PlayerStat.Bread -= deliveryCard.Quantity;
 
         // Increase Health

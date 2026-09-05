@@ -12,6 +12,11 @@ public class OverHeadIconHandler : MonoBehaviour
     public bool isBreadShown = false;
     public bool isEuroShown = false;
 
+    void Start()
+    {
+        Managers.Money.OverHeadIconHandler = this;
+    }
+
     private IEnumerator ShowBreadCoroutine()
     {
         OverHeadBread.SetActive(true);
