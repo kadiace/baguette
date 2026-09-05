@@ -21,4 +21,9 @@ public static class Extension
     {
         UI_Base.BindEvent(go, action, type);
     }
+
+    public static void ClearEvent(this GameObject go)
+    {
+        UI_Base.ClearEvent(go);
+    }
 }

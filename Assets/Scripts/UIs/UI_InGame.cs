@@ -55,7 +55,7 @@ public class UI_InGame : UI_Base
         GetText((int)Texts.BreadCount).GetComponent<TextMeshProUGUI>().text =
             $"Bread: {Managers.Player.PlayerStat.Bread} / {Managers.Player.PlayerStat.MaxBread}";
         GetText((int)Texts.Level).GetComponent<TextMeshProUGUI>().text =
-            $"Lv.{Managers.Player.PlayerStat.Level}";
+            Managers.Player.PlayerStat.Level == 5 ? "Lv.MAX" : $"Lv.{Managers.Player.PlayerStat.Level}";
         GetText((int)Texts.MonsterAmount).GetComponent<TextMeshProUGUI>().text =
             $"x{Managers.Player.PlayerStat.MonsterAmount}";
         GetText((int)Texts.ButterAmount).GetComponent<TextMeshProUGUI>().text =

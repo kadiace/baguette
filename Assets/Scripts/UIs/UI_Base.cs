@@ -90,4 +90,12 @@ public abstract class UI_Base : MonoBehaviour
                 break;
         }
     }
+
+    public static void ClearEvent(GameObject go)
+    {
+        UI_EventHandler evt = go.GetorAddComponent<UI_EventHandler>();
+        evt.OnClickHandler = null;
+        evt.OnDragHandler = null;
+        evt.OnBeginDragHandler = null;
+    }
 }

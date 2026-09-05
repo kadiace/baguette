@@ -24,6 +24,7 @@ public class UI_AbilityCard : UI_Base
         Bind<Button>(typeof(Buttons));
 
         GameObject rerollButton = GetButton((int)Buttons.Reroll).gameObject;
+        rerollButton.BindEvent(OnRerollButtonClicked);
         rerollButton.SetActive(false);
     }
 
@@ -40,14 +41,13 @@ public class UI_AbilityCard : UI_Base
         (string, string) abilityTooltip = AbilityCatalog.Info[value];
         GetText((int)Texts.Title).GetComponent<TextMeshProUGUI>().text = abilityTooltip.Item1;
         GetText((int)Texts.Description).GetComponent<TextMeshProUGUI>().text = abilityTooltip.Item2;
+        gameObject.ClearEvent();
         gameObject.BindEvent(eventData => OnCardClicked(eventData, value));
 
-        if (_index <= 2 && Managers.Player.AbilityCandidates[_index + 3] != null)
-        {
-            GameObject rerollButton = GetButton((int)Buttons.Reroll).gameObject;
-            rerollButton.SetActive(true);
-            rerollButton.BindEvent(OnRerollButtonClicked);
-        }
+
+        GameObject rerollButton = GetButton((int)Buttons.Reroll).gameObject;
+        rerollButton.SetActive(_index <= 2 &&
+            Managers.Player.AbilityCandidates[_index + 3] != null);
     }
 
     private void OnCardClicked(PointerEventData eventData, Ability ability)
