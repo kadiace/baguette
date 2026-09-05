@@ -27,9 +27,6 @@ public class WeaponHandler : MonoBehaviour
     [Tooltip("빵 재장전 시간")]
     [SerializeField] private float reloadTime;
 
-    [Header("위치 확인용 빵(테스트 후 제거 예정)")]
-    public GameObject breadTMP;
-
     void Awake()
     {
         SetBread();
@@ -38,7 +35,6 @@ public class WeaponHandler : MonoBehaviour
     //시작 시점에 빵 갯수 초기화  
     void Start()
     {
-        breadTMP.SetActive(false);
         CreateBread(1);
     }
 
