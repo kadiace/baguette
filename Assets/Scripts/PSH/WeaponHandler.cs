@@ -36,6 +36,7 @@ public class WeaponHandler : MonoBehaviour
     void Start()
     {
         CreateBread(1);
+        weaponHandlerAni.SetFloat("ReloadSpeed", 2f);
     }
 
     #region 빵 사용 관련
@@ -109,33 +110,29 @@ public class WeaponHandler : MonoBehaviour
             aimingKeepTimeCoroutine = null;
         }
 
-        if (isCooldown || (curKeepTime < aimingKeepTime))
+        if (!Managers.Player.PlayerStat.Abilities.Contains(Ability.RapidThrow)
+            && (isCooldown || (curKeepTime < aimingKeepTime)
+            || Managers.Player.PlayerStat.Bread < 1))
         {
             camController.CameraAim(false);
             RemoveThrowPath();
             return;
         }
-        else if (Managers.Player.PlayerStat.Bread < 1)
-        {
-            //던지기 직전에 빵이 없으면 줌 해제
-            camController.CameraAim(false);
-            RemoveThrowPath();
+
+        if (!weaponHandlerAni.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             return;
-        }
-        else
-        {
-            isCooldown = true;
-            //발사 각도 전달하기
-            onHandBread.SetFireAngle(fireAngleTransform.forward);
-            //빵 던지기
-            onHandBread.ThrowBaguette();
-            onHandBread = null;
-            //빵 재장전
-            weaponHandlerAni.Play("ReloadBaguette");
-            //시간 측정
-            StartCoroutine(ThrowCooldown());
-            StartCoroutine(ThrowBreadCoroutine());
-        }
+
+        isCooldown = true;
+        //발사 각도 전달하기
+        onHandBread.SetFireAngle(fireAngleTransform.forward);
+        //빵 던지기
+        onHandBread.ThrowBaguette();
+        onHandBread = null;
+        //빵 재장전
+        weaponHandlerAni.Play("ReloadBaguette");
+        //시간 측정
+        StartCoroutine(ThrowCooldown());
+        StartCoroutine(ThrowBreadCoroutine());
     }
 
     /// <summary>
@@ -195,7 +192,8 @@ public class WeaponHandler : MonoBehaviour
         yield return new WaitForSeconds(reloadTime);
 
         //카메라 줌 아웃(3인칭으로 변경)
-        camController.CameraAim(false);
+        if (!Managers.Player.PlayerStat.Abilities.Contains(Ability.RapidThrow))
+            camController.CameraAim(false);
         yield return null;
         RemoveThrowPath();
     }

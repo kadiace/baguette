@@ -78,21 +78,27 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        CheckKeyboardInput();
-    }
-
-    /// <summary>
-    ///  InputAction 감지
-    /// </summary>
-    void CheckKeyboardInput()
-    {
         //사망 시 입력 무시
         if (isDead)
             return;
         MovePlayer();
         JumpPlayer();
-        AttackPlayer();
         InteractionWithOthers();
+
+        if (!Managers.Player.PlayerStat.Abilities.Contains(Ability.RapidThrow))
+        {
+            AttackPlayer();
+            return;
+        }
+
+        // Rapid Throw
+        if (Managers.Player.PlayerStat.Bread <= 0)
+        {
+            camController.CameraAim(false);
+            return;
+        }
+        camController.CameraAim(true);
+        RapidThrow();
     }
 
     #region 플레이어 조작(이동, 공격, 상호작용)  *회전은 카메라에서 조절
@@ -157,36 +163,49 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void AttackPlayer()
     {
-        //좌 "클릭"
         if (Input.GetMouseButtonDown(0))
-        {
-            if (isThrowReady || weaponHandler.IsCooldown())
-                return;
-            weaponHandlerAni.Play("SwingDiagonal");
-        }
-        //우 "클릭"
+            Swing();
         else if (Input.GetMouseButton(1))
-        {
-            rightClickTime += Time.deltaTime;
-            if (rightClickTime >= aimTime)
-            {
-                if (Managers.Player.PlayerStat.Bread < 1)
-                    return;
-                isThrowReady = true;
-                camController.CameraAim(true);
-                weaponHandler.ShowThrowPath();
-                weaponHandler.StartAimingTime();
-
-            }
-
-        }
-        // 우클릭 해제 시 카메라 줌아웃
+            ThrowReady();
         else if (Input.GetMouseButtonUp(1))
+            Throw();
+    }
+
+    private void Swing()
+    {
+        if (isThrowReady || weaponHandler.IsCooldown())
+            return;
+        weaponHandlerAni.Play("SwingDiagonal");
+    }
+
+    private void ThrowReady()
+    {
+        rightClickTime += Time.deltaTime;
+        if (rightClickTime >= aimTime)
         {
-            weaponHandler.ThrowBread();
-            rightClickTime = 0f;
-            isThrowReady = false;
+            if (Managers.Player.PlayerStat.Bread < 1)
+                return;
+            isThrowReady = true;
+            camController.CameraAim(true);
+            weaponHandler.ShowThrowPath();
+            weaponHandler.StartAimingTime();
+
         }
+    }
+
+    private void Throw()
+    {
+        weaponHandler.ThrowBread();
+        rightClickTime = 0f;
+        isThrowReady = false;
+    }
+
+    private void RapidThrow()
+    {
+        if (Input.GetMouseButtonDown(0))
+            weaponHandler.ShowThrowPath();
+        if (Input.GetMouseButtonUp(0))
+            weaponHandler.ThrowBread();
     }
 
     /// <summary>
