@@ -105,8 +105,9 @@ public class DeliverManager
         // deliveryCard 리스트에서 제거 및 Destroy
         DestroyDelivery(pair);
 
-        // Earn Money
+        // Earn Money & Get Exp
         Managers.Money.Money = Managers.Money.Money + deliveryCard.Reward;
+        Managers.Player.AcquireExp(5);
     }
 
     public void DestroyDelivery(UI_DeliveryCard deliveryCard)

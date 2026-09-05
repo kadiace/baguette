@@ -80,12 +80,20 @@ public class EnemyController : Poolable
         }
 
         //사망 처리 요청
-        if (curHP <= 0)
+        if (curHP > 0)
+            return;
+
+        if (enemyHitCause != EnemyHitCause.Player)
         {
-            if (Managers.Player.PlayerStat.Abilities.Contains(Ability.Vigilante) && enemyHitCause == EnemyHitCause.Player)
-                Managers.Money.Money += 25;
             StartCoroutine(EnemyDeadAfterTime());
+            return;
         }
+
+        Managers.Player.AcquireExp(1);
+        if (Managers.Player.PlayerStat.Abilities.Contains(Ability.Vigilante))
+            Managers.Money.Money += 25;
+
+        StartCoroutine(EnemyDeadAfterTime());
     }
 
     /// <summary>

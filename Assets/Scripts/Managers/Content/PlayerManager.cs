@@ -32,7 +32,8 @@ public class PlayerManager
         {1, 10},
         {2, 15},
         {3, 25},
-        {4, 40}
+        {4, 40},
+        {5, 1}
     };
     private int _maxLevel = 5;
 
@@ -70,9 +71,10 @@ public class PlayerManager
 
     public void AcquireExp(int exp)
     {
+        if (_playerStat.Level == _maxLevel)
+            return;
         int maxExp = _expTable[_playerStat.Level];
         _playerStat.Exp += exp;
-        bool levelUp = false;
         int increasedLevel = 0;
 
         while (maxExp <= _playerStat.Exp)
@@ -81,14 +83,16 @@ public class PlayerManager
             _playerStat.Exp -= maxExp;
             maxExp = _expTable[_playerStat.Level];
             increasedLevel++;
-            levelUp = true;
+
+            if (_playerStat.Level == _maxLevel)
+            {
+                _playerStat.Exp = 1;
+                break;
+            }
         }
 
-        if (levelUp)
-        {
-            // Turn on ability select window by level with increasedLevel
+        for (int i = 0; i < increasedLevel; i++)
             EnableAbilities();
-        }
     }
 
     public void SetAbility(Ability ability)
