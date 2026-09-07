@@ -66,6 +66,9 @@ public class UI_AbilityCard : UI_Base
                     card.SetCard(card.Color, card.TimeLeft, 1, Managers.Deliver.CalculateReward(1));
                 }
                 break;
+            case Ability.ThiefMagnet:
+                Managers.Player.ThiefMagnetStartTime = Time.time;
+                break;
         }
 
         Managers.Player.DisableAbilities();

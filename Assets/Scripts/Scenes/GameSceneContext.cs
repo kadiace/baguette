@@ -103,11 +103,37 @@ public class GameSceneContext : BaseScene
     private void SpawnPickPocket()
     {
         int upgradeLevel = (Managers.Player.PlayerStat.MaxBread - 5) / 2;
-        if (Managers.Pool.GetStackSize("Pickpocket") >= 6 + 1 * upgradeLevel)
+        float multiplier = 1;
+
+        if (Managers.Player.PlayerStat.Abilities.Contains(Ability.ThiefMagnet))
+        {
+            float elapsedTime = Time.time - Managers.Player.ThiefMagnetStartTime;
+            multiplier = Mathf.Min(
+                1f + elapsedTime / 30f * 0.2f,
+                2f
+            );
+        }
+
+        int maxCount = Mathf.FloorToInt(multiplier * (6 + upgradeLevel));
+        int currentCount = Managers.Pool.GetStackSize("Pickpocket");
+
+        if (currentCount >= maxCount)
             return;
-        GameObject go = Managers.Resource.Instantiate("NPCs/Pickpocket");
-        EnemyController pickPocket = go.GetorAddComponent<EnemyController>();
-        go.transform.position = GetRandomEdgePosition();
+
+        float emptyRatio = 1 - (float)currentCount / maxCount * 2;
+
+        int spawnCount = Mathf.CeilToInt(
+            Mathf.Lerp(1f, 4f, emptyRatio));
+
+
+        spawnCount = Mathf.Min(spawnCount, maxCount - currentCount);
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            GameObject go = Managers.Resource.Instantiate("NPCs/Pickpocket");
+            EnemyController pickPocket = go.GetorAddComponent<EnemyController>();
+            go.transform.position = GetRandomEdgePosition();
+        }
     }
 
     private Vector3 GetRandomEdgePosition()

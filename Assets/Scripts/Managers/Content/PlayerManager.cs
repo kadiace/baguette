@@ -48,6 +48,7 @@ public class PlayerManager
     public UI_InGame UI_InGame { get { return _uI_InGame; } set { _uI_InGame = value; } }
     public UI_Abilities UI_Abilities { get { return _uI_Abilities; } set { _uI_Abilities = value; } }
     public Ability?[] AbilityCandidates { get { return _abilityCandidates; } set { _abilityCandidates = value; } }
+    public float ThiefMagnetStartTime { get; set; }
 
     public void Init()
     {
