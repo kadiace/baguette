@@ -16,6 +16,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private float drinkPrice = 25.00f;
     [Tooltip("버터 가격")]
     [SerializeField] private float butterPrice = 50.00f;
+    [Tooltip("빵 가격")]
+    [SerializeField] private float _hpPrice = 50.00f;
     [Tooltip("에어컨 가격")]
     [SerializeField] private float airConditionerPrice = 5600.00f;
 
@@ -77,6 +79,8 @@ public class ShopManager : MonoBehaviour
 
     [Tooltip("버터 개수 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI butterEachText;
+    [Tooltip("빵 구매 버튼")]
+    [SerializeField] private Button _hpButton;
     #endregion
 
     #region 에어컨 관련 변수
@@ -204,6 +208,15 @@ public class ShopManager : MonoBehaviour
             butterButton.interactable = true;
         }
 
+        if (Managers.Money.Money < _hpPrice || Managers.Player.PlayerStat.Hp >= Managers.Player.PlayerStat.MaxHp)
+        {
+            _hpButton.interactable = false;
+        }
+        else
+        {
+            _hpButton.interactable = true;
+        }
+
         if (Managers.Money.Money < airConditionerPrice)
         {
             airConditionerButton.interactable = false;
@@ -316,6 +329,14 @@ public class ShopManager : MonoBehaviour
         onButterChanged.Invoke(butterCount);
         curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
         butterEachText.text = Managers.Player.PlayerStat.ButterAmount.ToString();
+        ButtonInitiate();
+    }
+
+    public void AddHpValue()
+    {
+        Managers.Money.Money -= _hpPrice;
+        Managers.Player.AcquireHp(1);
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
         ButtonInitiate();
     }
 
