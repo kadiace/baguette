@@ -128,7 +128,32 @@ public class WeaponHandler : MonoBehaviour
         onHandBread.SetFireAngle(fireAngleTransform.forward);
         //빵 던지기
         onHandBread.ThrowBaguette();
+
+        Vector3 breadPos = onHandBread.transform.position;
+        Quaternion breadRot = onHandBread.transform.rotation;
+
         onHandBread = null;
+        if (Managers.Player.PlayerStat.Abilities.Contains(Ability.TripleShot))
+        {
+            Vector3 forwardXZ = Vector3.ProjectOnPlane(
+                fireAngleTransform.forward,
+                Vector3.up
+            ).normalized;
+
+            Vector3 perpendicular = Vector3.Cross(Vector3.up, forwardXZ).normalized;
+
+            Baguette baguette = Managers.Resource.Instantiate("Players/Baguette").GetorAddComponent<Baguette>();
+            baguette.transform.position = breadPos;
+            baguette.transform.rotation = breadRot;
+            baguette.SetFireAngle(fireAngleTransform.forward + perpendicular * 0.3f);
+            baguette.ThrowBaguette();
+
+            baguette = Managers.Resource.Instantiate("Players/Baguette").GetorAddComponent<Baguette>();
+            baguette.transform.position = breadPos;
+            baguette.transform.rotation = breadRot;
+            baguette.SetFireAngle(fireAngleTransform.forward + perpendicular * -0.3f);
+            baguette.ThrowBaguette();
+        }
         //빵 재장전
         weaponHandlerAni.Play("ReloadBaguette");
         //시간 측정
