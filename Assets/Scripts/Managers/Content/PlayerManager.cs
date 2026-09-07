@@ -30,17 +30,11 @@ public class PlayerManager
     private HealthCounter _healthCounter;
     private Dictionary<int, int> _expTable = new()
     {
-        // {1, 10},
-        // {2, 15},
-        // {3, 25},
-        // {4, 40},
-        // {5, 1}
-        
-        {1, 5},
-        {2, 5},
-        {3, 5},
-        {4, 5},
-        {5, 1}
+        {1, 10},
+        {2, 15},
+        {3, 25},
+        {4, 40},
+        {5, 1},
     };
     private int _maxLevel = 5;
 
