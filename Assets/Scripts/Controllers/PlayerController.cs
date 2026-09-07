@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -45,7 +45,19 @@ public class PlayerController : MonoBehaviour
     [Header("상호작용 할 가게")]
     public ShopKeeper shop;
     public Patissier bread;
-    //
+
+    private bool _inputEnabled = true;
+    public bool InputEnabled
+    {
+        get { return _inputEnabled; }
+        set
+        {
+            _inputEnabled = value;
+            if (!value)
+                StartCoroutine(EnableInputAfterDelay(1f));
+        }
+    }
+
     #endregion
 
     /// <summary>
@@ -340,6 +352,12 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    private IEnumerator EnableInputAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        _inputEnabled = true;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

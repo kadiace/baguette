@@ -82,6 +82,7 @@ public class PlayerManager
         int maxExp = _expTable[_playerStat.Level];
         _playerStat.Exp += exp;
         int increasedLevel = 0;
+        bool levelUp = false;
 
         while (maxExp <= _playerStat.Exp)
         {
@@ -89,6 +90,7 @@ public class PlayerManager
             _playerStat.Exp -= maxExp;
             maxExp = _expTable[_playerStat.Level];
             increasedLevel++;
+            levelUp = true;
 
             if (_playerStat.Level == _maxLevel)
             {
@@ -96,6 +98,9 @@ public class PlayerManager
                 break;
             }
         }
+
+        if (levelUp)
+            _playerController.InputEnabled = false;
 
         for (int i = 0; i < increasedLevel; i++)
             EnableAbilities();

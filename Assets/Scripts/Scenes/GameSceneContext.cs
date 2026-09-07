@@ -91,10 +91,10 @@ public class GameSceneContext : BaseScene
 
         return UnityEngine.Random.Range(0, 4) switch
         {
-            0 => new Vector3(70f, 1f, r),
-            1 => new Vector3(-70f, 1f, r),
-            2 => new Vector3(r, 1f, 70f),
-            _ => new Vector3(r, 1f, -70f),
+            0 => new Vector3(70f, 2f, r),
+            1 => new Vector3(-70f, 2f, r),
+            2 => new Vector3(r, 2f, 70f),
+            _ => new Vector3(r, 2f, -70f),
         };
     }
 

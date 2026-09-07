@@ -52,6 +52,9 @@ public class UI_AbilityCard : UI_Base
 
     private void OnCardClicked(PointerEventData eventData, Ability ability)
     {
+        if (!Managers.Player.PlayerController.InputEnabled)
+            return;
+        Managers.Player.PlayerController.InputEnabled = true;
         Managers.Player.PlayerStat.Abilities.Add(ability);
         Managers.Player.DisableAbilities();
     }

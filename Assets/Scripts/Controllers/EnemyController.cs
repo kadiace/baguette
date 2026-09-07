@@ -68,7 +68,6 @@ public class EnemyController : Poolable
         //피격 액션 넣기
         if (attackerPos != null)
         {
-
             //피격 방향 계산하기
             Vector3 knockbackDir = transform.position - attackerPos.Value; //벡터 계산
             knockbackDir.y = 0f;        //급격 넉백 방지
@@ -91,7 +90,7 @@ public class EnemyController : Poolable
 
         Managers.Player.AcquireExp(1);
         if (Managers.Player.PlayerStat.Abilities.Contains(Ability.Vigilante))
-            Managers.Money.Money += 25;
+            Managers.Money.Money += 50;
 
         StartCoroutine(EnemyDeadAfterTime());
     }
