@@ -5,8 +5,6 @@ using Unity.Profiling;
 
 public class ShopManager : MonoBehaviour
 {
-    [Tooltip("현재 소지한 음료, 버터를 관리 - SupplyManager")]
-    [SerializeField] private SupplyManager supplyManager;
     [Tooltip("패널 출력 여부 관리 - OnoffManager")]
     [SerializeField] private OnOffManager onOffManager;
     [Tooltip("플레이어")]
@@ -14,15 +12,12 @@ public class ShopManager : MonoBehaviour
     [Tooltip("플레이어 웨폰 헨들러")]
     [SerializeField] private WeaponHandler wHandler;
 
-    private int curDrink;
-    private int curButter;
-
     [Tooltip("음료수 가격")]
-    [SerializeField] private float drinkPrice = 2.00f;
+    [SerializeField] private float drinkPrice = 25.00f;
     [Tooltip("버터 가격")]
-    [SerializeField] private float butterPrice = 3.50f;
+    [SerializeField] private float butterPrice = 50.00f;
     [Tooltip("에어컨 가격")]
-    [SerializeField] private float airConditionerPrice = 10.00f;
+    [SerializeField] private float airConditionerPrice = 5600.00f;
 
 
     [Tooltip("현재 돈 Text")]
@@ -35,7 +30,7 @@ public class ShopManager : MonoBehaviour
     [Tooltip("최대 체력 강화 레벨")]
     [SerializeField] private int healthLevel = 1;
     [Tooltip("최대 체력 강화 가격")]
-    [SerializeField] private float healthPrice = 5.00f;
+    [SerializeField] private float healthPrice = 50.00f;
     [Tooltip("최대 체력 강화 가격 텍스트")]
     [SerializeField] private TMPro.TextMeshProUGUI healthPriceText;
     [Tooltip("현재 체력 수치 Text")]
@@ -49,19 +44,20 @@ public class ShopManager : MonoBehaviour
     [Tooltip("빵 소지 최대치 강화 레벨")]
     [SerializeField] private int breadLevel = 1;
     [Tooltip("빵 소지 최대치 강화 가격")]
-    [SerializeField] private float breadPrice = 5.00f;
+    [SerializeField] private float breadPrice = 50.00f;
     [Tooltip("빵 소지 최대치 강화 가격 텍스트")]
     [SerializeField] private TMPro.TextMeshProUGUI breadPriceText;
     [Tooltip("현재 빵 소지 최대치 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI breadText;
     [Tooltip("레벨업 시 빵 소지 최대치 수치 Text")]
     [SerializeField] private TMPro.TextMeshProUGUI breadUpgradeText;
+
     [Tooltip("이동속도 강화 구매 버튼")]
     [SerializeField] private Button speedButton;
     [Tooltip("이동속도 강화 레벨")]
     [SerializeField] private int speedLevel = 1;
     [Tooltip("이동속도 강화 가격")]
-    [SerializeField] private float speedPrice = 22.50f;
+    [SerializeField] private float speedPrice = 50.00f;
     [Tooltip("이동속도 강화 가격 텍스트")]
     [SerializeField] private TMPro.TextMeshProUGUI speedPriceText;
     [Tooltip("현재 이동속도 수치 Text")]
@@ -88,58 +84,39 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Button airConditionerButton;
     #endregion
 
-    public UnityEvent<float> InitialSpeedChanged;
     public UnityEvent<int> onDrinkChanged;
     public UnityEvent<int> onButterChanged;
     public UnityEvent onAirConditionerPurchased;
 
     void Start()
     {
-        GetCurrentValues();
         SetValueText();
         ButtonInitiate();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    #region 값 가져오고 초기 세팅
-    /// <summary>
-    /// 현재 소지한 돈, 음료, 버터 값 가져오기
-    /// </summary>
-    public void GetCurrentValues()
-    {
-        curDrink = supplyManager.GetDrinkCount();
-        curButter = supplyManager.GetButterCount();
-    }
     /// <summary>
     /// 현재 소지한 돈, 전체 텍스트 값 세팅
     /// </summary>
     public void SetValueText()
     {
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
         SetHealthValueText();
         SetBreadValueText();
         SetSpeedValueText();
-        drinkEachText.text = curDrink.ToString();
-        butterEachText.text = curButter.ToString();
+        drinkEachText.text = Managers.Player.PlayerStat.MonsterAmount.ToString();
+        butterEachText.text = Managers.Player.PlayerStat.ButterAmount.ToString();
     }
     /// <summary>
     /// 현재 소지한 체력 텍스트 값 세팅
     /// </summary>
     public void SetHealthValueText()
     {
-        healthText.text = player.GetComponent<PlayerController>().GetMaxHealth().ToString();
-        healthUpgradeText.text = (player.GetComponent<PlayerController>().GetMaxHealth() + 1).ToString();
-        healthPriceText.text = "€ " + healthPrice.ToString("F2");
+        healthText.text = Managers.Player.PlayerStat.MaxHp.ToString();
+        healthUpgradeText.text = (Managers.Player.PlayerStat.MaxHp + 1).ToString();
+        healthPriceText.text = "€ " + healthPrice.ToString("F0");
 
         if (healthLevel >= 11)
         {
-            healthText.text = 15.ToString();
-            healthUpgradeText.text = 15.ToString();
             healthPriceText.text = "MAX";
             healthButton.interactable = false;
         }
@@ -151,12 +128,10 @@ public class ShopManager : MonoBehaviour
     {
         breadText.text = Managers.Player.PlayerStat.MaxBread.ToString();
         breadUpgradeText.text = (Managers.Player.PlayerStat.MaxBread + 2).ToString();
-        breadPriceText.text = "€ " + breadPrice.ToString("F2");
+        breadPriceText.text = "€ " + breadPrice.ToString("F0");
 
         if (breadLevel >= 11)
         {
-            breadText.text = 25.ToString();
-            breadUpgradeText.text = 25.ToString();
             breadPriceText.text = "MAX";
             breadButton.interactable = false;
         }
@@ -166,14 +141,12 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     public void SetSpeedValueText()
     {
-        speedText.text = (1 + (speedLevel - 1) * 0.1f).ToString("F1");
-        speedUpgradeText.text = (1 + speedLevel * 0.1f).ToString("F1");
-        speedPriceText.text = "€ " + speedPrice.ToString("F2");
+        speedText.text = (Managers.Player.PlayerController.WalkSpeed / 10).ToString("F1");
+        speedUpgradeText.text = (Managers.Player.PlayerController.WalkSpeed / 10 + 0.1f).ToString("F1");
+        speedPriceText.text = "€ " + speedPrice.ToString("F0");
 
         if (speedLevel >= 6)
         {
-            speedText.text = 1.5.ToString();
-            speedUpgradeText.text = 1.5.ToString();
             speedPriceText.text = "MAX";
             speedButton.interactable = false;
             return;
@@ -241,7 +214,6 @@ public class ShopManager : MonoBehaviour
             airConditionerButton.interactable = true;
         }
     }
-    #endregion
 
     #region 레벨에 따른 가격, 능력치 세팅 함수
     /// <summary>
@@ -254,23 +226,18 @@ public class ShopManager : MonoBehaviour
         {
             SetHealthValueText();
             ButtonInitiate();
-            Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
-            Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
             return;
         }
+        Managers.Player.AcquireMaxHp(1);
 
         Managers.Money.Money -= healthPrice;
         healthLevel += 1;
 
-        player.GetComponent<PlayerController>().SetMaxHealth(5 + (healthLevel - 1));
-        healthPrice = 5 + (healthLevel - 1) * 2.5f;
+        healthPrice = 100 + (healthLevel - 1) * 25f;
 
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
         SetHealthValueText();
         ButtonInitiate();
-
-        Debug.Log("Max HP: " + player.GetComponent<PlayerController>().GetMaxHealth());
-        Debug.Log("Current HP: " + player.GetComponent<PlayerController>().GetCurrentHealth());
     }
     /// <summary>
     /// 빵 소지 최대치 레벨에 따른 능력치 및 가격 세팅
@@ -282,70 +249,86 @@ public class ShopManager : MonoBehaviour
         {
             SetBreadValueText();
             ButtonInitiate();
-            Debug.Log("Max Bread: " + Managers.Player.PlayerStat.MaxBread);
-            Debug.Log("Current Bread: " + Managers.Player.PlayerStat.Bread);
             return;
         }
         //플레이어 빵 최대 갯수 증가
-        wHandler.UpgradeMaxBread(2);
+        Managers.Player.PlayerStat.MaxBread += 2;
+        Managers.Player.PlayerStat.MaxBread += 2;
 
         //UI에 표시 글 수정
         Managers.Money.Money -= breadPrice;
         breadLevel += 1;
 
-        Managers.Player.PlayerStat.MaxBread = 5 + (breadLevel - 1) * 2;
-        breadPrice = 5 + (breadLevel - 1) * 2.5f;
+        breadPrice = 100 + (breadLevel - 1) * 25f;
 
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
         SetBreadValueText();
         ButtonInitiate();
+    }
+    public void SetSpeedValue()
+    {
+        // 빵 소지 최대치는 레벨별로 5 + 레벨 * 2, 최대 11레벨까지(최대치 25). 업그레이드 가격은 레벨별로 5 + 레벨 * 2.5
+        if (speedLevel >= 6)
+        {
+            SetSpeedValueText();
+            ButtonInitiate();
+            return;
+        }
+        //플레이어 빵 최대 갯수 증가
+        Managers.Player.PlayerController.WalkSpeed += 1f;
 
-        Debug.Log("Max Bread: " + Managers.Player.PlayerStat.MaxBread);
-        Debug.Log("Current Bread: " + Managers.Player.PlayerStat.Bread);
+        //UI에 표시 글 수정
+        Managers.Money.Money -= speedPrice;
+        speedLevel += 1;
+
+        speedPrice = 50 + (speedLevel - 1) * 25f;
+
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
+        SetSpeedValueText();
+        ButtonInitiate();
     }
 
     public void SetDrinkValue()
     {
-        drinkEachText.text = supplyManager.GetDrinkCount().ToString();
+        drinkEachText.text = Managers.Player.PlayerStat.MonsterAmount.ToString();
     }
 
     public void AddDrinkValue()
     {
         Managers.Money.Money -= drinkPrice;
-        supplyManager.SetDrinkCount(supplyManager.GetDrinkCount() + 1);
-        int drinkCount = supplyManager.GetDrinkCount();
-        Debug.Log("음료수 구매: " + drinkCount);
+        Managers.Player.PlayerStat.MonsterAmount += 1;
+        int drinkCount = Managers.Player.PlayerStat.MonsterAmount;
         onDrinkChanged.Invoke(drinkCount);
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
-        drinkEachText.text = supplyManager.GetDrinkCount().ToString();
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
+        drinkEachText.text = Managers.Player.PlayerStat.MonsterAmount.ToString();
         ButtonInitiate();
     }
 
     public void SetButterValue()
     {
-        butterEachText.text = supplyManager.GetButterCount().ToString();
+        butterEachText.text = Managers.Player.PlayerStat.ButterAmount.ToString();
     }
 
     public void AddButterValue()
     {
         Managers.Money.Money -= butterPrice;
-        supplyManager.SetButterCount(supplyManager.GetButterCount() + 1);
-        int butterCount = supplyManager.GetDrinkCount();
+        Managers.Player.PlayerStat.ButterAmount += 1;
+        int butterCount = Managers.Player.PlayerStat.ButterAmount;
         onButterChanged.Invoke(butterCount);
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
-        butterEachText.text = supplyManager.GetButterCount().ToString();
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
+        butterEachText.text = Managers.Player.PlayerStat.ButterAmount.ToString();
         ButtonInitiate();
     }
 
     public void SetMoneyValue()
     {
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
     }
 
     public void SetAirConditionerValue()
     {
         Managers.Money.Money -= airConditionerPrice;
-        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F2");
+        curMoneyText.text = "€ " + Managers.Money.Money.ToString("F0");
         ButtonInitiate();
         onAirConditionerPurchased.Invoke();
     }

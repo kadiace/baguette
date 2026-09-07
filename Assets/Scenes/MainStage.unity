@@ -7164,7 +7164,7 @@ MonoBehaviour:
   jumpHeight: 10
   isDead: 0
   isGround: 1
-  walkSpeed: 10
+  WalkSpeed: 10
   maxHealth: 5
   currentHealth: 5
   OnHealthChanged:
@@ -14049,7 +14049,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u20AC 3.50"
+  m_text: "\u20AC 50.00"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -19110,7 +19110,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u20AC 2.00"
+  m_text: "\u20AC 25.00"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20707,52 +20707,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7113918591115334850, guid: d3e1123586122684d8e30d01cb3dd0b7, type: 3}
   m_PrefabInstance: {fileID: 1942903269}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1071628254
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1071628256}
-  - component: {fileID: 1071628255}
-  m_Layer: 0
-  m_Name: SupplyManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1071628255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1071628254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44508c3e689b06f4292466fe6b027444, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SupplyManager
-  DrinkCount: 0
-  ButterCount: 0
---- !u!4 &1071628256
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1071628254}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 727.19257, y: 336.18924, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1072997656
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27650,50 +27604,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422522020}
   m_CullTransparentMesh: 1
---- !u!1 &1423602424
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1423602426}
-  - component: {fileID: 1423602425}
-  m_Layer: 0
-  m_Name: PowerUpManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1423602425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423602424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a7153093d4a4be4ab3654d9a6af354a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PowerUpManager
---- !u!4 &1423602426
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423602424}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 345.34518, y: 577.9234, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1423740253 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6038630587825021854, guid: 786644bd3d3825f4e85270e37d38630d, type: 3}
@@ -28648,6 +28558,7 @@ GameObject:
   - component: {fileID: 1478407176}
   - component: {fileID: 1478407178}
   - component: {fileID: 1478407177}
+  - component: {fileID: 1478407179}
   m_Layer: 5
   m_Name: CurrentMoney
   m_TagString: Untagged
@@ -28774,6 +28685,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478407175}
   m_CullTransparentMesh: 1
+--- !u!114 &1478407179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478407175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ee445b487b4d545ae35af31996df8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoneyCounter
 --- !u!1001 &1479342695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34260,29 +34183,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d045a353858624698d890744023be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopManager
-  supplyManager: {fileID: 1071628255}
   onOffManager: {fileID: 1201289353}
   player: {fileID: 349606018}
   wHandler: {fileID: 921402739}
-  drinkPrice: 2
-  butterPrice: 3.5
+  drinkPrice: 25
+  butterPrice: 50
   airConditionerPrice: 5600
   curMoneyText: {fileID: 1478407177}
   healthButton: {fileID: 962629038}
   healthLevel: 1
-  healthPrice: 5
+  healthPrice: 50
   healthPriceText: {fileID: 1645561880}
   healthText: {fileID: 1804040707}
   healthUpgradeText: {fileID: 53093630}
   breadButton: {fileID: 707221742}
   breadLevel: 1
-  breadPrice: 5
+  breadPrice: 50
   breadPriceText: {fileID: 1516244830}
   breadText: {fileID: 553308234}
   breadUpgradeText: {fileID: 779298160}
   speedButton: {fileID: 555148325}
   speedLevel: 1
-  speedPrice: 15
+  speedPrice: 50
   speedPriceText: {fileID: 82601306}
   speedText: {fileID: 2120067772}
   speedUpgradeText: {fileID: 2014664719}
@@ -34291,9 +34213,6 @@ MonoBehaviour:
   butterButton: {fileID: 555218064}
   butterEachText: {fileID: 2131155104}
   airConditionerButton: {fileID: 1707483443}
-  InitialSpeedChanged:
-    m_PersistentCalls:
-      m_Calls: []
   onDrinkChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -44864,7 +44783,5 @@ SceneRoots:
   - {fileID: 349606024}
   - {fileID: 1146637721}
   - {fileID: 1201289354}
-  - {fileID: 1423602426}
-  - {fileID: 1071628256}
   - {fileID: 471979565}
   - {fileID: 1033032807}

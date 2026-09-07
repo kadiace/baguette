@@ -27,6 +27,7 @@ public class PlayerManager
     private UI_Abilities _uI_Abilities;
 
     private Ability?[] _abilityCandidates;
+    private HealthCounter _healthCounter;
     private Dictionary<int, int> _expTable = new()
     {
         // {1, 10},
@@ -48,6 +49,15 @@ public class PlayerManager
     public UI_InGame UI_InGame { get { return _uI_InGame; } set { _uI_InGame = value; } }
     public UI_Abilities UI_Abilities { get { return _uI_Abilities; } set { _uI_Abilities = value; } }
     public Ability?[] AbilityCandidates { get { return _abilityCandidates; } set { _abilityCandidates = value; } }
+    public HealthCounter HealthCounter
+    {
+        get { return _healthCounter; }
+        set
+        {
+            _healthCounter = value;
+            _healthCounter.UpdateHealthCounter();
+        }
+    }
     public float ThiefMagnetStartTime { get; set; }
 
     public void Init()
@@ -105,6 +115,20 @@ public class PlayerManager
 
         for (int i = 0; i < increasedLevel; i++)
             EnableAbilities();
+    }
+
+    public void AcquireMaxHp(int maxHp)
+    {
+        _playerStat.MaxHp += maxHp;
+        _playerStat.Hp += maxHp;
+        _healthCounter.UpdateHealthCounter();
+    }
+
+    public void AcquireHp(int hp)
+    {
+        _playerStat.Hp += hp;
+        _playerStat.Hp = Math.Min(_playerStat.Hp, _playerStat.MaxHp);
+        _healthCounter.UpdateHealthCounter();
     }
 
     public void SetAbility(Ability ability)

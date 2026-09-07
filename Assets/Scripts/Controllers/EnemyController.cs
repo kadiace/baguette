@@ -4,8 +4,6 @@ using UnityEngine.Events;
 
 public class EnemyController : Poolable
 {
-    [Tooltip("플레이어")]
-    [SerializeField] private PlayerController player;
     [Header("적 컨포넌트")]
     [SerializeField] Rigidbody enemyRigid;
     [Tooltip("적 상태")]
@@ -21,7 +19,6 @@ public class EnemyController : Poolable
     void Start()
     {
         curHP = maxHP;
-        player = Managers.Player.PlayerController;
         _rb = gameObject.GetorAddComponent<Rigidbody>();
         onPlayerDamaged = new UnityEvent<int>();
     }
@@ -40,12 +37,12 @@ public class EnemyController : Poolable
     /// 몸체 접촉 감지
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log($"충돌 감지: {other.gameObject}");
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            player.TakeDamage(1);
+            Managers.Player.PlayerController.TakeDamage(1);
             StartCoroutine(StillTriggeredCoroutine());
         }
     }
@@ -103,10 +100,7 @@ public class EnemyController : Poolable
         while (true)
         {
             yield return new WaitForSeconds(1f); // 1초 대기
-            if (player != null && player.GetCurrentHealth() > 0)
-            {
-                player.TakeDamage(1);
-            }
+            Managers.Player.PlayerController.TakeDamage(1);
         }
     }
 
@@ -122,13 +116,13 @@ public class EnemyController : Poolable
     #region 플레이어 추적
     private void FollowPlayer()
     {
-        Vector3 delta = player.transform.position - transform.position;
+        Vector3 delta = Managers.Player.PlayerController.transform.position - transform.position;
         if (delta.magnitude < 1f)
         {
             return;
         }
         float step = _moveSpeed * Time.deltaTime;
-        Vector3 nextPos = Vector3.MoveTowards(_rb.position, player.transform.position, step);
+        Vector3 nextPos = Vector3.MoveTowards(_rb.position, Managers.Player.PlayerController.transform.position, step);
         delta.y = 0;
         Quaternion rotation = Quaternion.LookRotation(delta, Vector3.up);
 

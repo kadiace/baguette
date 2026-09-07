@@ -1,5 +1,5 @@
-
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +14,7 @@ public class UI_InGame : UI_Base
         Level,
         MonsterAmount,
         ButterAmount,
+        ButterPanelTitle,
     }
 
     enum Sliders
@@ -44,6 +45,7 @@ public class UI_InGame : UI_Base
             $"x{Managers.Player.PlayerStat.MonsterAmount}";
         GetText((int)Texts.ButterAmount).GetComponent<TextMeshProUGUI>().text =
             $"x{Managers.Player.PlayerStat.ButterAmount}";
+        GetText((int)Texts.CurrentMoney).GetComponent<TextMeshProUGUI>().text = $"€ {Managers.Money.Money:F2}";
 
         GetSlider((int)Sliders.EXPBar).GetComponent<Slider>().minValue = 0;
         GetSlider((int)Sliders.EXPBar).GetComponent<Slider>().maxValue = Managers.Player.GetMaxExp();
@@ -65,6 +67,9 @@ public class UI_InGame : UI_Base
         GetText((int)Texts.ButterBuffTime).GetComponent<TextMeshProUGUI>().text =
             $"{(int)_butterBuffRemain:D2}s";
 
+        GetText((int)Texts.ButterPanelTitle).GetComponent<TextMeshProUGUI>().text =
+            $"Butter ({(Managers.Player.PlayerStat.Abilities.Contains(Ability.ButterBlast) ? "Shift" : "E")})";
+
         GetSlider((int)Sliders.EXPBar).GetComponent<Slider>().minValue = 0;
         GetSlider((int)Sliders.EXPBar).GetComponent<Slider>().maxValue = Managers.Player.GetMaxExp();
         GetSlider((int)Sliders.EXPBar).GetComponent<Slider>().value = Managers.Player.PlayerStat.Exp;
@@ -74,7 +79,8 @@ public class UI_InGame : UI_Base
             _monsterBuffRemain = _monsterBuffDuration;
             _monsterBuffPanel.SetActive(true);
         }
-        if (Input.GetKeyDown(KeyCode.E) && Managers.Player.UseButterBuff())
+        if (!Managers.Player.PlayerStat.Abilities.Contains(Ability.ButterBlast)
+            && Input.GetKeyDown(KeyCode.E) && Managers.Player.UseButterBuff())
         {
             _butterBuffRemain = _butterBuffDuration;
             _butterBuffPanel.SetActive(true);

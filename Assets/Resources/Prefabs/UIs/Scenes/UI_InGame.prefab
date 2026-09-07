@@ -2691,7 +2691,6 @@ GameObject:
   - component: {fileID: 6691334922814583883}
   - component: {fileID: 8495568477100820117}
   - component: {fileID: 384782114013453446}
-  - component: {fileID: 146108357690705789}
   m_Layer: 5
   m_Name: CurrentMoney
   m_TagString: Untagged
@@ -2818,18 +2817,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &146108357690705789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5663310518822109719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25ee445b487b4d545ae35af31996df8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoneyCounter
 --- !u!1 &5825520616906610204
 GameObject:
   m_ObjectHideFlags: 0

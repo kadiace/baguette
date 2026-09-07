@@ -32,13 +32,7 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 상태")]
     public bool isDead = false;
     public bool isGround = true;
-    [SerializeField] float walkSpeed;
-    [Tooltip("플레이어 최대 체력")]
-    [SerializeField] private int maxHealth = 5;
-    [Tooltip("플레이어 현재 체력")]
-    [SerializeField] private int currentHealth = 5;
-    [Tooltip("플레이어 체력 변동 이벤트")]
-    public UnityEvent<int> OnHealthChanged;
+    public float WalkSpeed = 10f;
     public UnityEvent PlayerDied;
 
     [Header("상호작용 할 가게")]
@@ -172,7 +166,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(transform.position + Vector3.up * 0.5f, direction, 1.0f, LayerMask.GetMask("Block")))
             return;
 
-        _rb.MovePosition(_rb.position + direction * walkSpeed * Time.fixedDeltaTime);
+        _rb.MovePosition(_rb.position + direction * WalkSpeed * Time.fixedDeltaTime);
     }
 
     /// <summary>
@@ -295,30 +289,17 @@ public class PlayerController : MonoBehaviour
 
     #region 플레이어 체력 변동 & 사망 by.Jaehoon
     /// <summary>
-    /// 현재 체력 변동 이벤트를 Invoke합니다.
-    /// </summary>
-    private void HealthEventInvoke()
-    {
-        OnHealthChanged.Invoke(currentHealth);
-    }
-    /// <summary>
     /// 플레이어가 피해를 입었을 때 체력 감소
     /// </summary>
     /// <param name="damage">받은 피해량</param>
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth < 0)
-        {
-            currentHealth = 0;
-        }
+        Managers.Player.AcquireHp(-damage);
+        if (Managers.Player.PlayerStat.Hp < 0)
+            Managers.Player.PlayerStat.Hp = 0;
 
-        HealthEventInvoke();
-
-        if (currentHealth <= 0)
-        {
+        if (Managers.Player.PlayerStat.Hp <= 0)
             Die();
-        }
     }
     /// <summary>
     /// 플레이어 사망 처리
@@ -328,62 +309,6 @@ public class PlayerController : MonoBehaviour
         isDead = true;
         PlayerDied.Invoke();
     }
-    /// <summary>
-    /// 현재 체력 반환
-    /// </summary>
-    /// <returns>현재 체력</returns>
-    public int GetCurrentHealth()
-    {
-        return currentHealth;
-    }
-
-    public void IncreaseHealth()
-    {
-        SetCurrentHealth(1);
-    }
-
-    public void SetCurrentHealth(int count)
-    {
-        currentHealth += count;
-        HealthEventInvoke();
-    }
-
-    /// <summary>
-    /// 최대 체력 반환
-    /// </summary>
-    /// <returns>최대 체력</returns>
-    public int GetMaxHealth()
-    {
-        return maxHealth;
-    }
-    /// <summary>
-    /// 최대 체력 설정. 최대 체력 변경 시 현재 체력도 최대치로 초기화
-    /// </summary>
-    /// <param name="newMaxHealth"></param>
-    public void SetMaxHealth(int newMaxHealth)
-    {
-        maxHealth = newMaxHealth;
-        currentHealth = maxHealth; // 체력도 최대치로 초기화
-        HealthEventInvoke();
-    }
-    /// <summary>
-    /// 플레이어의 이동속도 전달
-    /// </summary>
-    /// <returns></returns>
-    public float GetPlayerSpeed()
-    {
-        return walkSpeed;
-    }
-
-    /// <summary>
-    /// 플레이어 속도 설정
-    /// </summary>
-    /// <param name="newSpeed"></param>
-    public void SetPlayerSpeed(float newSpeed)
-    {
-        walkSpeed = newSpeed;
-    }
-
     #endregion
 
     private IEnumerator EnableInputAfterDelay(float delay)

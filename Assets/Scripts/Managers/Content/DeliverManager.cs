@@ -117,13 +117,13 @@ public class DeliverManager
         }
 
         // Increase Health
-        Managers.Player.PlayerController.IncreaseHealth();
+        Managers.Player.AcquireHp(1);
 
         // Remove deliveryCard on list & Destroy
         DestroyDelivery(pair);
 
         // Earn Money & Get Exp
-        Managers.Money.Money = Managers.Money.Money + deliveryCard.Reward;
+        Managers.Money.Money = (float)(Managers.Money.Money + deliveryCard.Reward * (Managers.Player.PlayerStat.UseButter ? 1.5 : 1));
         Managers.Player.AcquireExp(5);
     }
 
