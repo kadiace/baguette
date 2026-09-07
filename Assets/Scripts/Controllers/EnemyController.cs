@@ -46,9 +46,9 @@ public class EnemyController : Poolable
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             // StopCoroutine(StillTriggeredCoroutine());
             StopAllCoroutines();

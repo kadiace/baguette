@@ -62,6 +62,7 @@ public class UI_InGame : UI_Base
             $"x{Managers.Player.PlayerStat.MonsterAmount}";
         GetText((int)Texts.ButterAmount).GetComponent<TextMeshProUGUI>().text =
             $"x{Managers.Player.PlayerStat.ButterAmount}";
+        GetText((int)Texts.CurrentMoney).GetComponent<TextMeshProUGUI>().text = $"€ {Managers.Money.Money:F2}";
         GetText((int)Texts.MonsterBuffTime).GetComponent<TextMeshProUGUI>().text =
             $"{(int)_monsterBuffRemain:D2}s";
         GetText((int)Texts.ButterBuffTime).GetComponent<TextMeshProUGUI>().text =

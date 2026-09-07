@@ -81,6 +81,30 @@ public class PlayerManager
         _abilityCandidates[UnityEngine.Random.Range(0, 3)] = Ability.Vigilante;
     }
 
+    public void Clear()
+    {
+        Managers.Resource.Destroy(_uI_InGame.gameObject);
+        Managers.Resource.Destroy(_uI_Abilities.gameObject);
+
+        _playerStat = new()
+        {
+            Exp = 0,
+            Level = 1,
+            Hp = 5,
+            MaxHp = 5,
+            Bread = 10,
+            MaxBread = 10,
+            UseMonster = false,
+            UseButter = false,
+            MonsterAmount = 5,
+            ButterAmount = 5,
+            Abilities = new()
+        };
+        _abilityCandidates = new Ability?[6];
+        GetRandomAbilities(new List<Ability>() { Ability.Vigilante });
+        _abilityCandidates[UnityEngine.Random.Range(0, 3)] = Ability.Vigilante;
+    }
+
     public int GetMaxExp()
     {
         return _expTable[_playerStat.Level];

@@ -158,13 +158,11 @@ public class PlayerController : MonoBehaviour
         if (movePos.sqrMagnitude < 0.001f)
             return;
 
-        // 기존에 있던 수평 속도 제거
         Vector3 currentVel = _rb.linearVelocity;
         currentVel.x = 0;
         currentVel.z = 0;
         _rb.linearVelocity = currentVel;
 
-        //카메라 시선 방향 확인
         Vector3 camForward = _camController.transform.forward;
         Vector3 camRight = _camController.transform.right;
 
@@ -174,7 +172,6 @@ public class PlayerController : MonoBehaviour
         camForward.Normalize();
         camRight.Normalize();
 
-        //플레이어 이동 위치 설정 및 이동
         Vector3 direction = (camForward * movePos.y) + (camRight * movePos.x);
 
         if (Physics.Raycast(transform.position + Vector3.up * 0.5f, direction, 1.0f, LayerMask.GetMask("Block")))

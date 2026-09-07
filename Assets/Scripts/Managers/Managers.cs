@@ -73,6 +73,8 @@ public class Managers : MonoBehaviour
     public static void Clear()
     {
         Deliver.Clear();
+        Money.Clear();
+        Player.Clear();
         Pool.Clear();
     }
 }

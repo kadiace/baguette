@@ -20,19 +20,17 @@ public class MoneyManager
     }
     public OverHeadIconHandler OverHeadIconHandler { get { return _overHeadIconHandler; } set { _overHeadIconHandler = value; } }
 
-    private int _drinkCount;
-    private int _butterCount;
-
     private TextMeshProUGUI _moneyUI;
 
     public TextMeshProUGUI MoneyUI { set { _moneyUI = value; _moneyUI.text = "€ " + _money.ToString("F2"); } }
-    public int DrinkCount { get { return _drinkCount; } set { _drinkCount = value; } }
-    public int ButterCount { get { return _butterCount; } set { _butterCount = value; } }
 
     public void Init()
     {
         _money = 10000f;
-        _drinkCount = 5;
-        _butterCount = 5;
+    }
+
+    public void Clear()
+    {
+        _money = 10000f;
     }
 }
