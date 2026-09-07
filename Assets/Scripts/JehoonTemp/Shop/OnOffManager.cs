@@ -29,15 +29,13 @@ public class OnOffManager : MonoBehaviour
 
             ShopPanel.GetComponent<ShopManager>().ButtonInitiate();
 
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            Managers.Game.Paused = true;
             ShopPanel.SetActive(true);
         }
         else
         {
+            Managers.Game.Paused = false;
             ShopPanel.SetActive(false);
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }

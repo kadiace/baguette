@@ -7,8 +7,8 @@ public class ShopManager : MonoBehaviour
 {
     [Tooltip("현재 소지한 음료, 버터를 관리 - SupplyManager")]
     [SerializeField] private SupplyManager supplyManager;
-    [Tooltip("체력 관리 HealthCounter")]
-    [SerializeField] private HealthCounter healthCounter;
+    [Tooltip("패널 출력 여부 관리 - OnoffManager")]
+    [SerializeField] private OnOffManager onOffManager;
     [Tooltip("플레이어")]
     [SerializeField] private GameObject player;
     [Tooltip("플레이어 웨폰 헨들러")]
@@ -96,7 +96,6 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
         GetCurrentValues();
-        //InitValueText();
         SetValueText();
         ButtonInitiate();
     }

@@ -14,6 +14,7 @@ public class Managers : MonoBehaviour
     }
 
     private readonly DeliverManager _deliverManager = new();
+    private readonly GameManager _gameManager = new();
     private readonly MoneyManager _moneyManager = new();
     private readonly PlayerManager _playerManager = new();
     private readonly PoolManager _poolManager = new();
@@ -22,6 +23,7 @@ public class Managers : MonoBehaviour
     private readonly UIManager _uiManager = new();
 
     public static DeliverManager Deliver => Instance._deliverManager;
+    public static GameManager Game => Instance._gameManager;
     public static MoneyManager Money => Instance._moneyManager;
     public static PlayerManager Player => Instance._playerManager;
     public static PoolManager Pool => Instance._poolManager;
@@ -62,6 +64,7 @@ public class Managers : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
         _deliverManager.Init();
+        _gameManager.Init();
         _moneyManager.Init();
         _playerManager.Init();
         _poolManager.Init();

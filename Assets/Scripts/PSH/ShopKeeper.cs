@@ -4,9 +4,6 @@ public class ShopKeeper : MonoBehaviour
 {
     [Tooltip("씬에서 직접 할당 필요")]
     public OnOffManager shopOnOFF;
-    [Header("상점 관련 UI")]
-    [Tooltip("상점 UI")]
-    public GameObject storeUI;
     [Tooltip("상호작용 키 UI (키 힌트 UI)")]
     public GameObject keyhintUI;
 
@@ -64,7 +61,11 @@ public class ShopKeeper : MonoBehaviour
     public void ShowStore()
     {
         shopOnOFF.StateChange();
-        storeUI.SetActive(true);
     }
 
+
+    public void CloseStore()
+    {
+        shopOnOFF.StateChange();
+    }
 }

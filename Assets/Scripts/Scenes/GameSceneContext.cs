@@ -17,8 +17,7 @@ public class GameSceneContext : BaseScene
     private void Start()
     {
         Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        Managers.Game.Paused = true;
 
         StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
         StartCoroutine(RepeatAction(5f, SpawnTraffic));
@@ -64,7 +63,7 @@ public class GameSceneContext : BaseScene
             selectedHouse = houseList[UnityEngine.Random.Range(0, houseList.Count)];
         }
 
-        Managers.Deliver.GenerateDeliveryCard(selectedHouse, Managers.Player.PlayerStat.MaxBread);
+        Managers.Deliver.GenerateDeliveryCard(selectedHouse);
     }
 
     private void SpawnTraffic()

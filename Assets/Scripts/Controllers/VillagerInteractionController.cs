@@ -18,10 +18,9 @@ public class VillagerInteractionController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        if (!other.CompareTag("Player") && !other.CompareTag("Bread"))
             return;
 
-        PlayerController player = other.GetOrAddComponent<PlayerController>();
-        Managers.Deliver.CompleteDelivery(player, this);
+        Managers.Deliver.CompleteDelivery(this, other.tag);
     }
 }

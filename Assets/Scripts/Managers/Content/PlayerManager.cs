@@ -141,8 +141,8 @@ public class PlayerManager
             UI_Abilities.UI_AbilityCards[i].SetCard(i);
 
         Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+
+        Managers.Game.Paused = true;
     }
 
     public void DisableAbilities()
@@ -151,8 +151,7 @@ public class PlayerManager
         GetRandomAbilities(_playerStat.Abilities);
 
         Time.timeScale = 1f;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        Managers.Game.Paused = false;
     }
 
     private void GetRandomAbilities(List<Ability> excludedAbilities)

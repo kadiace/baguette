@@ -31,7 +31,7 @@ public class DeliverManager
         return _deliveries.Count >= _maxLength;
     }
 
-    public void GenerateDeliveryCard(GameObject house, int maxBread)
+    public void GenerateDeliveryCard(GameObject house)
     {
         // Card
         UI_DeliveryCard deliveryCard = Managers.UI.CreateUI<UI_DeliveryCard>(_deliveriesBackground.transform, "Components");
@@ -47,10 +47,11 @@ public class DeliverManager
         }
 
         // Pick quantity
-        int upgradeLevel = (maxBread - 5) / 2;
-        int minQuantity = Mathf.RoundToInt(maxBread * 0.2f); // 1/5
-        int maxQuantity = Mathf.RoundToInt(maxBread * 0.4f); // 2/5
-        int requiredBread = UnityEngine.Random.Range(minQuantity, maxQuantity + 1);
+        int upgradeLevel = (Managers.Player.PlayerStat.MaxBread - 5) / 2;
+        int minQuantity = Mathf.RoundToInt(Managers.Player.PlayerStat.MaxBread * 0.2f); // 1/5
+        int maxQuantity = Mathf.RoundToInt(Managers.Player.PlayerStat.MaxBread * 0.4f); // 2/5
+        int requiredBread = Managers.Player.PlayerStat.Abilities.Contains(Ability.ThrowDelivery) ?
+            1 : UnityEngine.Random.Range(minQuantity, maxQuantity + 1);
 
         int reward = 180
            + upgradeLevel * 2
@@ -86,23 +87,28 @@ public class DeliverManager
         RefreshDeliveriesLayout();
     }
 
-    public void CompleteDelivery(PlayerController player, VillagerInteractionController villager)
+    public void CompleteDelivery(VillagerInteractionController villager, string tag)
     {
-        // Reduce bread
-        WeaponHandler weaponHandler = player.weaponHandler;
+        // Get basic information
+        WeaponHandler weaponHandler = Managers.Player.PlayerController.weaponHandler;
         DeliveryPair pair = _deliveries.Find(delivery => delivery.Villager == villager);
         UI_DeliveryCard deliveryCard = pair.Card;
         Color originHouseColor = pair.OriginHouseColor;
 
-        if (Managers.Player.PlayerStat.Bread < deliveryCard.Quantity)
-            return;
+        // Reduce bread
+        bool skipBreadConsumption = Managers.Player.PlayerStat.Abilities.Contains(Ability.ThrowDelivery) && tag == "Bread";
+        if (!skipBreadConsumption)
+        {
+            if (Managers.Player.PlayerStat.Bread < deliveryCard.Quantity)
+                return;
 
-        Managers.Player.PlayerStat.Bread -= deliveryCard.Quantity;
+            Managers.Player.PlayerStat.Bread -= deliveryCard.Quantity;
+        }
 
         // Increase Health
-        player.IncreaseHealth();
+        Managers.Player.PlayerController.IncreaseHealth();
 
-        // deliveryCard 리스트에서 제거 및 Destroy
+        // Remove deliveryCard on list & Destroy
         DestroyDelivery(pair);
 
         // Earn Money & Get Exp
