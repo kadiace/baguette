@@ -14,12 +14,15 @@ public class GameSceneContext : BaseScene
     [SerializeField]
     private List<TrafficPath> _paths;
 
+    private Coroutine _deliveryCoroutine;
+    private bool _orderRushApplied = false;
+
     private void Start()
     {
         Time.timeScale = 0f;
         Managers.Game.Paused = true;
 
-        StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
+        _deliveryCoroutine = StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
         StartCoroutine(RepeatAction(1f, SpawnTraffic));
         StartCoroutine(RepeatAction(2f, SpawnPickPocket));
 
@@ -27,6 +30,28 @@ public class GameSceneContext : BaseScene
         UI_Abilities uI_Abilities = Managers.UI.CreateUI<UI_Abilities>(null, "Scenes");
         Managers.Player.UI_Abilities = uI_Abilities;
         Managers.Player.EnableAbilities();
+    }
+
+    void Update()
+    {
+        if (_orderRushApplied)
+            return;
+
+        if (!Managers.Player.PlayerStat.Abilities.Contains(Ability.OrderRush))
+            return;
+
+        _orderRushApplied = true;
+        Managers.Deliver.SetMaxLength(8);
+        ChangeDeliveryPeriod(4f);
+    }
+
+    public void ChangeDeliveryPeriod(float period)
+    {
+        if (_deliveryCoroutine != null)
+            StopCoroutine(_deliveryCoroutine);
+
+        _deliveryCoroutine =
+            StartCoroutine(RepeatAction(period, GenerateNewDeliveryCard));
     }
 
     private IEnumerator RepeatAction(float period, Action function)

@@ -26,6 +26,11 @@ public class DeliverManager
         _deliveriesBackground = deliveries.transform.Find("Background").gameObject;
     }
 
+    public void SetMaxLength(int maxLength)
+    {
+        _maxLength = maxLength;
+    }
+
     public bool IsFull()
     {
         return _deliveries.Count >= _maxLength;
@@ -47,15 +52,12 @@ public class DeliverManager
         }
 
         // Pick quantity
-        int upgradeLevel = (Managers.Player.PlayerStat.MaxBread - 5) / 2;
         int minQuantity = Mathf.RoundToInt(Managers.Player.PlayerStat.MaxBread * 0.2f); // 1/5
         int maxQuantity = Mathf.RoundToInt(Managers.Player.PlayerStat.MaxBread * 0.4f); // 2/5
         int requiredBread = Managers.Player.PlayerStat.Abilities.Contains(Ability.ThrowDelivery) ?
             1 : UnityEngine.Random.Range(minQuantity, maxQuantity + 1);
 
-        int reward = 180
-           + upgradeLevel * 2
-           + requiredBread * 20;
+        int reward = CalculateReward(requiredBread);
 
         deliveryCard.SetCard(color, 1 * 60f, requiredBread, reward);
 
@@ -85,6 +87,15 @@ public class DeliverManager
             OriginHouseColor = originHouseColor
         });
         RefreshDeliveriesLayout();
+    }
+
+    public int CalculateReward(int requiredBread)
+    {
+        int upgradeLevel = (Managers.Player.PlayerStat.MaxBread - 10) / 2;
+
+        return 180
+           + upgradeLevel * 2
+           + requiredBread * 20;
     }
 
     public void CompleteDelivery(VillagerInteractionController villager, string tag)

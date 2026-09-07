@@ -56,6 +56,18 @@ public class UI_AbilityCard : UI_Base
             return;
         Managers.Player.PlayerController.InputEnabled = true;
         Managers.Player.PlayerStat.Abilities.Add(ability);
+
+        switch (ability)
+        {
+            case Ability.ThrowDelivery:
+                foreach (DeliveryPair deliveryPair in Managers.Deliver.Deliveries)
+                {
+                    UI_DeliveryCard card = deliveryPair.Card;
+                    card.SetCard(card.Color, card.TimeLeft, 1, Managers.Deliver.CalculateReward(1));
+                }
+                break;
+        }
+
         Managers.Player.DisableAbilities();
     }
 

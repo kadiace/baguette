@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
                 moveInput.Disable();
                 jumpInput.Disable();
                 interactionInput.Disable();
-                StartCoroutine(EnableInputAfterDelay(1f));
+                StartCoroutine(EnableInputAfterDelay(0.5f));
             }
         }
     }

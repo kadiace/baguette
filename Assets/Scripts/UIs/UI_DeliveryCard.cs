@@ -19,11 +19,12 @@ public class UI_DeliveryCard : UI_Base
     private HouseColor _color;
     private int _reward;
     private int _quantity;
-    private float _time;
+    private float _timeLeft;
 
     public HouseColor Color { get { return _color; } }
     public int Reward { get { return _reward; } }
     public int Quantity { get { return _quantity; } }
+    public float TimeLeft { get { return _timeLeft; } }
 
     public override void Init()
     {
@@ -33,13 +34,13 @@ public class UI_DeliveryCard : UI_Base
 
     private void Update()
     {
-        if (_time <= 0f)
+        if (_timeLeft <= 0f)
             return;
 
-        _time -= Time.deltaTime;
-        _time = Mathf.Max(_time, 0f);
+        _timeLeft -= Time.deltaTime;
+        _timeLeft = Mathf.Max(_timeLeft, 0f);
 
-        if (_time <= 0f)
+        if (_timeLeft <= 0f)
         {
             Managers.Deliver.DestroyDelivery(this);
             return;
@@ -58,7 +59,7 @@ public class UI_DeliveryCard : UI_Base
         _color = color;
         _reward = reward;
         _quantity = quantity;
-        _time = time;
+        _timeLeft = time;
 
         GetText((int)Texts.Reward).GetComponent<TextMeshProUGUI>().text = $"{_reward} €";
         GetText((int)Texts.Quantity).GetComponent<TextMeshProUGUI>().text = $"Baguette × {_quantity}";
@@ -68,8 +69,8 @@ public class UI_DeliveryCard : UI_Base
 
     private void SetTime()
     {
-        int minutes = Mathf.FloorToInt(_time / 60f);
-        int seconds = Mathf.FloorToInt(_time % 60f);
+        int minutes = Mathf.FloorToInt(_timeLeft / 60f);
+        int seconds = Mathf.FloorToInt(_timeLeft % 60f);
         GetText((int)Texts.Time).GetComponent<TextMeshProUGUI>().text = $"{minutes:D2}:{seconds:D2}";
     }
 }
