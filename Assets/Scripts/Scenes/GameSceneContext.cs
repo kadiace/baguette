@@ -20,7 +20,7 @@ public class GameSceneContext : BaseScene
         Managers.Game.Paused = true;
 
         StartCoroutine(RepeatAction(10f, GenerateNewDeliveryCard));
-        StartCoroutine(RepeatAction(5f, SpawnTraffic));
+        StartCoroutine(RepeatAction(1f, SpawnTraffic));
         StartCoroutine(RepeatAction(2f, SpawnPickPocket));
 
         Managers.Player.UI_InGame = Managers.UI.CreateUI<UI_InGame>(null, "Scenes");

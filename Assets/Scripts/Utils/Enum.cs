@@ -56,6 +56,7 @@ public enum Ability
     TripleShot,
     Carjack,
     ThiefMagnet,
+    RemoteSupply,
 }
 
 public static class AbilityCatalog
@@ -64,12 +65,13 @@ public static class AbilityCatalog
         {
             { Ability.OrderRush, ("주문 폭주", "입소문이 퍼졌습니다. 주문이 더 빨리 들어오고, 더 많은 주문을 받아둘 수 있습니다.") },
             { Ability.ThrowDelivery, ("배달의 달인", "빵을 던져서 맞춰도 배달에 성공합니다. 모든 주문의 수량이 1개로 감소하며, 배달 보수도 그만큼 감소합니다.") },
-            { Ability.RapidThrow, ("습박 빵 던져", "기본 시점이 1인칭으로 변경되고 마우스 좌클릭 휘두르기가 던지기로 변경됩니다. 빵 던지기의 딜레이가 대폭 감소합니다.") },
+            { Ability.RapidThrow, ("습박 빵 던져잇", "기본 시점이 1인칭으로 변경되고 마우스 좌클릭 휘두르기가 던지기로 변경됩니다. 빵 던지기의 딜레이가 대폭 감소합니다.") },
             { Ability.Vigilante, ("자경단", "시켜줘 파리 명예 자경단. 소매치기를 처치할 때마다 보상이 들어옵니다.") },
             { Ability.ButterBlast, ("베스트프렌드", "버터의 효과가 배달 보수 증가 버프에서, 영역 범위 공격으로 변경됩니다.") },
-            { Ability.TripleShot, ("바게트의 상처", "빵을 던질 때 세 갈래로 나갑니다. 걱정하지 마세요! 똑같이 1개의 바게트만 소모됩니다.") },
-            { Ability.Carjack, ("자동차,\n빌리겠습니다", "차를 훔쳐 탈 수 있습니다. 차를 탄 상태에서는 NPC와 상호작용이 불가능합니다.") },
-            { Ability.ThiefMagnet, ("냄새 맡고\n왔습니다", "향긋한 냄새에 소매치기들이 몰려듭니다. 소매치기가 지금보다 2배 더 늘어납니다.") },
+            { Ability.TripleShot, ("강화 투척", "빵을 던질 때 세 갈래로 나갑니다. 걱정하지 마세요! 똑같이 1개의 바게트만 소모됩니다.") },
+            { Ability.Carjack, ("차량 강탈", "차를 훔쳐 탈 수 있습니다. 차를 탄 상태에서는 어떤 보상도 얻을 수 없습니다.") },
+            { Ability.ThiefMagnet, ("참을 수 없어!", "향긋한 냄새에 소매치기들이 몰려듭니다. 소매치기가 지금보다 2배 더 늘어납니다.") },
+            { Ability.RemoteSupply, ("원격 충전", "베이커리에서 떨어져 있어도 F 키를 눌러 빵을 충전합니다.") },
         };
 }
 
@@ -78,4 +80,10 @@ public enum EnemyHitCause
     Unknown,
     Player,
     Car,
+}
+
+public enum CarTriggerType
+{
+    Collision,
+    Detection
 }

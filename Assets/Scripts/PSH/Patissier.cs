@@ -32,7 +32,6 @@ public class Patissier : MonoBehaviour
             return;
         keyhintUI.SetActive(true);
         target = Camera.main.transform;
-        player.SetBreadShopInteration(this);
     }
 
     //키 힌트 숨기기
@@ -44,6 +43,5 @@ public class Patissier : MonoBehaviour
 
         target = null;
         keyhintUI.SetActive(false);
-        player.RemoveBreadShopInteration();
     }
 }

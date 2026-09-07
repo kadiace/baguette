@@ -67,7 +67,7 @@ public class PlayerManager
         };
         _abilityCandidates = new Ability?[6];
         GetRandomAbilities(new List<Ability>() { Ability.Vigilante });
-        _abilityCandidates[UnityEngine.Random.Range(0, _abilityCandidates.Length)] = Ability.Vigilante;
+        _abilityCandidates[UnityEngine.Random.Range(0, 3)] = Ability.Vigilante;
     }
 
     public int GetMaxExp()

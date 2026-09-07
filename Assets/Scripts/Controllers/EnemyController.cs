@@ -21,7 +21,7 @@ public class EnemyController : Poolable
     void Start()
     {
         curHP = maxHP;
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
+        player = Managers.Player.PlayerController;
         _rb = gameObject.GetorAddComponent<Rigidbody>();
         onPlayerDamaged = new UnityEvent<int>();
     }

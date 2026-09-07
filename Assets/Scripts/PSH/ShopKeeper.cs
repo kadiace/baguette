@@ -45,7 +45,6 @@ public class ShopKeeper : MonoBehaviour
 
         target = Camera.main.transform;
         keyhintUI.SetActive(true);
-        other.GetComponent<PlayerController>().SetShopInteration(this);
     }
 
     //키 힌트 숨기기
@@ -55,7 +54,6 @@ public class ShopKeeper : MonoBehaviour
             return;
         target = null;
         keyhintUI.SetActive(false);
-        other.GetComponent<PlayerController>().RemoveShopInteration();
     }
 
     public void ShowStore()

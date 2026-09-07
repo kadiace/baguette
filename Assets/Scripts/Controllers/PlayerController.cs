@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,12 +8,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Tooltip("카메라")]
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] private CamController camController;
+    [SerializeField] private CamController _camController;
     [Header("플레이어 무기 관리자(?)")]
     public WeaponHandler weaponHandler;
     [Header("플레이어 조작")]
-    [SerializeField] Rigidbody pRigid;
     [Tooltip("W A S D")]
     public InputAction moveInput;
     [Tooltip("Space")]
@@ -43,18 +42,33 @@ public class PlayerController : MonoBehaviour
     public UnityEvent PlayerDied;
 
     [Header("상호작용 할 가게")]
-    public ShopKeeper shop;
-    public Patissier bread;
+    [SerializeField] private ShopKeeper _shop;
+    [SerializeField] private Patissier _bread;
+    public HashSet<CarController> Cars = new();
 
     private bool _inputEnabled = true;
+    private Rigidbody _rb;
+
+    public CamController CamController { get { return _camController; } set { _camController = value; } }
     public bool InputEnabled
     {
         get { return _inputEnabled; }
         set
         {
             _inputEnabled = value;
+            if (value)
+            {
+                moveInput.Enable();
+                jumpInput.Enable();
+                interactionInput.Enable();
+            }
             if (!value)
+            {
+                moveInput.Disable();
+                jumpInput.Disable();
+                interactionInput.Disable();
                 StartCoroutine(EnableInputAfterDelay(1f));
+            }
         }
     }
 
@@ -65,7 +79,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Reset()
     {
-        pRigid = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -86,6 +100,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         Managers.Player.PlayerController = this;
+        _rb = gameObject.GetorAddComponent<Rigidbody>();
     }
 
     void Update()
@@ -93,7 +108,6 @@ public class PlayerController : MonoBehaviour
         //사망 시 입력 무시
         if (isDead)
             return;
-        MovePlayer();
         JumpPlayer();
         InteractionWithOthers();
 
@@ -106,11 +120,23 @@ public class PlayerController : MonoBehaviour
         // Rapid Throw
         if (Managers.Player.PlayerStat.Bread <= 0)
         {
-            camController.CameraAim(false);
+            _camController.CameraAim(false);
             return;
         }
-        camController.CameraAim(true);
+        _camController.CameraAim(true);
         RapidThrow();
+    }
+
+    private void FixedUpdate()
+    {
+        MovePlayer();
+
+        // [-70, 70] 내부에 있도록 보정
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -70f, 70f);
+        pos.z = Mathf.Clamp(pos.z, -70f, 70f);
+
+        transform.position = pos;
     }
 
     #region 플레이어 조작(이동, 공격, 상호작용)  *회전은 카메라에서 조절
@@ -125,14 +151,14 @@ public class PlayerController : MonoBehaviour
             return;
 
         // 기존에 있던 수평 속도 제거
-        Vector3 currentVel = pRigid.linearVelocity;
+        Vector3 currentVel = _rb.linearVelocity;
         currentVel.x = 0;
         currentVel.z = 0;
-        pRigid.linearVelocity = currentVel;
+        _rb.linearVelocity = currentVel;
 
         //카메라 시선 방향 확인
-        Vector3 camForward = cameraTransform.forward;
-        Vector3 camRight = cameraTransform.right;
+        Vector3 camForward = _camController.transform.forward;
+        Vector3 camRight = _camController.transform.right;
 
         camForward.y = 0f;
         camRight.y = 0f;
@@ -141,18 +167,12 @@ public class PlayerController : MonoBehaviour
         camRight.Normalize();
 
         //플레이어 이동 위치 설정 및 이동
-        Vector3 movementDirection = (camForward * movePos.y) + (camRight * movePos.x);
-        transform.Translate(movementDirection * Time.deltaTime * walkSpeed, Space.World);
-    }
+        Vector3 direction = (camForward * movePos.y) + (camRight * movePos.x);
 
-    private void FixedUpdate()
-    {
-        // [-70, 70] 내부에 있도록 보정
-        Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, -70f, 70f);
-        pos.z = Mathf.Clamp(pos.z, -70f, 70f);
+        if (Physics.Raycast(transform.position + Vector3.up * 0.5f, direction, 1.0f, LayerMask.GetMask("Block")))
+            return;
 
-        transform.position = pos;
+        _rb.MovePosition(_rb.position + direction * walkSpeed * Time.fixedDeltaTime);
     }
 
     /// <summary>
@@ -165,7 +185,7 @@ public class PlayerController : MonoBehaviour
 
         if (jumpInput.triggered)
         {
-            pRigid.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
             isGround = false;
         }
     }
@@ -198,7 +218,7 @@ public class PlayerController : MonoBehaviour
             if (Managers.Player.PlayerStat.Bread < 1)
                 return;
             isThrowReady = true;
-            camController.CameraAim(true);
+            _camController.CameraAim(true);
             weaponHandler.ShowThrowPath();
             weaponHandler.StartAimingTime();
 
@@ -225,38 +245,39 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void InteractionWithOthers()
     {
-        if (interactionInput.triggered)
+        if (!interactionInput.triggered)
+            return;
+
+        float distShop = (transform.position - _shop.transform.position).magnitude;
+        float distBread = (transform.position - _bread.transform.position).magnitude;
+
+        float distCar = float.PositiveInfinity;
+        CarController car = null;
+
+        foreach (CarController curCar in Cars)
         {
-            //둘 다 있을 경우 가까운 가게 선택
-            if (shop != null && bread != null)
+            float curDistCar = (transform.position - curCar.transform.position).magnitude;
+            if (curDistCar < distCar)
             {
-                float distShop = (transform.position - shop.transform.position).sqrMagnitude;
-                float distBread = (transform.position - bread.transform.position).sqrMagnitude;
-
-                if (distShop < distBread)
-                    shop.ShowStore();
-                else
-                {
-                    gameObject.GetComponentInChildren<OverHeadIconHandler>().StartShowBread();
-                    weaponHandler.SupplyBread();
-                }
-
-            }
-            else if (shop != null)
-                shop.ShowStore();
-            else if (bread != null)
-            {
-                gameObject.GetComponentInChildren<OverHeadIconHandler>().StartShowBread();
-                weaponHandler.SupplyBread();
+                car = curCar;
+                distCar = curDistCar;
             }
         }
+
+        float interactDistance = 4f;
+
+        if (distShop <= distBread
+            && distShop <= distCar
+            && distShop <= interactDistance)
+            _shop.ShowStore();
+        else if (distBread <= distCar
+            && distBread <= interactDistance)
+            weaponHandler.SupplyBread();
+        else if (car != null
+            && distCar <= interactDistance
+            && Managers.Player.PlayerStat.Abilities.Contains(Ability.Carjack))
+            car.Ride(this);
     }
-
-    public void SetShopInteration(ShopKeeper shopKeeper) => shop = shopKeeper;
-    public void RemoveShopInteration() => shop = null;
-    public void SetBreadShopInteration(Patissier patissier) => bread = patissier;
-    public void RemoveBreadShopInteration() => bread = null;
-
 
     #endregion
 
