@@ -13,6 +13,8 @@ public class CarController : Poolable
     [SerializeField] private float _floatForce = 15f;
     [SerializeField] private InputAction _moveInput;
     [SerializeField] private InputAction _interactionInput;
+    [SerializeField] public GameObject _keyhintUI;
+    private Transform _target;
 
     private readonly HashSet<GameObject> _collidedObjects = new();
 
@@ -58,6 +60,12 @@ public class CarController : Poolable
         pos.z = Mathf.Clamp(pos.z, -70f, 70f);
 
         transform.position = pos;
+    }
+    void LateUpdate()
+    {
+        if (_target == null)
+            return;
+        _keyhintUI.transform.rotation = _target.rotation;
     }
 
     private void DriveCar()
@@ -195,6 +203,7 @@ public class CarController : Poolable
     {
         if (other.CompareTag("Player"))
             other.GetComponent<PlayerController>().Cars.Remove(this);
+        _keyhintUI.SetActive(false);
     }
 
     private void HandleCollisionTrigger(Collider other)
@@ -233,8 +242,10 @@ public class CarController : Poolable
 
     private void HandleDetectionTrigger(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        if (!other.CompareTag("Player") || !Managers.Player.PlayerStat.Abilities.Contains(Ability.Carjack))
             return;
         other.GetComponent<PlayerController>().Cars.Add(this);
+        _target = Camera.main.transform;
+        _keyhintUI.SetActive(true);
     }
 }

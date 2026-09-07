@@ -26,11 +26,11 @@ public class MoneyManager
 
     public void Init()
     {
-        _money = 10000f;
+        _money = 100f;
     }
 
     public void Clear()
     {
-        _money = 10000f;
+        _money = 100f;
     }
 }
