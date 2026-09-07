@@ -39,7 +39,6 @@ public class EnemyController : Poolable
     /// <param name="other"></param>
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log($"충돌 감지: {other.gameObject}");
         if (collision.gameObject.CompareTag("Player"))
         {
             Managers.Player.PlayerController.TakeDamage(1);

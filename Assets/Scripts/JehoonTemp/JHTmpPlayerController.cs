@@ -41,7 +41,8 @@ public class JHTmpPlayerController : MonoBehaviour
     [Tooltip("플레이어 체력 변동 이벤트")]
     public UnityEvent<int> OnHealthChanged;
 
-    private void Awake(){
+    private void Awake()
+    {
         pRigid = GetComponent<Rigidbody>();
     }
 
@@ -60,7 +61,8 @@ public class JHTmpPlayerController : MonoBehaviour
         //mouseInput.Enable();
     }
 
-    void Update(){
+    void Update()
+    {
         CheckKeyboardInput();
         RotatePlayer();
     }
@@ -71,7 +73,7 @@ public class JHTmpPlayerController : MonoBehaviour
     void CheckKeyboardInput()
     {
         //사망 시 입력 무시
-        if (isDead) 
+        if (isDead)
             return;
         MovePlayer();
         JumpPlayer();
@@ -120,7 +122,7 @@ public class JHTmpPlayerController : MonoBehaviour
     /// </summary>
     void JumpPlayer()
     {
-        if(jumpInput.triggered)
+        if (jumpInput.triggered)
             pRigid.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
     }
 
@@ -130,8 +132,9 @@ public class JHTmpPlayerController : MonoBehaviour
     void AttackPlayer()
     {
         //좌 "클릭"
-        if (Input.GetMouseButtonDown(0)){
-            if(isThrowReady)
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isThrowReady)
                 return;
             JHTmpWeaponHandler.MeleeAttack();
             meleeAni.Play("SwingDiagonal");
@@ -140,11 +143,12 @@ public class JHTmpPlayerController : MonoBehaviour
         else if (Input.GetMouseButton(1))
         {
             rightClickTime += Time.deltaTime;
-            if (rightClickTime >= aimTime){
+            if (rightClickTime >= aimTime)
+            {
                 isThrowReady = true;
                 camController.CameraAim(true);
             }
-            
+
         }
         // 우클릭 해제 시 카메라 줌아웃
         else if (Input.GetMouseButtonUp(1))
@@ -174,7 +178,7 @@ public class JHTmpPlayerController : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth < 0)
         {
-            currentHealth = 0;            
+            currentHealth = 0;
         }
 
         HealthEventInvoke();
@@ -190,7 +194,6 @@ public class JHTmpPlayerController : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        Debug.Log("플레이어 사망");
     }
     /// <summary>
     /// 현재 체력 반환
@@ -210,17 +213,4 @@ public class JHTmpPlayerController : MonoBehaviour
     }
 
     #endregion
-
-    /// <summary>
-    /// 트리거 발동 감지
-    /// </summary>
-    /// <param name="other"></param>
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.gameObject.name == "EnemyTemp")
-    //     {
-    //         TakeDamage(1);
-    //         Debug.Log("플레이어가 적에게 피해를 입었습니다. 현재 체력: " + currentHealth);
-    //     }
-    // }
 }

@@ -41,8 +41,6 @@ public class Baguette : MonoBehaviour
     {
         if (isThrow && !isStuck)
             transform.Translate(Vector3.forward * flySpeed * Time.deltaTime);
-        if (isStuck)
-            Debug.Log("빵이 벽에 고정됨");
     }
 
     #region 공격 관련 (근접 공격, 던지기)
@@ -81,10 +79,8 @@ public class Baguette : MonoBehaviour
     private void OnTriggerEnter(Collider collision)
     {
         if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Floor")) && isThrow)
-        {
-            Debug.Log("빵 고정");
             SetStuck(collision);
-        }
+
         else if (collision.gameObject.CompareTag("Enemy"))
         {
             //플레이어와의 접촉에 의한 공격 방지 장치
@@ -107,13 +103,6 @@ public class Baguette : MonoBehaviour
                 enemy.EnemyHit(curDamage, EnemyHitCause.Player, transform.root.position);
             }
         }
-        /*
-        else if (collision.gameObject.CompareTag("Ground") && isThrow)
-        {
-            Debug.Log("빵이 땅에 닿음");
-            //Destroy(gameObject);
-        }
-        */
     }
     #region 빵 고정 관련
     public void SetFireAngle(Vector3 forwardDirection)

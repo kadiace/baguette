@@ -36,7 +36,7 @@ public class JHTmpWeaponHandler : MonoBehaviour
         CountEventInvoke();
     }
 
-#region 빵 사용 관련
+    #region 빵 사용 관련
     /// <summary>
     /// 빵 사용 시 현재 빵 개수를 감소시키고, UI에 변경 사항을 전달합니다.
     /// </summary>
@@ -67,9 +67,9 @@ public class JHTmpWeaponHandler : MonoBehaviour
         curBread = MaxBread;
         CountEventInvoke();
     }
-#endregion
+    #endregion
 
-#region 빵 공격 관련
+    #region 빵 공격 관련
     /// <summary>
     /// 근접 공격
     /// </summary>
@@ -83,11 +83,13 @@ public class JHTmpWeaponHandler : MonoBehaviour
     /// </summary>
     public void ThrowBread()
     {
-        if (isCooldown){
+        if (isCooldown)
+        {
             Debug.Log("아직 쿨타임이 남았습니다.");
             return;
         }
-        else if (curBread <= 0){
+        else if (curBread <= 0)
+        {
             Debug.Log("빵이 없습니다.");
             return;
         }
@@ -107,9 +109,9 @@ public class JHTmpWeaponHandler : MonoBehaviour
         }
     }
 
-#endregion
+    #endregion
 
-#region 빵 개수 관련
+    #region 빵 개수 관련
     /// <summary>
     /// 현재 빵 개수를 반환합니다.
     /// </summary>
@@ -135,7 +137,7 @@ public class JHTmpWeaponHandler : MonoBehaviour
         Debug.Log("현재 빵 개수: " + curBread);
     }
 
-#endregion
+    #endregion
 
     /// <summary>
     /// 던지기 쿨타임 코루틴
@@ -144,7 +146,8 @@ public class JHTmpWeaponHandler : MonoBehaviour
     {
 
         float curCoolTime = 0;
-        while (curCoolTime < throwCooldownTime){
+        while (curCoolTime < throwCooldownTime)
+        {
             curCoolTime++;
             yield return new WaitForSeconds(1f);
         }
@@ -157,7 +160,8 @@ public class JHTmpWeaponHandler : MonoBehaviour
     IEnumerator ThrowBreadCoroutine()
     {
         float curReloadTime = 0;
-        while (curReloadTime < reloadTime){
+        while (curReloadTime < reloadTime)
+        {
             curReloadTime++;
             yield return new WaitForSeconds(1f);
         }

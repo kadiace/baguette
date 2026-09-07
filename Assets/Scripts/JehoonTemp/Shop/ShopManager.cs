@@ -159,7 +159,6 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     public void ButtonInitiate()
     {
-        // Debug.Log("ButtonInitiate() 호출");
         if (Managers.Money.Money < healthPrice || healthLevel >= 11)
         {
             healthButton.interactable = false;
@@ -253,7 +252,7 @@ public class ShopManager : MonoBehaviour
         }
         //플레이어 빵 최대 갯수 증가
         Managers.Player.PlayerStat.MaxBread += 2;
-        Managers.Player.PlayerStat.MaxBread += 2;
+        Managers.Player.PlayerStat.Bread += 2;
 
         //UI에 표시 글 수정
         Managers.Money.Money -= breadPrice;

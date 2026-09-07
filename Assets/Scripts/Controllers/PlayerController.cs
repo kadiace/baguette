@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public InputAction jumpInput;
     [Tooltip("상호작용 키")]
     public InputAction interactionInput;
+    [Tooltip("특수 공격 키")]
+    public InputAction skillInput;
     [Tooltip("공격 애니메이션(웨폰 헨들러)")]
     public Animator weaponHandlerAni;
     public bool isThrowReady = false;
@@ -43,6 +45,14 @@ public class PlayerController : MonoBehaviour
     private bool _inputEnabled = true;
     private Rigidbody _rb;
 
+    private Vector3 _stormTargetPos;
+    private GameObject _blastGuide;
+    private MeshFilter _blastGuideMeshFilter;
+    private MeshRenderer _blastGuideMeshRenderer;
+    private Mesh _blastGuideMesh;
+
+    private const int BlastGuideSegments = 64;
+
     public CamController CamController { get { return _camController; } set { _camController = value; } }
     public bool InputEnabled
     {
@@ -52,15 +62,11 @@ public class PlayerController : MonoBehaviour
             _inputEnabled = value;
             if (value)
             {
-                moveInput.Enable();
-                jumpInput.Enable();
-                interactionInput.Enable();
+                EnableInputAction();
             }
             if (!value)
             {
-                moveInput.Disable();
-                jumpInput.Disable();
-                interactionInput.Disable();
+                DisableInputAction();
                 StartCoroutine(EnableInputAfterDelay(0.5f));
             }
         }
@@ -76,25 +82,32 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
-    private void OnEnable()
-    {
-        InitInputAction();
-    }
-
     /// <summary>
     /// InputAction 활성화
     /// </summary>
-    void InitInputAction()
+    void EnableInputAction()
     {
         moveInput.Enable();
         jumpInput.Enable();
         interactionInput.Enable();
+        skillInput.Enable();
+    }
+
+    void DisableInputAction()
+    {
+        moveInput.Enable();
+        jumpInput.Enable();
+        interactionInput.Enable();
+        skillInput.Enable();
     }
 
     void Awake()
     {
         Managers.Player.PlayerController = this;
         _rb = gameObject.GetorAddComponent<Rigidbody>();
+
+        InitBlastGuide();
+        HideBlastGuide();
     }
 
     void Update()
@@ -104,6 +117,7 @@ public class PlayerController : MonoBehaviour
             return;
         JumpPlayer();
         InteractionWithOthers();
+        UseSkill();
 
         if (!Managers.Player.PlayerStat.Abilities.Contains(Ability.RapidThrow))
         {
@@ -285,6 +299,56 @@ public class PlayerController : MonoBehaviour
             weaponHandler.SupplyBread();
     }
 
+    private void UseSkill()
+    {
+        bool butterBlast = Managers.Player.PlayerStat.Abilities.Contains(Ability.ButterBlast) && Managers.Player.PlayerStat.ButterAmount > 0;
+        if (!butterBlast)
+            return;
+        Vector3 camForward = CamController.transform.forward;
+        Vector3 targetPos = transform.position + camForward.normalized * 6f;
+        targetPos.y = 0.05f;
+        _stormTargetPos = targetPos;
+
+        if (skillInput.IsPressed())
+            ShowBlastGuide(_stormTargetPos, 5f);
+        if (skillInput.WasReleasedThisFrame())
+        {
+            Managers.Player.PlayerStat.ButterAmount--;
+            GameObject blastGuide = DuplicateBlastGuide();
+            HideBlastGuide();
+            StartCoroutine(ButterBlast(_stormTargetPos, blastGuide));
+        }
+    }
+
+    private IEnumerator ButterBlast(Vector3 stormTargetPos, GameObject blastGuide)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < 5f)
+        {
+            SummonBread(stormTargetPos);
+
+            yield return new WaitForSeconds(0.2f);
+            elapsed += 0.2f;
+        }
+
+        Destroy(blastGuide);
+    }
+
+    private void SummonBread(Vector3 stormTargetPos)
+    {
+        Baguette baguette = Managers.Resource.Instantiate("Players/Baguette").GetorAddComponent<Baguette>();
+        Vector2 randomCircle = Random.insideUnitCircle * 4f;
+        Vector3 randomPos = stormTargetPos + new Vector3(
+            randomCircle.x,
+            10f,
+            randomCircle.y
+        );
+        baguette.transform.position = randomPos;
+        baguette.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        baguette.SetFireAngle(new Vector3(0, -1, 0));
+        baguette.ThrowBaguette();
+    }
     #endregion
 
     #region 플레이어 체력 변동 & 사망 by.Jaehoon
@@ -323,4 +387,84 @@ public class PlayerController : MonoBehaviour
             isGround = true;
     }
 
+    private void InitBlastGuide()
+    {
+        Transform blastGuideTransform = transform.Find("BlastGuide");
+
+        _blastGuide = blastGuideTransform.gameObject;
+        _blastGuideMeshFilter = _blastGuide.GetorAddComponent<MeshFilter>();
+        _blastGuideMeshRenderer = _blastGuide.GetorAddComponent<MeshRenderer>();
+
+        _blastGuideMesh = new Mesh();
+        _blastGuideMeshFilter.mesh = _blastGuideMesh;
+    }
+
+    private void DrawBlastGuide(Vector3 worldCenter, float radius)
+    {
+        Vector3[] vertices = new Vector3[BlastGuideSegments + 1];
+        int[] triangles = new int[BlastGuideSegments * 3];
+
+        vertices[0] = _blastGuide.transform.InverseTransformPoint(worldCenter);
+
+        for (int i = 0; i < BlastGuideSegments; i++)
+        {
+            float angle = 2f * Mathf.PI * i / BlastGuideSegments;
+
+            Vector3 worldPosition = worldCenter + new Vector3(
+                Mathf.Cos(angle) * radius,
+                0f,
+                Mathf.Sin(angle) * radius
+            );
+            vertices[i + 1] =
+                _blastGuide.transform.InverseTransformPoint(worldPosition);
+        }
+
+        for (int i = 0; i < BlastGuideSegments; i++)
+        {
+            int current = i + 1;
+            int next = (i + 1) % BlastGuideSegments + 1;
+
+            triangles[i * 3] = 0;
+            triangles[i * 3 + 1] = next;
+            triangles[i * 3 + 2] = current;
+        }
+
+        _blastGuideMesh.Clear();
+        _blastGuideMesh.vertices = vertices;
+        _blastGuideMesh.triangles = triangles;
+        _blastGuideMesh.RecalculateNormals();
+        _blastGuideMesh.RecalculateBounds();
+    }
+
+    private void ShowBlastGuide(Vector3 center, float radius)
+    {
+        DrawBlastGuide(center, radius);
+        _blastGuide.SetActive(true);
+    }
+
+    private void HideBlastGuide()
+    {
+        _blastGuide.SetActive(false);
+    }
+
+    private GameObject DuplicateBlastGuide()
+    {
+        GameObject blastGuide = Instantiate(
+            _blastGuide,
+            _blastGuide.transform.parent
+        );
+
+        blastGuide.transform.SetParent(null, true);
+
+        MeshFilter meshFilter = blastGuide.GetComponent<MeshFilter>();
+        meshFilter.mesh = Instantiate(_blastGuideMesh);
+
+        MeshRenderer meshRenderer = blastGuide.GetComponent<MeshRenderer>();
+
+        Color butterColor = meshRenderer.material.color;
+        butterColor.a = 0.1f;
+        meshRenderer.material.color = butterColor;
+
+        return blastGuide;
+    }
 }
