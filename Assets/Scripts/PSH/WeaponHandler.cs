@@ -46,6 +46,7 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void SupplyBread()
     {
+        Managers.Money.OverHeadIconHandler.StartShowBread();
         Managers.Player.PlayerStat.Bread = Managers.Player.PlayerStat.MaxBread;
     }
 

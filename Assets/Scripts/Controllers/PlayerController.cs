@@ -269,14 +269,26 @@ public class PlayerController : MonoBehaviour
         if (distShop <= distBread
             && distShop <= distCar
             && distShop <= interactDistance)
+        {
             _shop.ShowStore();
+            return;
+        }
         else if (distBread <= distCar
             && distBread <= interactDistance)
+        {
             weaponHandler.SupplyBread();
+            return;
+        }
         else if (car != null
             && distCar <= interactDistance
             && Managers.Player.PlayerStat.Abilities.Contains(Ability.Carjack))
+        {
             car.Ride(this);
+            return;
+        }
+
+        if (Managers.Player.PlayerStat.Abilities.Contains(Ability.RemoteSupply))
+            weaponHandler.SupplyBread();
     }
 
     #endregion
